@@ -56,7 +56,7 @@ function bam_default_options()
     return array(
         'enabled'          => 1,
         'load_mode'        => 'cdn',
-        'mermaid_version'  => '11.17.2',
+        'mermaid_version'  => '12.0.0',
         'theme_mode'       => 'arcaea_dark',
         'security_level'   => 'strict',
         'enable_shortcode' => 1,
@@ -85,7 +85,7 @@ function bam_sanitize_options($input)
     $allowed_load_modes = array('cdn');
     $output['load_mode'] = in_array($input['load_mode'] ?? '', $allowed_load_modes, true)
         ? $input['load_mode'] : $defaults['load_mode'];
-    $allowed_versions = array('11.15.0', '11', '10.9.6', '11.17.2', '11.17');
+    $allowed_versions = array('11.15.0', '11', '10.9.6', '11.17.2', '11.17', '12.0.0', '12.0');
     $output['mermaid_version'] = in_array($input['mermaid_version'] ?? '', $allowed_versions, true)
         ? $input['mermaid_version'] : $defaults['mermaid_version'];
     $allowed_theme_modes = array('arcaea_dark', 'arcaea_light', 'auto');
