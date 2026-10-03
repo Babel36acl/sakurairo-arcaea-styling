@@ -3,6 +3,9 @@ import path from 'node:path';
 
 function scalar(value) {
   const text = value.trim();
+  if ((text.startsWith('[') && text.endsWith(']')) || (text.startsWith('"') && text.endsWith('"'))) {
+    try { return JSON.parse(text); } catch { /* fall through to the legacy parser */ }
+  }
   if (text === 'true') return true;
   if (text === 'false') return false;
   if (text.startsWith('[') && text.endsWith(']')) {

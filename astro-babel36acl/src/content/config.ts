@@ -14,8 +14,8 @@ export const collections = {
       published: day,
       updated: day.optional(),
       // 与文件名分离，修改标题和日期不会改变已发布的网址。
-      permalink: z.string().regex(/^\/(?:[\p{L}\p{N}_-]+\/)+$/u,
-        'permalink 应为 /2026/10/03/my-post/，仅包含文字、数字、横线、下划线和路径分隔符'),
+      permalink: z.string().regex(/^\/(?:[^\s/]+\/)+$/u,
+        'permalink 应为以 / 开始和结束、各段不含空格或斜杠的稳定路径'),
       draft: z.boolean().default(true),
       categories: z.array(z.string().trim().min(1)).default([]),
       tags: z.array(z.string().trim().min(1)).default([]),

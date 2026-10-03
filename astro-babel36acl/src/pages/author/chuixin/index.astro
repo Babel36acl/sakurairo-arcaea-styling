@@ -1,0 +1,37 @@
+---
+import SakurairoLayout from "../../../layouts/SakurairoLayout.astro";
+import site from "../../../data/site.json";
+import { getPosts, plainText } from "../../../lib/content";
+
+const posts = (await getPosts()).sort((a, b) => b.date.localeCompare(a.date));
+const totalWords = posts.reduce((sum, post) => sum + plainText(post.content).length, 0);
+---
+
+<SakurairoLayout title={`Babel36acl | 作者 | ${site.title}`} bodyClass="archive author author-chuixin wp-theme-Sakurairo chinese-font serif" landAtHome={false} canonicalRoute="author/chuixin">
+  <div id="page" class="site wrapper author-page">
+    <div class="blank" style="padding-top:75px"></div>
+    <div id="content" class="site-content">
+      <main id="primary" class="content-area" role="main">
+        <section class="author-intro" aria-labelledby="author-title">
+          <img src="/assets/avatar.png" width="72" height="72" alt="Babel36acl" loading="eager" />
+          <div>
+            <p class="author-kicker">AUTHOR / CHUIXIN</p>
+            <h1 id="author-title">Babel36acl</h1>
+            <p>记录嵌入式工程、协议分析、工具链与那些仍在回响的声音。</p>
+            <div class="author-stats"><span>{posts.length} 篇文章</span><span>{totalWords} 字</span></div>
+          </div>
+        </section>
+        <h2 class="main-title"><i class="fa-regular fa-bookmark" aria-hidden="true"></i>文章归档</h2>
+        <div class="author-posts">
+          {posts.map((post) => (
+            <a class="author-post" href={`/${post.route}/`}>
+              <span class="author-post__date">{post.date.slice(0, 10)}</span>
+              <span class="author-post__title">{post.title}</span>
+              <span class="author-post__arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </main>
+    </div>
+  </div>
+</SakurairoLayout>

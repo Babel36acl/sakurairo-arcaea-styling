@@ -7,6 +7,7 @@ current_link=${3:-/opt/1panel/www/sites/babel36acl.xyz/astro-current}
 keep_releases=${ASTRO_KEEP_RELEASES:-5}
 stamp=$(date -u +%Y%m%dT%H%M%SZ)
 release_dir="$release_root/$stamp"
+current_parent=$(dirname "$current_link")
 previous_target=''
 
 case "$release_root" in
@@ -26,7 +27,10 @@ mkdir "$release_dir"
 cp -a "$artifact_dir/." "$release_dir/"
 chmod -R a+rX "$release_dir"
 rm -f "$current_link.next"
-ln -s "$release_dir" "$current_link.next"
+# The OpenResty container bind-mounts /opt/1panel/www as /www. A relative
+# target keeps the symlink valid in both the host and the container namespace.
+link_target=$(realpath --relative-to="$current_parent" "$release_dir")
+ln -s "$link_target" "$current_link.next"
 mv -Tf "$current_link.next" "$current_link"
 
 rollback() {

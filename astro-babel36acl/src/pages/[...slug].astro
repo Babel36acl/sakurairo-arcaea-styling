@@ -2,18 +2,60 @@
 import SakurairoLayout from "../layouts/SakurairoLayout.astro";
 import site from "../data/site.json";
 import { render } from "astro:content";
-import { getEntries, plainText } from "../lib/content";
+import { getEntries, legacyRouteAliases, plainText } from "../lib/content";
 
 export async function getStaticPaths() {
   const allEntries = await getEntries();
   const posts = allEntries.filter((entry) => entry.type === "post");
-  return allEntries.map((entry) => ({
-    params: { slug: entry.route },
-    props: { entry, posts }
-  }));
+  const canonicalRoutes = new Set(allEntries.map((entry) => entry.route.replace(/^\/+|\/+$/g, "")));
+  const paths = [];
+  const byRoute = new Map(allEntries.map((entry) => [entry.route.replace(/^\/+|\/+$/g, ""), entry]));
+  for (const entry of allEntries) {
+    const canonicalRoute = entry.route.replace(/^\/+|\/+$/g, "");
+    paths.push({
+      params: { slug: canonicalRoute },
+      props: { entry, posts, canonicalRoute }
+    });
+    if (entry.type !== "post") continue;
+    const shortRoute = decodeURIComponent(canonicalRoute.split("/").pop() || "");
+    if (!shortRoute || canonicalRoutes.has(shortRoute)) continue;
+    canonicalRoutes.add(shortRoute);
+    paths.push({
+      params: { slug: shortRoute },
+      props: { entry, posts, canonicalRoute }
+    });
+  }
+  for (const [alias, target] of legacyRouteAliases) {
+    if (canonicalRoutes.has(alias)) continue;
+    const targetEntry = byRoute.get(target);
+    if (targetEntry) {
+      canonicalRoutes.add(alias);
+      paths.push({ params: { slug: alias }, props: { entry: targetEntry, posts, canonicalRoute: target } });
+      continue;
+    }
+    if (alias !== target) continue;
+    const title = alias.startsWith("bsp_dc_motor") ? "BSP 直流电机驱动（旧文章链接）" : "DC 电机统一功率管理（旧文章链接）";
+    const entry = {
+      id: `legacy-missing-${alias}`,
+      type: "page",
+      route: alias,
+      title,
+      excerpt: "该历史链接仍被保留，但原 WordPress 文章未出现在当前公开文章接口中。",
+      date: "2026-10-03",
+      modified: "2026-10-03",
+      categories: [],
+      tags: [],
+      content: `<div class="arcaea-article-content"><p>这个地址来自旧站专题导航。当前可公开迁移的 WordPress 文章中没有找到对应正文，因此这里保留稳定入口并明确标记为待补档，避免旧链接继续返回 404。</p><p>如果你需要恢复原文，请提供旧文章导出或备份；收到来源后会沿用这个地址补回正文。</p></div>`,
+      legacyMissing: true,
+    };
+    canonicalRoutes.add(alias);
+    paths.push({ params: { slug: alias }, props: { entry, posts, canonicalRoute: alias } });
+  }
+  return paths;
 }
 
-const { entry, posts } = Astro.props;
+const { entry, posts, canonicalRoute: requestedCanonicalRoute } = Astro.props;
+const canonicalRoute = requestedCanonicalRoute || entry.route;
 const isPost = entry.type === "post";
 const title = `${entry.title} | ${site.title}`;
 
@@ -75,7 +117,7 @@ const MarkdownContent = markdownRender?.Content;
 const headings = markdownRender?.headings || legacyHeadings;
 ---
 
-<SakurairoLayout title={title} bodyClass={bodyClass} landAtHome={false} posts={posts}>
+<SakurairoLayout title={title} bodyClass={bodyClass} landAtHome={false} posts={posts} canonicalRoute={canonicalRoute}>
   <div id="page" class="site wrapper">
     <div class="blank" style="padding-top:75px"></div>
     <div id="content" class="site-content">

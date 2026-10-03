@@ -5,7 +5,8 @@ import siteInteractions from "../scripts/site-interactions.js?raw";
 const {
   title = "Babel36acl的个人博客",
   bodyClass = "home blog wp-theme-Sakurairo hfeed chinese-font serif",
-  landAtHome = true
+  landAtHome = true,
+  canonicalRoute = ""
 } = Astro.props;
 
 const navItems = [
@@ -46,6 +47,7 @@ function isCurrent(href) {
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="x-dns-prefetch-control" content="on" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fontsapi.zeoseven.com" crossorigin />
     <link rel="preconnect" href="https://s4.zstatic.net" crossorigin />
     <link rel="shortcut icon" href="/assets/basic/favicon.ico" />
     <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
@@ -58,6 +60,18 @@ function isCurrent(href) {
     <link rel="stylesheet" href="/assets/plugin/arcaea-dark.css" />
     <link rel="stylesheet" href="/assets/plugin/bac-prism-wrap.css" />
     <link rel="stylesheet" href="/assets/plugin/mermaid.css" />
+    <script is:inline src="/assets/runtime/prism.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-clike.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-markup.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-c.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-cpp.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-bash.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-javascript.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-json.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-python.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-yaml.js"></script>
+    <script is:inline src="/assets/runtime/prism-components/prism-cmake.js"></script>
+    <script is:inline src="/assets/article-enhance.js"></script>
     <!-- 主题样式按 Sakurairo 源码 functions.php 的加载顺序拆分。 -->
     <link rel="stylesheet" href="/assets/theme/source/style.css" />
     <link rel="stylesheet" href="/assets/theme/source/shortcodes.css" />
@@ -69,8 +83,11 @@ function isCurrent(href) {
     <link rel="stylesheet" href="/assets/theme/source/wave.css" />
     <link rel="stylesheet" href="/assets/theme/live-custom.css" />
     {isArcaeaPage && <link rel="stylesheet" href="/assets/plugin/games-arcaea.css" />}
+    <!-- Maple Mono NF CN / ZSFT #442, OFL-1.1. Source references: chinese-font.netlify.app and fonts.zeoseven.com/items/442/. -->
+    <link rel="stylesheet" href="https://fontsapi.zeoseven.com/442/main/result.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Noto+Sans+SC|Fira+Code|Zen+Old+Mincho&display=swap" />
     <link rel="stylesheet" href="/sakurairo-astro.css" />
+    {canonicalRoute && <link rel="canonical" href={`https://babel36acl.xyz/${canonicalRoute.replace(/^\/+|\/+$/g, "")}/`} />}
     <title>{title}</title>
   </head>
   <body class={`${bodyClass} dark`}>

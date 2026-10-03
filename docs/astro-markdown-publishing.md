@@ -70,7 +70,7 @@ GitHub Actions 会执行同一套构建。成功后通过 SSH 将 `dist/` 上传
 - `ASTRO_VPS_PORT`：可选，默认 `22`。
 - `ASTRO_VPS_RELEASE_ROOT`、`ASTRO_VPS_CURRENT_LINK`：可选，默认分别为 `/opt/1panel/www/sites/babel36acl.xyz/astro-releases` 和 `/opt/1panel/www/sites/babel36acl.xyz/astro-current`。这两个路径必须与现有 OpenResty `root` 的实际配置核对后再填写；工作流不会替你猜测或修改 OpenResty 配置。
 
-当前 VPS 的 OpenResty 容器把 /opt/1panel/www 挂载为容器内的 /www，站点配置使用 /www/sites/babel36acl.xyz/astro-current 作为静态 root；WordPress 容器保留用于回滚，但不再接收公开站点请求。
+当前 VPS 的 OpenResty 容器把 /opt/1panel/www 挂载为容器内的 /www，站点配置使用 /www/sites/babel36acl.xyz/astro-current 作为静态 root；因此发布脚本会在宿主机创建相对 `current` 链接，让同一个链接在宿主机和容器挂载路径下都能解析；WordPress 容器保留用于回滚，但不再接收公开站点请求。
 
 推送到 `main` 时，三个必填 secrets 缺失会明确跳过 VPS 作业而保留构建结果；手动运行工作流并选择 `deploy_vps=true` 只适用于 secrets 已配置的仓库。
 

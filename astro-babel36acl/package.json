@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "new:post": "node scripts/new-post.mjs",
+    "content:materialize": "node scripts/materialize-legacy-articles.mjs",
+    "verify:links": "node scripts/verify-links.mjs",
     "verify:dist": "node scripts/verify-dist.mjs",
     "test:publishing": "node scripts/test-publishing.mjs",
-    "build": "astro build && node scripts/generate-sitemap.mjs && node scripts/generate-search-index.mjs && npm run verify:dist",
+    "build": "astro build && node scripts/generate-sitemap.mjs && node scripts/generate-search-index.mjs && npm run verify:dist && npm run verify:links",
     "preview": "astro preview --host 0.0.0.0",
     "migrate:wp": "node scripts/migrate-wordpress.mjs"
   },
