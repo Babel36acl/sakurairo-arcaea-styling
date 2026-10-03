@@ -37,6 +37,7 @@ bash sakurairo-theme/install.sh
 
 ## 发布与部署
 
+- Astro Markdown 文章和 VPS/OpenResty 发布流程见 [`docs/astro-markdown-publishing.md`](docs/astro-markdown-publishing.md)。日常只需在 `astro-babel36acl/src/content/articles/<slug>/index.md` 写 Markdown；本地构建通过后推送 `main`，GitHub Actions 会生成静态包，并在配置 VPS secrets 后原子切换远端 `current` 版本链接。
 - `.github/workflows/mermaid-release.yml` 统一承接独立 Mermaid 插件的构建、发布及依赖检查。根仓库 `v1.x` Release 和 zip 对应此插件，不能作为整站部署包。
 - `babel-arcaea-code` 继续使用自身仓库的 CI 与 Release，生产站点不切换到旧 Mermaid 插件。
 - 主题更新器先获取上游 main、应用本地补丁、检查 PHP，再备份切换。检测到未记录的本地修改或补丁冲突时停止。完整文章及页脚检查失败时回滚。

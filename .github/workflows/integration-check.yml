@@ -19,6 +19,7 @@ jobs:
       - name: Check deployment and installer shell syntax
         run: |
           sh -n deployment/update-sakurairo-theme
+          sh -n deployment/publish-astro-static.sh
           bash -n sakurairo-theme/install.sh
           bash -n sakurairo-arcaea-blog-skill/install.sh
       - name: Apply theme patch and reproduce encoded comment URL

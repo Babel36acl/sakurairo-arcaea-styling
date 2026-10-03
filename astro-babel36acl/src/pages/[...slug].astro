@@ -1,27 +1,21 @@
 ---
 import SakurairoLayout from "../layouts/SakurairoLayout.astro";
-import posts from "../data/posts.json";
-import pages from "../data/pages.json";
 import site from "../data/site.json";
+import { render } from "astro:content";
+import { getEntries, plainText } from "../lib/content";
 
-export function getStaticPaths() {
-  return [...posts, ...pages].map((entry) => ({
+export async function getStaticPaths() {
+  const allEntries = await getEntries();
+  const posts = allEntries.filter((entry) => entry.type === "post");
+  return allEntries.map((entry) => ({
     params: { slug: entry.route },
-    props: { entry }
+    props: { entry, posts }
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, posts } = Astro.props;
 const isPost = entry.type === "post";
 const title = `${entry.title} | ${site.title}`;
-
-function plainText(html) {
-  return String(html || "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/&hellip;|&#8230;/g, "...")
-    .replace(/&nbsp;/g, " ")
-    .trim();
-}
 
 function wordCount(entry) {
   return plainText(entry.content).length;
@@ -37,11 +31,6 @@ function daysAgo(dateText) {
   const days = Math.max(0, Math.round((now.valueOf() - date.valueOf()) / 86400000));
   if (days <= 0) return "今天";
   return `${days} 天前`;
-}
-
-function galleryImage(entry) {
-  const seed = [17, 44, 23, 93, 40, 27, 58, 66, 35, 71, 12, 84][entry.id % 12];
-  return `https://babel36acl.xyz/wp-json/sakura/v1/gallery?img=w&${seed}`;
 }
 
 function stripHtml(html) {
@@ -77,41 +66,54 @@ function addHeadingIds(html) {
 }
 
 const bodyClass = isPost
-  ? `wp-singular post-template-default single single-post postid-${entry.id} single-format-aside wp-theme-Sakurairo chinese-font`
-  : `page-template-default page page-id-${entry.id} wp-theme-Sakurairo chinese-font`;
+  ? `wp-singular post-template-default single single-post postid-${entry.id} single-format-aside wp-theme-Sakurairo chinese-font serif`
+  : `page-template-default page page-id-${entry.id} wp-theme-Sakurairo chinese-font serif`;
 
-const { content: entryContent, headings } = addHeadingIds(entry.content);
+const { content: entryContent, headings: legacyHeadings } = addHeadingIds(entry.content);
+const markdownRender = entry.markdown ? await render(entry.markdown) : null;
+const MarkdownContent = markdownRender?.Content;
+const headings = markdownRender?.headings || legacyHeadings;
 ---
 
-<SakurairoLayout title={title} bodyClass={bodyClass} landAtHome={false}>
-  <div class="pattern-center-blank"></div>
-  <div class={`pattern-center ${isPost ? "single-center" : ""}`}>
-    <div class="pattern-attachment bg" style={`background-image: url(${galleryImage(entry)});`}></div>
-    <header class={`pattern-header ${isPost ? "single-header" : ""}`}>
-      <h1 class="entry-title">{entry.title}</h1>
-      {
-        isPost && (
-          <>
-            <span class="toppic-line"></span>
-            <p class="entry-census has-splitter">
-              <span>{26} 次阅读</span>
-              <span>预计阅读时间: {readMinutes(entry)} 分钟</span>
-              <span>发布于 {daysAgo(entry.date)}</span>
-              <span>{wordCount(entry)} 字</span>
-            </p>
-          </>
-        )
-      }
-    </header>
-  </div>
-
+<SakurairoLayout title={title} bodyClass={bodyClass} landAtHome={false} posts={posts}>
   <div id="page" class="site wrapper">
+    <div class="blank" style="padding-top:75px"></div>
     <div id="content" class="site-content">
       <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">
           {isPost && <div class="has-toc have-toc"></div>}
-          <article id={`post-${entry.id}`} class={`post-${entry.id} post type-${entry.type} status-publish format-aside hentry`}>
-            <div class="entry-content" set:html={entryContent} />
+          <article id={`post-${entry.id}`} class={`post-${entry.id} ${isPost ? "post" : "page"} type-${entry.type} status-publish format-aside hentry`}>
+            <header class="entry-header">
+              <h1 class="entry-title">{entry.title}</h1>
+              {
+                isPost && (
+                  <p class="entry-census has-splitter">
+                    <span class="meta-author"><a href="/author/chuixin/"><img alt="Babel36acl" src="/assets/avatar.png" width="16" height="16" decoding="async" /> </a><a rel="author" title="Babel36acl" href="/author/chuixin/">Babel36acl</a></span>
+                    {entry.categories?.[0] && <span><i class="fa-regular fa-folder"></i> <a href="#">{entry.categories[0].name}</a></span>}
+                    <span class="comments-number"><i class="fa-regular fa-comment"></i> <a href={`/${entry.route}/#respond`}>无~</a></span>
+                    <span>{26} 次阅读</span>
+                    <span>预计阅读时间: {readMinutes(entry)} 分钟</span>
+                    <span>发布于 {daysAgo(entry.date)}</span>
+                    <span>最后更新于 {entry.modified?.slice(0, 10)}</span>
+                    <span>{wordCount(entry)} 字</span>
+                  </p>
+                )
+              }
+              {isPost && <hr />}
+            </header>
+            {markdownRender ? (
+              <div class="entry-content">
+                <div class="arcaea-article-content"><MarkdownContent /></div>
+              </div>
+            ) : entryContent.includes('class="arcaea-article-content"') ? (
+              <div class="entry-content" set:html={entryContent} />
+            ) : !isPost ? (
+              <div class="entry-content" set:html={entryContent} />
+            ) : (
+              <div class="entry-content">
+                <div class="arcaea-article-content" set:html={entryContent} />
+              </div>
+            )}
             {
               isPost && (
                 <footer class="post-footer">
@@ -122,7 +124,7 @@ const { content: entryContent, headings } = addHeadingIds(entry.content);
                   </a>
                   <div class="info" itemprop="author" itemscope itemtype="http://schema.org/Person">
                     <a href="/author/chuixin/" class="profile gravatar">
-                      <img class="fa-spin" style="--fa-animation-duration: 15s;" src="https://babel36acl.xyz/wp-json/sakura/v1/avatar" itemprop="image" alt="Babel36acl" height="30" width="30" />
+                      <img class="fa-spin" style="--fa-animation-duration: 15s;" src="/assets/avatar.png" itemprop="image" alt="Babel36acl" height="30" width="30" />
                     </a>
                   </div>
                   <div class="meta"><a href="/author/chuixin/" itemprop="url" rel="author">Babel36acl</a></div>

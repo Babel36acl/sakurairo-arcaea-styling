@@ -1,0 +1,169 @@
+name: Astro static build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "astro-babel36acl/**"
+      - "deployment/publish-astro-static.sh"
+      - ".github/workflows/astro-publish.yml"
+  pull_request:
+    paths:
+      - "astro-babel36acl/**"
+      - "deployment/publish-astro-static.sh"
+      - ".github/workflows/astro-publish.yml"
+  workflow_dispatch:
+    inputs:
+      deploy_pages:
+        description: "Deploy the already-built artifact to GitHub Pages"
+        required: true
+        default: false
+        type: boolean
+      deploy_vps:
+        description: "Upload the artifact to the configured VPS/OpenResty host"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: astro-static-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: astro-babel36acl
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: astro-babel36acl/.nvmrc
+          cache: npm
+          cache-dependency-path: astro-babel36acl/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static site and generated indexes
+        run: npm run build
+
+      - name: Test draft and published Markdown behavior
+        run: npm run test:publishing
+
+      - name: Upload static artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-babel36acl-dist-${{ github.sha }}
+          path: astro-babel36acl/dist
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy-pages:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy_pages == true
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download static artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: astro-babel36acl-dist-${{ github.sha }}
+          path: dist
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  prepare-vps:
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    env:
+      ASTRO_VPS_HOST: ${{ secrets.ASTRO_VPS_HOST }}
+      ASTRO_VPS_USER: ${{ secrets.ASTRO_VPS_USER }}
+      ASTRO_VPS_SSH_KEY: ${{ secrets.ASTRO_VPS_SSH_KEY }}
+    steps:
+      - name: Check VPS deployment inputs
+        id: check
+        env:
+          DEPLOY_VPS: ${{ inputs.deploy_vps || false }}
+        run: |
+          configured=false
+          if [ -n "$ASTRO_VPS_HOST" ] && [ -n "$ASTRO_VPS_USER" ] && [ -n "$ASTRO_VPS_SSH_KEY" ]; then
+            if [ "$GITHUB_EVENT_NAME" = "push" ] || [ "$DEPLOY_VPS" = "true" ]; then
+              configured=true
+            fi
+          fi
+          echo "configured=$configured" >> "$GITHUB_OUTPUT"
+          if [ "$configured" = "false" ]; then
+            echo "VPS deployment skipped: configure ASTRO_VPS_HOST, ASTRO_VPS_USER and ASTRO_VPS_SSH_KEY, then use a push to main or manual deploy_vps=true."
+          fi
+
+  deploy-vps:
+    if: needs.prepare-vps.outputs.configured == 'true'
+    needs: [build, prepare-vps]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout deployment script
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: deployment/publish-astro-static.sh
+
+      - name: Download static artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: astro-babel36acl-dist-${{ github.sha }}
+          path: dist
+
+      - name: Configure SSH
+        env:
+          ASTRO_VPS_HOST: ${{ secrets.ASTRO_VPS_HOST }}
+          ASTRO_VPS_PORT: ${{ secrets.ASTRO_VPS_PORT }}
+        run: |
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          port="${ASTRO_VPS_PORT:-22}"
+          ssh-keyscan -p "$port" -H "$ASTRO_VPS_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Upload and atomically switch VPS release
+        env:
+          ASTRO_VPS_HOST: ${{ secrets.ASTRO_VPS_HOST }}
+          ASTRO_VPS_USER: ${{ secrets.ASTRO_VPS_USER }}
+          ASTRO_VPS_PORT: ${{ secrets.ASTRO_VPS_PORT }}
+          ASTRO_VPS_RELEASE_ROOT: ${{ secrets.ASTRO_VPS_RELEASE_ROOT }}
+          ASTRO_VPS_CURRENT_LINK: ${{ secrets.ASTRO_VPS_CURRENT_LINK }}
+          ASTRO_VPS_SSH_KEY: ${{ secrets.ASTRO_VPS_SSH_KEY }}
+        run: |
+          eval "$(ssh-agent -s)"
+          printf '%s\n' "$ASTRO_VPS_SSH_KEY" | tr -d '\r' | ssh-add -
+          port="${ASTRO_VPS_PORT:-22}"
+          release_root="${ASTRO_VPS_RELEASE_ROOT:-/opt/astro/babel36acl/releases}"
+          current_link="${ASTRO_VPS_CURRENT_LINK:-/opt/astro/babel36acl/current}"
+          target="$ASTRO_VPS_USER@$ASTRO_VPS_HOST"
+          remote_tmp=$(ssh -p "$port" "$target" 'mktemp -d /tmp/astro-release.XXXXXX')
+          trap 'ssh -p "$port" "$target" "rm -rf -- $remote_tmp" || true' EXIT
+          rsync -az --delete -e "ssh -p $port" dist/ "$target:$remote_tmp/"
+          ssh -p "$port" "$target" "sh -s -- '$remote_tmp' '$release_root' '$current_link'" < deployment/publish-astro-static.sh

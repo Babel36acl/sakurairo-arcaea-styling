@@ -1,8 +1,9 @@
 ---
 import SakurairoLayout from "../layouts/SakurairoLayout.astro";
-import posts from "../data/posts.json";
+import { getPosts, plainText } from "../lib/content";
 
-const latestPosts = [...posts]
+const posts = await getPosts();
+const latestPosts = posts
   .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
   .slice(0, 12);
 
@@ -14,14 +15,6 @@ function daysAgo(dateText) {
   return `${days} 天前`;
 }
 
-function plainText(html) {
-  return String(html || "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/&hellip;|&#8230;/g, "...")
-    .replace(/&nbsp;/g, " ")
-    .trim();
-}
-
 function wordCount(post) {
   return plainText(post.content).length;
 }
@@ -30,13 +23,28 @@ function readMinutes(post) {
   return Math.max(1, Math.round(wordCount(post) / 220));
 }
 
+const galleryAssets = {
+  12: "/assets/gallery/12.jpg",
+  17: "/assets/gallery/17.jpg",
+  23: "/assets/gallery/23.jpg",
+  27: "/assets/gallery/27.jpg",
+  35: "/assets/gallery/35.jpg",
+  40: "/assets/gallery/40.png",
+  44: "/assets/gallery/44.jpg",
+  58: "/assets/gallery/58.jpg",
+  66: "/assets/gallery/66.jpg",
+  71: "/assets/gallery/71.jpg",
+  84: "/assets/gallery/84.jpg",
+  93: "/assets/gallery/93.jpg"
+};
+
 function galleryImage(index) {
   const seed = [17, 44, 23, 93, 40, 27, 58, 66, 35, 71, 12, 84][index % 12];
-  return `https://babel36acl.xyz/wp-json/sakura/v1/gallery?img=w&${seed}`;
+  return galleryAssets[seed];
 }
 ---
 
-<SakurairoLayout title="Babel36acl的个人博客">
+<SakurairoLayout title="Babel36acl的个人博客" posts={posts}>
   <div class="headertop filter-nothing sakurairo-hero">
     <div id="banner_wave_1"></div>
     <div id="banner_wave_2"></div>
@@ -55,17 +63,17 @@ function galleryImage(index) {
         <div class="top-social">
           <li>
             <a href="https://space.bilibili.com/25746729" target="_blank" class="social-bili" title="bilibili">
-              <img alt="bilibili" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@3.0/display_icon/fluent_design/bilibili.webp" />
+              <img alt="bilibili" loading="lazy" src="/assets/social/bilibili.webp" />
             </a>
           </li>
           <li>
             <a href="https://github.com/AKCX2002" target="_blank" class="social-github" title="github">
-              <img alt="github" loading="lazy" src="https://s.nmxc.ltd/sakurairo_vision/@3.0/display_icon/fluent_design/github.webp" />
+              <img alt="github" loading="lazy" src="/assets/social/github.webp" />
             </a>
           </li>
           <li>
             <a href="mailto:chuixin-life@outlook.com" class="social-wangyiyun" title="E-mail">
-              <img loading="lazy" alt="E-mail" src="https://s.nmxc.ltd/sakurairo_vision/@3.0/display_icon/fluent_design/mail.webp" />
+              <img loading="lazy" alt="E-mail" src="/assets/social/mail.webp" />
             </a>
           </li>
         </div>
@@ -81,11 +89,10 @@ function galleryImage(index) {
   </div>
 
   <div id="page" class="site wrapper current_blur">
-    <div class="blank"></div>
     <div id="content" class="site-content">
       <div id="primary" class="content-area">
         <main id="main" class="site-main" role="main">
-          <h1 class="main-title posts-area-title">
+          <h1 class="main-title posts-area-title post-list-show">
             <i class="fa-regular fa-bookmark" aria-hidden="true"></i>
             Article
           </h1>
@@ -95,7 +102,7 @@ function galleryImage(index) {
               <article class="post post-list-thumb post-list-show" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="post-thumb">
                   <a href={`/${post.route}/`}>
-                    <img alt="post_img" src={galleryImage(index)} />
+                    <img alt="post_img" loading="lazy" decoding="async" src={galleryImage(index)} />
                   </a>
                 </div>
                 <div class="post-date">

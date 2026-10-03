@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
-    "build": "astro build && node scripts/generate-sitemap.mjs",
+    "new:post": "node scripts/new-post.mjs",
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "test:publishing": "node scripts/test-publishing.mjs",
+    "build": "astro build && node scripts/generate-sitemap.mjs && node scripts/generate-search-index.mjs && npm run verify:dist",
     "preview": "astro preview --host 0.0.0.0",
     "migrate:wp": "node scripts/migrate-wordpress.mjs"
   },

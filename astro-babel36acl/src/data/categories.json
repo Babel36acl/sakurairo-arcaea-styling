@@ -8,7 +8,7 @@
   },
   {
     "id": 13,
-    "count": 31,
+    "count": 32,
     "description": "具体故障、调试过程与硬件软件联动问题。",
     "name": "嵌入式实战",
     "slug": "embedded-practice"
@@ -22,7 +22,7 @@
   },
   {
     "id": 16,
-    "count": 14,
+    "count": 15,
     "description": "分析方法、工作流、工具链与可复用模板。",
     "name": "方法与工具",
     "slug": "methods-and-tools"

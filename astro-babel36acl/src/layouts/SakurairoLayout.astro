@@ -1,7 +1,10 @@
 ---
+import { ViewTransitions } from "astro:transitions";
+import siteInteractions from "../scripts/site-interactions.js?raw";
+
 const {
   title = "Babel36acl的个人博客",
-  bodyClass = "home blog wp-theme-Sakurairo hfeed chinese-font",
+  bodyClass = "home blog wp-theme-Sakurairo hfeed chinese-font serif",
   landAtHome = true
 } = Astro.props;
 
@@ -19,6 +22,8 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
+const isGamesPage = bodyClass.includes("page-id-375");
+const isArcaeaPage = isGamesPage || bodyClass.includes("page-id-430");
 
 function normalizePath(path) {
   return decodeURI(path).replace(/\/+$/, "") || "/";
@@ -35,24 +40,35 @@ function isCurrent(href) {
 <!doctype html>
 <html lang="zh-Hans">
   <head>
+    <ViewTransitions />
     <meta name="theme-color" content="#98b6ff" />
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="x-dns-prefetch-control" content="on" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://s4.zstatic.net" crossorigin />
-    <link rel="shortcut icon" href="https://s.nmxc.ltd/sakurairo_vision/@3.0/basic/favicon.ico" />
+    <link rel="shortcut icon" href="/assets/basic/favicon.ico" />
     <link rel="stylesheet" href="https://s4.zstatic.net/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-includes/css/dist/block-library/style.min.css?ver=7.0" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/reading/reading-progress.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/reading/content-enhance.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/reading/arcaea-article-content.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/prism/prism.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/prism/themes/arcaea-common.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/prism/themes/arcaea-dark.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/css/bac-prism-wrap.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/plugins/babel-arcaea-code/assets/mermaid/mermaid.css?ver=1781149285" />
-    <link rel="stylesheet" href="https://babel36acl.xyz/wp-content/themes/Sakurairo/css/?iro_header&github&wave&minify&3.0.10" />
+    <link rel="stylesheet" href="/assets/plugin/block-library.css" />
+    <link rel="stylesheet" href="/assets/plugin/reading-progress.css" />
+    <link rel="stylesheet" href="/assets/plugin/content-enhance.css" />
+    <link rel="stylesheet" href="/assets/plugin/arcaea-article-content.css" />
+    <link rel="stylesheet" href="/assets/plugin/prism.css" />
+    <link rel="stylesheet" href="/assets/plugin/arcaea-common.css" />
+    <link rel="stylesheet" href="/assets/plugin/arcaea-dark.css" />
+    <link rel="stylesheet" href="/assets/plugin/bac-prism-wrap.css" />
+    <link rel="stylesheet" href="/assets/plugin/mermaid.css" />
+    <!-- 主题样式按 Sakurairo 源码 functions.php 的加载顺序拆分。 -->
+    <link rel="stylesheet" href="/assets/theme/source/style.css" />
+    <link rel="stylesheet" href="/assets/theme/source/shortcodes.css" />
+    <link rel="stylesheet" href="/assets/theme/source/dark.css" />
+    <link rel="stylesheet" href="/assets/theme/source/responsive.css" />
+    <link rel="stylesheet" href="/assets/theme/source/animation.css" />
+    <link rel="stylesheet" href="/assets/theme/source/templates.css" />
+    <link rel="stylesheet" href="/assets/theme/source/github.css" />
+    <link rel="stylesheet" href="/assets/theme/source/wave.css" />
+    <link rel="stylesheet" href="/assets/theme/live-custom.css" />
+    {isArcaeaPage && <link rel="stylesheet" href="/assets/plugin/games-arcaea.css" />}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Noto+Sans+SC|Fira+Code|Zen+Old+Mincho&display=swap" />
     <link rel="stylesheet" href="/sakurairo-astro.css" />
     <title>{title}</title>
@@ -64,8 +80,8 @@ function isCurrent(href) {
     <div class="scrollbar" id="bar"></div>
 
     <header class="site-header no-select" role="banner">
-      <div class="mo-nav-button"><i class="fa-solid fa-bars"></i></div>
-      <div class="mobile-nav">
+      <button class="mo-nav-button" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="打开菜单"><i class="fa-solid fa-bars"></i></button>
+      <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
         <div class="mo-menu-search">
           <form class="search-form" method="get" action="/" role="search">
             <input class="search-input" type="search" name="s" placeholder="搜索..." required />
@@ -73,7 +89,7 @@ function isCurrent(href) {
         </div>
         <div class="mo_nav_item">
           <ul class="menu">
-            {navItems.map(([label, href]) => <li class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
+            {navItems.map(([label, href], index) => <li style={`--nav-index:${index}`} class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
           </ul>
         </div>
       </div>
@@ -87,34 +103,22 @@ function isCurrent(href) {
       <div class="nav-search-wrapper">
         <nav>
           <ul class="menu">
-            {navItems.map(([label, href]) => <li class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
+            {navItems.map(([label, href], index) => <li style={`--nav-index:${index}`} class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
           </ul>
         </nav>
         <div class="nav-search-divider"></div>
-        <div class="searchbox js-toggle-search">
+        <button class="searchbox js-toggle-search" type="button" aria-label="打开搜索">
           <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
           <span class="screen-reader-text">搜索</span>
-        </div>
-        <div class="bg-switch" id="bg-next" style="display:none">
-          <i class="fa-solid fa-dice" aria-hidden="true"></i>
-          <span class="screen-reader-text">切换背景</span>
-        </div>
+        </button>
       </div>
 
-      <div class="user-menu-wrapper">
-        <div class="header-user-avatar"><i class="fa-solid fa-circle-user"></i></div>
-        <div class="header-user-menu">
-          <div class="header-user-name no-logged">
-            <a id="login-link" href="/wp-login.php" data-no-pjax style="font-weight:bold;text-decoration:none">登录</a>
-          </div>
-        </div>
-      </div>
     </header>
 
     <section id="main-container">
       <slot />
       <footer id="colophon" class="site-footer" role="contentinfo">
-        <div class="site-info" theme-info="Sakurairo v3.0.10">
+        <div class="site-info" theme-info="Sakurairo v3.0.11">
           <div class="footer-content">
             <p class="footer_info">© 2026 <strong>Babel36acl</strong>
               <span style="opacity:.65">— 世界は灰色でも、音だけは嘘をつかなかった。</span>
@@ -137,50 +141,22 @@ function isCurrent(href) {
       </footer>
     </section>
 
-    <button id="moblieGoTop" title="回到顶部"><i class="fa-solid fa-caret-up fa-lg"></i></button>
-    <button id="changskin" title="控制面板"><i class="fa-solid fa-compass-drafting fa-lg fa-flip"></i></button>
+    <button class="mo-toc-button" type="button" aria-expanded="false" aria-controls="mobile-toc" aria-label="打开目录" hidden title="打开目录"><i class="fa-solid fa-list"></i></button>
+    <aside class="mo_toc_panel" id="mobile-toc" aria-hidden="true" hidden>
+      <div class="mo_toc_panel__header"><strong>目录</strong><button type="button" class="mo_toc_close" aria-label="关闭目录">×</button></div>
+      <div class="mo_toc_panel__body"></div>
+    </aside>
     <div class={landAtHome ? "background_blur" : "background_blur current_blur"}></div>
-    <script is:inline>
-      (() => {
-        const mobileButton = document.querySelector(".mo-nav-button");
-        const mobileNav = document.querySelector(".mobile-nav");
-        const footer = document.getElementById("colophon");
-        const goTop = document.getElementById("moblieGoTop");
-        const skinButton = document.getElementById("changskin");
-        const progress = document.getElementById("bar");
-
-        mobileButton?.addEventListener("click", () => {
-          mobileNav?.classList.toggle("open");
-          mobileButton.querySelector("i")?.classList.toggle("open");
-        });
-
-        mobileNav?.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", () => {
-            mobileNav.classList.remove("open");
-            mobileButton?.querySelector("i")?.classList.remove("open");
-          });
-        });
-
-        goTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-        const updateChrome = () => {
-          const y = document.documentElement.scrollTop || document.body.scrollTop;
-          const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-          const active = y > 20 ? "scale(1)" : "scale(0)";
-          if (goTop) goTop.style.transform = active;
-          if (skinButton) skinButton.style.transform = active;
-          if (progress) progress.style.width = `${Math.min(100, Math.round((y / max) * 100))}%`;
-
-          if (footer) {
-            const nearBottom = y + window.innerHeight >= document.documentElement.scrollHeight - 100;
-            footer.classList.toggle("show", nearBottom);
-          }
-        };
-
-        updateChrome();
-        window.addEventListener("scroll", updateChrome, { passive: true });
-        window.addEventListener("resize", updateChrome);
-      })();
-    </script>
+    <div class="search-form--modal" data-search-modal aria-hidden="true" hidden>
+      <div class="search-form__inner" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="search-form__header"><h2 id="search-title">搜索文章</h2><button class="search_close" type="button" aria-label="关闭搜索">×</button></div>
+        <form class="js-search-form" role="search">
+          <label class="screen-reader-text" for="search-input">搜索关键词</label>
+          <input id="search-input" class="search-input" type="search" autocomplete="off" placeholder="输入标题、摘要或正文关键词" />
+        </form>
+        <div class="search-results" data-search-results aria-live="polite"><p class="search-empty">输入关键词开始搜索</p></div>
+      </div>
+    </div>
+    <script is:inline set:html={siteInteractions}></script>
   </body>
 </html>

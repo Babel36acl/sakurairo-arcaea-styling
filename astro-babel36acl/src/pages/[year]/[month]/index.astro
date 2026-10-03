@@ -1,0 +1,59 @@
+---
+import SakurairoLayout from "../../../layouts/SakurairoLayout.astro";
+import site from "../../../data/site.json";
+import { getPosts, plainText } from "../../../lib/content";
+
+const galleryAssets = [
+  "/assets/gallery/17.jpg",
+  "/assets/gallery/44.jpg",
+  "/assets/gallery/23.jpg",
+  "/assets/gallery/93.jpg",
+  "/assets/gallery/40.png",
+  "/assets/gallery/27.jpg",
+  "/assets/gallery/58.jpg",
+  "/assets/gallery/66.jpg",
+  "/assets/gallery/35.jpg",
+  "/assets/gallery/71.jpg",
+  "/assets/gallery/12.jpg",
+  "/assets/gallery/84.jpg"
+];
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const months = [...new Set(posts.map((post) => post.date.slice(0, 7)))];
+  return months.map((month) => {
+    const [year, value] = month.split("-");
+    return { params: { year, month: value }, props: { month, entries: posts.filter((post) => post.date.startsWith(month)), allPosts: posts } };
+  });
+}
+
+const { month, entries, allPosts } = Astro.props;
+const [year, monthValue] = month.split("-");
+function daysAgo(dateText) {
+  const days = Math.max(0, Math.round((Date.now() - new Date(dateText).valueOf()) / 86400000));
+  return days <= 0 ? "今天" : `${days} 天前`;
+}
+function readMinutes(post) { return Math.max(1, Math.round(plainText(post.content).length / 220)); }
+---
+
+<SakurairoLayout title={`${year} 年 ${Number(monthValue)} 月 | ${site.title}`} landAtHome={false} posts={allPosts}>
+  <div id="page" class="site wrapper current_blur">
+    <div class="blank" style="padding-top:75px"></div>
+    <div id="content" class="site-content">
+      <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+          <h1 class="main-title posts-area-title post-list-show"><i class="fa-regular fa-bookmark" aria-hidden="true"></i>{year} 年 {Number(monthValue)} 月</h1>
+          {entries.map((post, index) => (
+            <article class="post post-list-thumb post-list-show" itemscope itemtype="http://schema.org/BlogPosting">
+              <div class="post-thumb"><a href={`/${post.route}/`}><img alt="post_img" loading="lazy" decoding="async" src={galleryAssets[index % galleryAssets.length]} /></a></div>
+              <div class="post-date"><i class="fa-regular fa-clock"></i>发布于 {daysAgo(post.date)}</div>
+              <div class="post-meta"><span><i class="fa-regular fa-eye"></i>{26 + index * 7} 热度</span><span class="comments-number"><i class="fa-regular fa-comment"></i><a href={`/${post.route}/#respond`}>无~</a></span><span><i class="fa-regular fa-pen-to-square"></i>{plainText(post.content).length} 字</span><span><i class="fa-solid fa-hourglass"></i>{readMinutes(post)} 分钟</span><span class="meta-author"><a href="/author/chuixin/">Babel36acl</a></span></div>
+              <div class="post-title"><a href={`/${post.route}/`}><h3>{post.title}</h3></a></div>
+              <div class="post-excerpt"><div class="ai-excerpt-tip"><i class="fa-solid fa-bars-staggered"></i>摘要</div><p>{post.excerpt}</p></div>
+            </article>
+          ))}
+        </main>
+      </div>
+    </div>
+  </div>
+</SakurairoLayout>
