@@ -2,8 +2,8 @@
 set -eu
 
 artifact_dir=${1:?usage: publish-astro-static.sh ARTIFACT_DIR [RELEASE_ROOT] [CURRENT_LINK]}
-release_root=${2:-/opt/astro/babel36acl/releases}
-current_link=${3:-/opt/astro/babel36acl/current}
+release_root=${2:-/opt/1panel/www/sites/babel36acl.xyz/astro-releases}
+current_link=${3:-/opt/1panel/www/sites/babel36acl.xyz/astro-current}
 keep_releases=${ASTRO_KEEP_RELEASES:-5}
 stamp=$(date -u +%Y%m%dT%H%M%SZ)
 release_dir="$release_root/$stamp"

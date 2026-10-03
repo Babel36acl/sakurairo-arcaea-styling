@@ -163,8 +163,8 @@ jobs:
           eval "$(ssh-agent -s)"
           printf '%s\n' "$ASTRO_VPS_SSH_KEY" | tr -d '\r' | ssh-add -
           port="${ASTRO_VPS_PORT:-22}"
-          release_root="${ASTRO_VPS_RELEASE_ROOT:-/opt/astro/babel36acl/releases}"
-          current_link="${ASTRO_VPS_CURRENT_LINK:-/opt/astro/babel36acl/current}"
+          release_root="${ASTRO_VPS_RELEASE_ROOT:-/opt/1panel/www/sites/babel36acl.xyz/astro-releases}"
+          current_link="${ASTRO_VPS_CURRENT_LINK:-/opt/1panel/www/sites/babel36acl.xyz/astro-current}"
           target="$ASTRO_VPS_USER@$ASTRO_VPS_HOST"
           remote_tmp=$(ssh -p "$port" "$target" 'mktemp -d /tmp/astro-release.XXXXXX')
           trap 'ssh -p "$port" "$target" "rm -rf -- $remote_tmp" || true' EXIT
