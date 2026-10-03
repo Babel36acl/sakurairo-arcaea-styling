@@ -82,11 +82,6 @@ function isCurrent(href) {
     <header class="site-header no-select" role="banner">
       <button class="mo-nav-button" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="打开菜单"><i class="fa-solid fa-bars"></i></button>
       <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
-        <div class="mo-menu-search">
-          <form class="search-form" method="get" action="/" role="search">
-            <input class="search-input" type="search" name="s" placeholder="搜索..." required />
-          </form>
-        </div>
         <div class="mo_nav_item">
           <ul class="menu">
             {navItems.map(([label, href], index) => <li style={`--nav-index:${index}`} class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
@@ -106,11 +101,6 @@ function isCurrent(href) {
             {navItems.map(([label, href], index) => <li style={`--nav-index:${index}`} class={isCurrent(href) ? "current-menu-item" : ""}><a href={href}>{label}</a></li>)}
           </ul>
         </nav>
-        <div class="nav-search-divider"></div>
-        <button class="searchbox js-toggle-search" type="button" aria-label="打开搜索">
-          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-          <span class="screen-reader-text">搜索</span>
-        </button>
       </div>
 
     </header>
@@ -147,16 +137,6 @@ function isCurrent(href) {
       <div class="mo_toc_panel__body"></div>
     </aside>
     <div class={landAtHome ? "background_blur" : "background_blur current_blur"}></div>
-    <div class="search-form--modal" data-search-modal aria-hidden="true" hidden>
-      <div class="search-form__inner" role="dialog" aria-modal="true" aria-labelledby="search-title">
-        <div class="search-form__header"><h2 id="search-title">搜索文章</h2><button class="search_close" type="button" aria-label="关闭搜索">×</button></div>
-        <form class="js-search-form" role="search">
-          <label class="screen-reader-text" for="search-input">搜索关键词</label>
-          <input id="search-input" class="search-input" type="search" autocomplete="off" placeholder="输入标题、摘要或正文关键词" />
-        </form>
-        <div class="search-results" data-search-results aria-live="polite"><p class="search-empty">输入关键词开始搜索</p></div>
-      </div>
-    </div>
     <script is:inline set:html={siteInteractions}></script>
   </body>
 </html>
