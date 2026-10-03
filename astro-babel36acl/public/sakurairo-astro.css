@@ -1477,3 +1477,80 @@ body.dark::before {
   body.dark::before,
   .site.wrapper::after { display: none; }
 }
+
+/* Maple Mono CN is the reading voice for正文; display headings keep their editorial serif. */
+:root { --arc-body: "Maple Mono NF CN", "Maple Mono CN", "Maple Mono", "Noto Sans SC", sans-serif; }
+
+.entry-content,
+.entry-content p,
+.entry-content li,
+.entry-content td,
+.entry-content th,
+.entry-content blockquote,
+.entry-content figcaption,
+.post-excerpt,
+.post-excerpt p,
+.author-intro p:not(.author-kicker),
+.author-post__title,
+.toc,
+.toc a,
+.games-arcaea-wrap .hero-subtitle,
+.games-arcaea-wrap .floating-tag,
+.games-arcaea-wrap .section-desc,
+.games-arcaea-wrap .mood-tag,
+.games-arcaea-wrap .game-subtitle,
+.games-arcaea-wrap .game-entry > p,
+.games-arcaea-wrap .resonance-line,
+.games-arcaea-wrap .resonance-quote {
+  font-family: var(--arc-body) !important;
+  font-weight: 400;
+  letter-spacing: -.012em;
+}
+
+.entry-content p,
+.entry-content li,
+.entry-content td,
+.entry-content th,
+.post-excerpt p,
+.games-arcaea-wrap .hero-subtitle,
+.games-arcaea-wrap .game-entry > p,
+.games-arcaea-wrap .resonance-line,
+.games-arcaea-wrap .resonance-quote {
+  font-feature-settings: "calt" 1, "liga" 1;
+}
+
+/* The keyword rail follows the hero copy; it is a lower section, never a side column. */
+.games-arcaea-wrap .game-hero {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  min-height: auto;
+  padding-bottom: 56px;
+}
+
+.games-arcaea-wrap .hero-left {
+  width: min(760px, 100%);
+  max-width: 760px;
+}
+
+.games-arcaea-wrap .hero-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 4px 28px;
+  width: min(980px, 100%);
+  min-width: 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(223, 215, 255, .2);
+  text-align: left;
+}
+
+.games-arcaea-wrap .floating-tag {
+  display: inline-block;
+  line-height: 1.9;
+}
+
+@media (max-width: 1024px) {
+  .games-arcaea-wrap .hero-right { display: flex; }
+}
