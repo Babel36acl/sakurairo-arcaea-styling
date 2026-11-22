@@ -1,0 +1,64 @@
+# PR 质量门禁：只做构建校验，不发布。
+# 发布由 deploy.yml 在 push main 时负责；本工作流不接触服务器、不读取部署 secrets。
+# 注意：本文件不匹配 deploy.yml 的 paths 过滤器，所以改 ci.yml 不会触发部署。
+name: PR Check
+
+on:
+  pull_request:
+    paths:
+      - "astro-babel36acl-next/**"
+      - ".github/workflows/ci.yml"
+
+permissions:
+  contents: read
+
+# 同一个 PR 的新提交取消旧运行，避免排队堆积
+concurrency:
+  group: pr-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  SITE_DIR: astro-babel36acl-next
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pnpm 必须先于 setup-node 安装（cache: pnpm 依赖 PATH 上的 pnpm）
+      - name: Setup pnpm 11.22.0
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+          run_install: false
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: astro-babel36acl-next/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: astro-babel36acl-next
+        run: pnpm install --frozen-lockfile
+
+      - name: Astro check
+        working-directory: astro-babel36acl-next
+        run: pnpm astro check
+
+      # 与 deploy.yml 保持一致：pnpm build 是完整管线，不要拆成 astro build。
+      - name: Build
+        working-directory: astro-babel36acl-next
+        env:
+          CI: "true"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build
+
+      - name: Verify dist
+        working-directory: astro-babel36acl-next
+        run: node scripts/verify-dist.mjs
