@@ -55,3 +55,6 @@ reference/
 tmp/
 astro-dist.tar.gz
 
+# src/scripts/vendor 是构建必需的本地依赖（legacy-tocbot），根 .gitignore 的 vendor/ 会误伤
+!src/scripts/vendor/
+
