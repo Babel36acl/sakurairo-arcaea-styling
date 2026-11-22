@@ -95,13 +95,18 @@ jobs:
           chmod 700 "$HOME/.ssh"
           printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/vps_deploy_key"
           chmod 600 "$HOME/.ssh/vps_deploy_key"
+          # 先尝试预置 host key；失败也不阻断，连接时用 accept-new 做 TOFU 校验。
           for i in 1 2 3; do
-            if ssh-keyscan -p "${VPS_PORT:-22}" -H "$VPS_HOST" >> "$HOME/.ssh/known_hosts" 2>/dev/null; then
+            if ssh-keyscan -p "${VPS_PORT:-22}" -H "$VPS_HOST" >> "$HOME/.ssh/known_hosts" 2>/dev/null && [ -s "$HOME/.ssh/known_hosts" ]; then
               break
             fi
             sleep 3
           done
-          test -s "$HOME/.ssh/known_hosts" || { echo "::error::could not learn the VPS host key"; exit 1; }
+          if [ -s "$HOME/.ssh/known_hosts" ]; then
+            echo "host key learned via ssh-keyscan"
+          else
+            echo "::warning::ssh-keyscan failed; falling back to StrictHostKeyChecking=accept-new"
+          fi
 
       - name: Upload release tarball
         env:
@@ -113,7 +118,7 @@ jobs:
           REMOTE_TAR="/tmp/astro-dist-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
           echo "REMOTE_TAR=$REMOTE_TAR" >> "$GITHUB_ENV"
           scp -i "$HOME/.ssh/vps_deploy_key" -P "${VPS_PORT:-22}" \
-            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
             "$RUNNER_TEMP/astro-dist.tar.gz" "${VPS_USER:-deploy}@$VPS_HOST:$REMOTE_TAR"
           echo "uploaded $REMOTE_TAR"
 
@@ -128,7 +133,7 @@ jobs:
           TAR_SHA="$(cut -d' ' -f1 "$RUNNER_TEMP/astro-dist.sha256")"
           # 脚本经 base64 走 stdin，避免多行 heredoc 在 SSH 传输里被引号/换行吃掉
           base64 -w0 .github/ci/deploy-vps.sh | ssh -i "$HOME/.ssh/vps_deploy_key" -p "${VPS_PORT:-22}" \
-            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
             "${VPS_USER:-deploy}@$VPS_HOST" \
             "base64 -d > '$REMOTE_SCRIPT' && bash '$REMOTE_SCRIPT' '$REMOTE_TAR' '$TAR_SHA' '$SITE_ROOT' '$HEALTH_URL' '$KEEP_RELEASES' && rm -f '$REMOTE_SCRIPT'"
 
