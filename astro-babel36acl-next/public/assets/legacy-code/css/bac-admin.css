@@ -1,0 +1,26 @@
+/**
+ * Babel Arcaea Code — Admin Dashboard Styles
+ *
+ * Styles for the plugin settings page and health check table.
+ * All styles previously inline are now external for performance and CSP compliance.
+ *
+ * @package Babel_Arcaea_Code
+ */
+
+/* ── Health Check Panel ── */
+
+body.legacy-article .bac-health-check-panel {
+    background: rgba(15, 24, 42, 0.12);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 8px;
+    border: 1px solid rgba(230, 238, 255, 0.15);
+}
+
+body.legacy-article .bac-health-check-panel h3 {
+    margin-top: 0;
+}
+
+body.legacy-article .bac-health-check-panel .description {
+    margin-top: 8px;
+}

@@ -1,0 +1,149 @@
+/* ============================================================
+ * Babel Arcaea Code — Prism shared Arcaea layer
+ * Aligned with sakurairo-arcaea-blog-skill visual tokens.
+ * ============================================================ */
+
+:root {
+    --bac-code-font: "FiraCode Nerd Font", "Fira Code", "JetBrains Mono", Consolas, monospace;
+    --bac-code-radius: 10px;
+    --bac-code-blur: blur(12px) saturate(130%);
+    --bac-code-shadow: 0 12px 36px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+pre[class*="language-"],
+.arcaea-article-content pre[class*="language-"] {
+    position: relative;
+    margin: 1.25rem 0 !important;
+    padding: 1.35rem 1.5rem !important;
+    overflow: auto;
+    border-radius: var(--bac-code-radius) !important;
+    font-family: var(--bac-code-font) !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    text-shadow: none !important;
+    tab-size: 4;
+    -webkit-backdrop-filter: var(--bac-code-blur);
+    backdrop-filter: var(--bac-code-blur);
+    box-shadow: var(--bac-code-shadow) !important;
+}
+
+code[class*="language-"],
+pre[class*="language-"] code,
+.arcaea-article-content pre code[class*="language-"] {
+    font-family: var(--bac-code-font) !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    white-space: pre;
+}
+
+:not(pre)>code[class*="language-"] {
+    border-radius: 4px;
+    padding: 0.2em 0.4em;
+    font-family: var(--bac-code-font) !important;
+    font-size: 0.9em;
+}
+
+pre.line-numbers,
+.arcaea-article-content pre.line-numbers,
+.arcaea-article-content pre[class*="language-"].line-numbers {
+    padding-left: 3.4em !important;
+}
+
+.line-numbers .line-numbers-rows {
+    top: 1.35rem;
+    left: 0;
+    width: 2.5em;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: rgba(160,220,255,0.24) !important;
+    font-family: var(--bac-code-font) !important;
+    line-height: 1.7 !important;
+}
+
+.line-numbers .line-numbers-rows > span {
+    color: rgba(200,210,230,0.42) !important;
+    display: block;
+    pointer-events: none;
+}
+
+/* Use Prism's native CSS counter, not attr(data-line-number).
+   The line-numbers plugin creates <span> elements; line numbers are
+   rendered via ::before { content: counter(linenumber) }. */
+pre.line-numbers {
+    counter-reset: linenumber 0 !important;
+}
+.line-numbers .line-numbers-rows > span::before {
+    color: inherit !important;
+    content: counter(linenumber) !important;
+    display: block;
+    text-align: right;
+    padding-right: 0.55em;
+}
+
+div.code-toolbar {
+    position: relative;
+}
+
+div.code-toolbar>.toolbar {
+    top: 0.55rem;
+    right: 0.65rem;
+    opacity: 1;
+}
+
+div.code-toolbar>.toolbar>.toolbar-item {
+    margin-left: 0.35rem;
+}
+
+div.code-toolbar>.toolbar button,
+div.code-toolbar>.toolbar a,
+div.code-toolbar>.toolbar>.toolbar-item>span {
+    border-radius: 999px !important;
+    padding: 0.28rem 0.62rem !important;
+    font-family: var(--bac-code-font) !important;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+    box-shadow: none !important;
+    -webkit-transition: opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+pre[class*="language-"] mark,
+pre[class*="language-"] .line-highlight {
+    margin-top: 1.35rem;
+    border-radius: 6px;
+}
+
+.command-line-prompt {
+    border-right-width: 1px;
+    margin-right: 1em;
+}
+
+.token.tab:not(:empty)::before,
+.token.cr::before,
+.token.lf::before,
+.token.space::before {
+    opacity: 0.45;
+}
+
+pre[class*="language-"]::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    pre[class*="language-"],
+    div.code-toolbar>.toolbar button,
+    div.code-toolbar>.toolbar a,
+    div.code-toolbar>.toolbar span {
+        transition: none !important;
+        animation: none !important;
+    }
+}

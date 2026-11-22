@@ -1,0 +1,131 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import LegacyContentPage from "@components/pages/LegacyContentPage.astro";
+import PostDetail from "@/components/layout/PostDetail.astro";
+import LegacyArticleDetail from "@/components/layout/LegacyArticleDetail.astro";
+import PostPage from "@/components/layout/PostPage.astro";
+import { siteConfig } from "@/config";
+import I18nKey from "@/i18n/i18nKey";
+import { i18n } from "@/i18n/translation";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/banner-home.css";
+import { getSortedPosts } from "@/utils/content-utils";
+export const getStaticPaths = (async ({ paginate }) => {
+	const allBlogPosts = await getSortedPosts();
+	// 使用配置中的文章数量
+	const pageSize = siteConfig.pagination.postsPerPage;
+	const homePages = paginate(allBlogPosts, { pageSize });
+	const legacyPosts = await getCollection("posts", ({ data }) =>
+		Boolean(data.canonicalPath) && (!import.meta.env.PROD || data.draft !== true),
+	);
+	const legacyPages = await getCollection("pages", ({ data }) =>
+		!import.meta.env.PROD || data.draft !== true,
+	);
+	const explicitRoutes = new Set([
+		"about",
+		"archive",
+		"atom",
+		"bangumi",
+		"bilibili",
+		"booknav",
+		"categories",
+		"dynamic",
+		"friends",
+		"gallery",
+		"guestbook",
+		"myanimelist",
+		"projects",
+		"rss",
+		"search",
+		"sponsor",
+		"vndb",
+	]);
+	const routeParam = (permalink: string) => permalink.replace(/^\/+|\/+$/g, "");
+	const contentPaths = [
+		...legacyPosts.map((entry) => ({
+			params: { page: routeParam(entry.data.canonicalPath) },
+			props: { entry, kind: "post" as const },
+		})),
+		...legacyPages
+			.filter((entry) => !explicitRoutes.has(routeParam(entry.data.canonicalPath).split("/")[0]))
+			.map((entry) => ({
+				params: { page: routeParam(entry.data.canonicalPath) },
+				props: { entry, kind: "page" as const },
+			})),
+	];
+	return [...homePages, ...contentPaths];
+}) satisfies GetStaticPaths;
+// https://github.com/withastro/astro/issues/6507#issuecomment-1489916992
+
+const { page } = Astro.props;
+const { entry, kind } = Astro.props as {
+	entry?: CollectionEntry<"posts"> | CollectionEntry<"pages">;
+	kind?: "post" | "page";
+};
+
+// 列表页隐藏的 h1：首屏用站点标题，后续页用「首页 · 页码」，避免空 h1
+const heading =
+	page?.currentPage === 1
+		? siteConfig.title
+		: page
+			? `${i18n(I18nKey.home)} · ${page.currentPage}`
+			: siteConfig.title;
+---
+
+{entry && kind ? (
+  kind === "post" ? (
+    entry.data.legacyId === 798 ? <LegacyArticleDetail entry={entry as CollectionEntry<"posts">} /> : <PostDetail entry={entry as CollectionEntry<"posts">} />
+  ) : (
+    <LegacyContentPage entry={entry as CollectionEntry<"pages">} kind="page" />
+  )
+) : (
+  <MainGridLayout heading={heading} legacyPostList={true}>
+    <PostPage page={page} />
+    {
+      page!.total > page!.size && page!.url.next && (
+        <div slot="legacy-pagination" id="pagination" class="legacy-pagination">
+          <a href={page!.url.next}> 更早的文章</a>
+        </div>
+      )
+    }
+  </MainGridLayout>
+)}
+
+<script>
+  // 响应式分页处理脚本
+  document.addEventListener("DOMContentLoaded", function () {
+    // 如果启用了响应式分页，添加相应的CSS类
+    const responsiveEnabled = true; // ${siteConfig.pagination.responsive}
+    if (responsiveEnabled) {
+      const deviceType = getDeviceType();
+      document.body.classList.add(`device-${deviceType}`);
+
+      // 监听窗口大小变化
+      let resizeTimeout: any;
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function () {
+          const newDeviceType = getDeviceType();
+          const currentDeviceType = document.body.className.match(
+            /device-(mobile|tablet|desktop)/
+          )?.[1];
+
+          if (currentDeviceType !== newDeviceType) {
+            document.body.classList.remove(`device-${currentDeviceType}`);
+            document.body.classList.add(`device-${newDeviceType}`);
+          }
+        }, 250);
+      });
+    }
+  });
+
+  function getDeviceType() {
+    if (typeof window === "undefined") return "desktop";
+
+    const width = window.innerWidth;
+    if (width < 768) return "mobile";
+    if (width < 1024) return "tablet";
+    return "desktop";
+  }
+</script>

@@ -1,0 +1,71 @@
+body.legacy-article .bac-code-shell {
+  position: relative;
+  margin: 1.25rem 0;
+}
+
+body.legacy-article .bac-code-shell .code-toolbar,
+body.legacy-article .bac-code-shell > pre[class*="language-"] {
+  margin: 0 !important;
+}
+
+body.legacy-article .bac-code-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  min-height: 34px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(160, 220, 255, 0.18);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background: rgba(13, 17, 23, 0.92);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+}
+
+body.legacy-article .bac-code-titlebar + .code-toolbar > pre[class*="language-"],
+body.legacy-article .bac-code-titlebar + pre[class*="language-"] {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+body.legacy-article .bac-code-shell .code-toolbar > .toolbar {
+  top: 0.55rem;
+}
+
+body.legacy-article .bac-code-titlebar-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  flex: 0 0 auto;
+}
+
+body.legacy-article .bac-code-titlebar-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.legacy-article .bac-code-titlebar-dots span:nth-child(1) {
+  background: #ff5f57;
+}
+
+body.legacy-article .bac-code-titlebar-dots span:nth-child(2) {
+  background: #febc2e;
+}
+
+body.legacy-article .bac-code-titlebar-dots span:nth-child(3) {
+  background: #28c840;
+}
+
+body.legacy-article .bac-code-titlebar-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: rgba(235, 240, 248, 0.88);
+  font-family: var(--bac-code-font);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

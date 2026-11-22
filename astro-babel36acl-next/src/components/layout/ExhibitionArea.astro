@@ -1,0 +1,240 @@
+<div class="exhibition-area-container">
+	<h1 class="fes-title">
+		<i class="fa-solid fa-laptop" aria-hidden="true"></i> Display
+	</h1>
+	<div class="bento-grid">
+		<div class="stat-capsules-container">
+			<div class="stat-capsule">
+				<i class="fa-solid fa-users" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">作者数</span>
+					<span class="capsule-value">1 位</span>
+				</div>
+			</div>
+			<div
+				class="stat-capsule medal-capsule gold"
+				data-medal-type="total_words"
+				data-medal-level="gold"
+				data-achievement="文字的力量已在你手中绽放，丰富的创作已汇聚成海。"
+				data-progress="100"
+			>
+				<div class="medal-particles-container" aria-hidden="true">
+					<div class="medal-particles"></div>
+				</div>
+				<i class="fa-solid fa-medal" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">映雪囊萤</span>
+					<span class="capsule-value">138,496 字</span>
+				</div>
+				<div class="medal-info-tooltip" role="tooltip">
+					<div class="medal-achievement">文字的力量已在你手中绽放，丰富的创作已汇聚成海。</div>
+				</div>
+			</div>
+			<div class="stat-capsule">
+				<i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">内容数</span>
+					<span class="capsule-value">44 篇</span>
+				</div>
+			</div>
+			<div class="stat-capsule">
+				<i class="fa-regular fa-comment" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">评论数</span>
+					<span class="capsule-value">0 条</span>
+				</div>
+			</div>
+			<div class="stat-capsule announcement-capsule">
+				<i class="fa-solid fa-bullhorn" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="announcement-line first-line"></span>
+					<span class="announcement-line second-line"></span>
+				</div>
+			</div>
+			<div
+				class="stat-capsule medal-capsule bronze"
+				data-medal-type="blog_days"
+				data-medal-level="bronze"
+				data-achievement="创作之舟已扬帆远航，每道浪痕都在刻写博客的深度航标。"
+				data-next-level="还需要 188 天到下一等级"
+				data-progress="53"
+			>
+				<div class="medal-particles-container" aria-hidden="true">
+					<div class="medal-particles"></div>
+				</div>
+				<i class="fa-solid fa-medal" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">时光涟漪</span>
+					<span class="capsule-value">312 天</span>
+				</div>
+				<div class="medal-info-tooltip" role="tooltip">
+					<div class="medal-achievement">创作之舟已扬帆远航，每道浪痕都在刻写博客的深度航标。</div>
+					<div class="medal-next-level">还需要 188 天到下一等级</div>
+				</div>
+			</div>
+			<div
+				class="stat-capsule medal-capsule bronze"
+				data-medal-type="view_count"
+				data-medal-level="bronze"
+				data-achievement="你已筑起知识的港湾，思想的涟漪正不断扩散。"
+				data-next-level="还需要 3,641 次访问到下一等级"
+				data-progress="63.59"
+			>
+				<div class="medal-particles-container" aria-hidden="true">
+					<div class="medal-particles"></div>
+				</div>
+				<i class="fa-solid fa-medal" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">滥觞所始</span>
+					<span class="capsule-value">11,359 次</span>
+				</div>
+				<div class="medal-info-tooltip" role="tooltip">
+					<div class="medal-achievement">你已筑起知识的港湾，思想的涟漪正不断扩散。</div>
+					<div class="medal-next-level">还需要 3,641 次访问到下一等级</div>
+				</div>
+			</div>
+			<div class="stat-capsule">
+				<i class="fa-solid fa-user-clock" aria-hidden="true"></i>
+				<div class="capsule-content">
+					<span class="capsule-label">上次在线</span>
+					<span class="capsule-value">4 周前</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="bento-item bento-medium">
+			<div class="card-title-wrapper">
+				<h3 class="bento-card-title">夏霞</h3>
+			</div>
+			<a href="" target="_blank" rel="external nofollow" class="card-link">
+				<div class="card-image">
+					<img src="data:," alt="夏霞" loading="lazy" />
+				</div>
+				<div class="card-info">
+					<p class="card-description">あの儚く散る花火の下で、馬鹿みたいに永遠を誓った</p>
+				</div>
+			</a>
+		</div>
+		<div class="bento-item bento-medium">
+			<div class="card-title-wrapper">
+				<h3 class="bento-card-title">雪冴ゆる</h3>
+			</div>
+			<a href="" target="_blank" rel="external nofollow" class="card-link">
+				<div class="card-image">
+					<img src="data:," alt="雪冴ゆる" loading="lazy" />
+				</div>
+				<div class="card-info">
+					<p class="card-description">独りぽっちの冴えない僕を暗闇から連れ出してくれた</p>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	(() => {
+		const initMedalEffects = () => {
+			const cards = document.querySelectorAll(".medal-capsule");
+			if (!cards.length) return;
+
+			cards.forEach((card) => {
+				if (card.dataset.medalEffectsInitialized === "true") return;
+				const icon = card.querySelector("i");
+				const content = card.querySelector(".capsule-content");
+				const particles = card.querySelector(".medal-particles");
+				if (!particles) return;
+
+				const level = card.getAttribute("data-medal-level") || "bronze";
+				const particleColor = level === "gold"
+					? "rgba(255, 215, 0, 0.8)"
+					: level === "silver"
+						? "rgba(192, 192, 192, 0.8)"
+						: "rgba(205, 127, 50, 0.8)";
+
+				const particleCount = 10 + Math.floor(5 * Math.random());
+				for (let index = 0; index < particleCount; index += 1) {
+					const particle = document.createElement("span");
+					particle.className = "medal-particle";
+					Object.assign(particle.style, {
+						position: "absolute",
+						width: `${2 + 3 * Math.random()}px`,
+						height: `${2 + 3 * Math.random()}px`,
+						background: particleColor,
+						borderRadius: "50%",
+						opacity: String(0.3 + 0.7 * Math.random()),
+						top: `${100 * Math.random()}%`,
+						left: `${100 * Math.random()}%`,
+						transition: `transform ${1.5 + 2 * Math.random()}s ease-out, opacity 1s ease-out`,
+						pointerEvents: "none",
+						boxShadow: `0 0 3px ${particleColor}`,
+					});
+					particles.appendChild(particle);
+
+					card.addEventListener("mouseenter", () => {
+						window.setTimeout(() => {
+							Object.assign(particle.style, {
+								transform: `translate3d(${40 * Math.random() - 20}px, ${40 * Math.random() - 20}px, 0)`,
+								opacity: String(0.6 * Math.random()),
+							});
+						}, 100 * Math.random());
+					});
+					card.addEventListener("mouseleave", () => {
+						window.setTimeout(() => {
+							Object.assign(particle.style, {
+								transform: "translate3d(0, 0, 0)",
+								opacity: String(0.3 + 0.7 * Math.random()),
+							});
+						}, 100 * Math.random());
+					});
+				}
+
+				card.style.transform = "perspective(1000px)";
+				card.style.transformStyle = "preserve-3d";
+				if (icon) icon.style.transform = "translateZ(5px)";
+				if (content) content.style.transform = "translateZ(3px)";
+				particles.style.transform = "translateZ(-5px)";
+
+				card.addEventListener("mousemove", (event) => {
+					const rect = card.getBoundingClientRect();
+					const x = event.clientX - rect.left;
+					const y = event.clientY - rect.top;
+					const relativeX = (x - rect.width / 2) / (rect.width / 2);
+					const relativeY = (y - rect.height / 2) / (rect.height / 2);
+					card.style.transform = `perspective(1000px) rotateY(${5 * relativeX}deg) rotateX(${5 * -relativeY}deg) scale3d(1.05, 1.05, 1.05)`;
+					if (icon) icon.style.transform = `translateX(${6 * relativeX}px) translateY(${4 * relativeY}px) translateZ(15px)`;
+					if (content) content.style.transform = `translateX(${3 * relativeX}px) translateY(${2 * relativeY}px) translateZ(5px)`;
+					particles.style.transform = `translateX(${2 * -relativeX}px) translateY(${2 * -relativeY}px) translateZ(-5px)`;
+					card.dispatchEvent(new CustomEvent("medal:tilt", { detail: { relativeX, relativeY } }));
+				});
+				card.addEventListener("mouseleave", () => {
+					card.style.transform = "perspective(1000px)";
+					if (icon) icon.style.transform = "translateZ(5px)";
+					if (content) content.style.transform = "translateZ(3px)";
+					particles.style.transform = "translateZ(-5px)";
+				});
+				card.dataset.medalEffectsInitialized = "true";
+
+				if (level === "gold" && !card.querySelector(".medal-ambient")) {
+					const ambient = document.createElement("div");
+					ambient.className = "medal-ambient";
+					card.appendChild(ambient);
+					for (const [index, position] of [["25%", "20%"], ["65%", "70%"]].entries()) {
+						const fleck = document.createElement("div");
+						fleck.className = `medal-fleck medal-fleck-${index + 1}`;
+						fleck.style.top = position[0];
+						fleck.style.left = position[1];
+						card.appendChild(fleck);
+					}
+				}
+			});
+		};
+
+		if (!window.__sakurairoMedalEffectsBound) {
+			window.__sakurairoMedalEffectsBound = true;
+			document.addEventListener("DOMContentLoaded", initMedalEffects, { once: true });
+			document.addEventListener("astro:page-load", initMedalEffects);
+			document.addEventListener("swup:contentReplaced", initMedalEffects);
+		}
+		initMedalEffects();
+	})();
+</script>

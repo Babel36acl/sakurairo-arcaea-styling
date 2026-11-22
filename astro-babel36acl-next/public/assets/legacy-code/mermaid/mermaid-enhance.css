@@ -1,0 +1,271 @@
+body.legacy-article .arcaea-mermaid-box {
+  --bac-mermaid-toolbar-gap: 0.45rem;
+  --bac-mermaid-accent: rgba(160, 220, 255, 0.78);
+  --bac-mermaid-surface: rgba(11, 19, 36, 0.72);
+  --bac-mermaid-ring: rgba(225, 236, 255, 0.16);
+}
+
+body.legacy-article .arcaea-mermaid-box pre.mermaid svg {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+body.legacy-article .arcaea-mermaid-toolbar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: var(--bac-mermaid-toolbar-gap);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+body.legacy-article .arcaea-mermaid-box:hover .arcaea-mermaid-toolbar,
+body.legacy-article .arcaea-mermaid-box:focus-within .arcaea-mermaid-toolbar {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.legacy-article .arcaea-mermaid-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 0.72rem;
+  border: 1px solid var(--bac-mermaid-ring);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(24, 32, 48, 0.88), rgba(13, 18, 28, 0.74));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: rgba(238, 244, 255, 0.85);
+  font-family: "FiraCode Nerd Font", "Fira Code", "JetBrains Mono", "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+body.legacy-article .arcaea-mermaid-tool:hover {
+  background: linear-gradient(180deg, rgba(36, 47, 68, 0.92), rgba(18, 28, 43, 0.86));
+  border-color: rgba(160, 220, 255, 0.34);
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(160, 220, 255, 0.08);
+}
+
+body.legacy-article .arcaea-mermaid-tool:focus-visible {
+  outline: 2px solid rgba(160, 220, 255, 0.42);
+  outline-offset: 2px;
+}
+
+body.legacy-article .arcaea-mermaid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  background: rgba(4, 9, 18, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+body.legacy-article .arcaea-mermaid-overlay.active {
+  display: block;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-stage.is-dragging {
+  cursor: grabbing;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-viewport {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-viewport svg {
+  display: block;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at top, rgba(96, 150, 255, 0.16), transparent 42%),
+    rgba(8, 21, 42, 0.88);
+  border: 1px solid rgba(230, 238, 255, 0.28);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+body.legacy-article .arcaea-mermaid-overlay-close,
+body.legacy-article .arcaea-mermaid-overlay-hint {
+  position: absolute;
+  z-index: 2;
+  color: rgba(235, 240, 248, 0.88);
+  font-family: "FiraCode Nerd Font", "Fira Code", "JetBrains Mono", "Noto Sans SC", sans-serif;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-close {
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(13, 17, 23, 0.72);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+body.legacy-article .arcaea-mermaid-overlay-close:hover {
+  transform: scale(1.04);
+  border-color: rgba(160, 220, 255, 0.34);
+  background: rgba(18, 24, 34, 0.88);
+}
+
+body.legacy-article .arcaea-mermaid-overlay-hint {
+  left: 16px;
+  bottom: 16px;
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(13, 17, 23, 0.58);
+  font-size: 12px;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell {
+  margin-top: 1rem;
+  --bac-code-font: "FiraCode Nerd Font", "Fira Code", "JetBrains Mono", "Noto Sans SC", sans-serif;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar,
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-fold-toggle {
+  font-family: var(--bac-code-font);
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  min-height: 34px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(160, 220, 255, 0.18);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background:
+    linear-gradient(180deg, rgba(23, 31, 48, 0.96), rgba(13, 17, 23, 0.94));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  flex: 0 0 auto;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-dots span:nth-child(1) {
+  background: #ff5f57;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-dots span:nth-child(2) {
+  background: #febc2e;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-dots span:nth-child(3) {
+  background: #28c840;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-titlebar-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: rgba(235, 240, 248, 0.88);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .arcaea-mermaid-source {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(160, 220, 255, 0.18);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  background:
+    linear-gradient(180deg, rgba(11, 20, 38, 0.74), rgba(8, 16, 32, 0.56));
+  color: rgba(226, 236, 250, 0.92);
+  font-family: var(--bac-code-font);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  position: relative;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell.bac-code-collapsed .arcaea-mermaid-source {
+  max-height: var(--bac-code-collapse-height, 32rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-fold-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid rgba(160, 220, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(9, 18, 34, 0.62);
+  color: rgba(235, 240, 248, 0.88);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+body.legacy-article .arcaea-mermaid-source-shell .bac-code-fold-toggle:hover {
+  border-color: rgba(160, 220, 255, 0.32);
+  background: rgba(13, 24, 44, 0.75);
+  transform: translateY(-1px);
+}

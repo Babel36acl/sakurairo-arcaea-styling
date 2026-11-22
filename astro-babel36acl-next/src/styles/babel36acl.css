@@ -1,0 +1,2194 @@
+/* Sakurairo 插画首屏 + Arcaea 阅读系统。
+ * 源自旧站 visual-tokens.md 与 arcaea-article-content.css，适配 Astro 组件。
+ */
+:root {
+  --arcaea-bg-main: #edf1fa;
+  --arcaea-surface: rgba(249,251,255,.9);
+  --arcaea-surface-soft: rgba(229,237,251,.84);
+  --arcaea-mobile-nav-glass: rgba(244,248,255,.66);
+  --arcaea-mobile-control-glass: rgba(249,251,255,.74);
+  --arcaea-mobile-card-glass: rgba(249,251,255,.78);
+  --arcaea-mobile-nav-filter: blur(24px) saturate(1.18);
+  --arcaea-mobile-button-filter: blur(12px) saturate(1.12);
+  --arcaea-mobile-category-filter: blur(20px) saturate(1.08);
+  --arcaea-mobile-content-filter: blur(18px) saturate(1.08);
+  --arcaea-mobile-control-filter: blur(22px) saturate(1.15);
+  --arcaea-border: rgba(71,93,137,.22);
+  --arcaea-border-strong: rgba(71,93,137,.4);
+  --arcaea-heading: #24334e;
+  --arcaea-text: #34445f;
+  --arcaea-muted: #526381;
+  --arcaea-accent-light-soft: #39739b;
+  --arcaea-accent-conflict-soft: #756297;
+  --arcaea-link: #38658f;
+  --arcaea-glow: rgba(130,180,255,.16);
+  --arcaea-shadow: 0 14px 40px rgba(14,21,42,.15);
+}
+
+:root.dark {
+  --arcaea-bg-main: #0a1220;
+  --arcaea-surface: rgba(16,27,45,.88);
+  --arcaea-surface-soft: rgba(22,36,59,.84);
+  --arcaea-mobile-nav-glass: rgba(8,17,32,.64);
+  --arcaea-mobile-control-glass: rgba(16,27,45,.74);
+  --arcaea-mobile-card-glass: rgba(16,27,45,.78);
+  --arcaea-border: rgba(120,160,220,.22);
+  --arcaea-border-strong: rgba(170,205,255,.34);
+  --arcaea-heading: #f2f6fc;
+  --arcaea-text: rgba(242,246,252,.94);
+  --arcaea-muted: #b9c7da;
+  --arcaea-accent-light-soft: #8be3ff;
+  --arcaea-accent-conflict-soft: #c9aeff;
+  --arcaea-link: #9fc6ff;
+  --arcaea-glow: rgba(130,180,255,.24);
+  --arcaea-shadow: 0 14px 40px rgba(0,0,0,.28);
+}
+/* 接入主题真正使用的变量，而不是另建一套未生效的配色。 */
+:root, :root.dark {
+  --primary: var(--arcaea-accent-light-soft);
+  --page-bg: var(--arcaea-bg-main);
+  --card-bg: var(--arcaea-surface);
+  --card-bg-transparent: var(--arcaea-surface);
+  --float-panel-bg: var(--arcaea-surface);
+  --line-divider: var(--arcaea-border);
+  --content-meta: var(--arcaea-muted);
+  --radius-large: .9rem;
+}
+.card-base, .card-base-transparent {
+  background: var(--arcaea-surface);
+  border: 1px solid var(--arcaea-border);
+  box-shadow: var(--arcaea-shadow), inset 0 1px 0 rgb(255 255 255 / .06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.post-card-wrapper,
+#post-container {
+  position: relative;
+}
+.post-card-wrapper { overflow: hidden; }
+.post-card-wrapper::before,
+#post-container::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0.5rem 1rem auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--arcaea-border-strong), rgba(201,174,255,.5), transparent);
+  opacity: .8;
+  pointer-events: none;
+}
+.arcaea-home-label {
+  position: relative;
+  color: #e4eaff;
+  font-size: .75rem;
+  letter-spacing: .26em;
+  margin-bottom: 1.6rem;
+  text-shadow: 0 2px 8px #0a1220;
+}
+.arcaea-home-label::before,
+.arcaea-home-label::after {
+  content: "";
+  display: inline-block;
+  width: .36rem;
+  height: .36rem;
+  margin: 0 .7rem;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+  vertical-align: .08em;
+  opacity: .7;
+}
+.arcaea-home-label span { margin-inline: .8em; opacity: .6; }
+.banner-home-text-overlay .banner-title {
+  font-family: "Noto Serif SC", "Yu Mincho", "Microsoft YaHei", serif;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: .05em;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px rgba(6,10,28,.9);
+}
+.banner-home-text-overlay .banner-subtitle { letter-spacing: .1em; text-shadow: 0 2px 10px #0a1220; }
+.banner-home-text-overlay .banner-link {
+  border: 1px solid rgba(231,235,255,.38);
+  border-radius: .35rem;
+  background: rgba(25,30,55,.48);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+  clip-path: polygon(4% 0, 96% 0, 100% 22%, 100% 78%, 96% 100%, 4% 100%, 0 78%, 0 22%);
+}
+html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper img {
+  filter: none !important;
+}
+html[data-wallpaper-mode="fullscreen"] body.is-home #banner-dim-container .banner-dim-overlay {
+  background: linear-gradient(180deg, rgba(5,7,18,.04), rgba(6,10,24,.18)) !important;
+}
+/* 波浪随内容滚动，避免留在固定背景上。 */
+.arcaea-horizon {
+  position: absolute;
+  inset: -4rem 0 auto;
+  height: 4.1rem;
+  pointer-events: none;
+  color: var(--arcaea-bg-main);
+}
+.arcaea-horizon svg { width: 100%; height: 100%; }
+body:not(.is-home) .arcaea-horizon { display: none; }
+body.is-home #content-panel { padding-top: 1.5rem; }
+.profile-avatar-image {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  border: 1px solid var(--arcaea-border-strong);
+  margin: 1.6rem auto 0;
+}
+.post-card-wrapper { transition: border-color 180ms ease, box-shadow 180ms ease; }
+.post-card-wrapper:hover { border-color: var(--arcaea-border-strong); }
+.post-card-wrapper .post-card-title { color: var(--arcaea-heading); }
+.post-card-wrapper .description { color: var(--arcaea-muted); line-height: 1.8; }
+.post-card-wrapper .post-card-image { border: 1px solid var(--arcaea-border); }
+@media (min-width: 1024px) {
+  #post-list-container.list-mode .has-cover .post-card-content { width: 63% !important; padding: 1.65rem 1.35rem !important; }
+  #post-list-container.list-mode .has-cover .post-card-image { width: 34% !important; top: .6rem !important; bottom: .6rem !important; right: .6rem !important; }
+  #post-list-container.list-mode .post-card-title { font-size: 1.4rem !important; line-height: 1.55 !important; }
+}
+#post-container { padding: clamp(1.25rem, 3vw, 2.6rem); }
+#post-container [data-pagefind-meta="title"] {
+  font-size: clamp(1.5rem, 2.3vw, 2.1rem);
+  line-height: 1.55;
+  color: var(--arcaea-heading);
+  text-wrap: balance;
+}
+.custom-md {
+  color: var(--arcaea-text);
+  line-height: 1.82;
+  --tw-prose-body: var(--arcaea-text);
+  --tw-prose-headings: var(--arcaea-heading);
+  --tw-prose-bold: var(--arcaea-heading);
+  --tw-prose-quotes: var(--arcaea-text);
+  --tw-prose-links: var(--arcaea-link);
+}
+.custom-md h2 {
+  position: relative;
+  isolation: isolate;
+  width: fit-content;
+  max-width: 100%;
+  margin: 2.35em 0 1.2em;
+  padding: .08em .4em .18em 0;
+  color: var(--arcaea-heading);
+  font-size: 1.65em;
+  line-height: 1.4;
+  border: 0;
+}
+.custom-md h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -.25em;
+  width: min(8.5rem, 58%);
+  height: 2px;
+  background: linear-gradient(90deg, var(--arcaea-accent-light-soft), var(--arcaea-accent-conflict-soft), transparent);
+  box-shadow: 0 0 14px var(--arcaea-glow);
+}
+.custom-md h2::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 58% 0 0 30%;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, rgba(169,123,255,.24), rgba(95,212,255,.12), transparent);
+}
+.custom-md h3 { position: relative; padding-left: .85em; color: var(--arcaea-heading); line-height: 1.5; }
+.custom-md h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .25em;
+  width: 3px;
+  height: 1em;
+  border-radius: 2px;
+  background: linear-gradient(var(--arcaea-accent-light-soft), var(--arcaea-accent-conflict-soft));
+}
+.custom-md h4 {
+  position: relative;
+  padding-left: 1.15em;
+  color: var(--arcaea-heading);
+}
+.custom-md h4::before {
+  content: "";
+  position: absolute;
+  left: .15em;
+  top: .45em;
+  width: .42em;
+  height: .42em;
+  border: 1px solid var(--arcaea-accent-conflict-soft);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--arcaea-glow);
+}
+.custom-md hr {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--arcaea-border-strong) 38%, var(--arcaea-accent-conflict-soft) 50%, var(--arcaea-border-strong) 62%, transparent);
+  opacity: .8;
+}
+.custom-md :where(p, li) { color: var(--arcaea-text); }
+.custom-md :where(blockquote, table, pre) { border-color: var(--arcaea-border); }
+.custom-md blockquote { padding: 1rem 1.4rem; background: var(--arcaea-surface-soft); border-radius: .5rem; color: var(--arcaea-text); }
+.custom-md table { background: var(--arcaea-surface-soft); }
+.custom-md :where(th, td) { border-bottom: 1px solid var(--arcaea-border); }
+.custom-md th { color: var(--arcaea-heading); }
+.custom-md :where(pre, .expressive-code) { max-width: 100%; overflow-x: auto; }
+.custom-md :where(h2, h3, h4) { scroll-margin-top: 6rem; }
+:where(a[href], button, [role="button"], summary):focus-visible { outline: 2px solid var(--arcaea-accent-light-soft); outline-offset: 3px; }
+@media (max-width: 767px) {
+  /* 手机导航与控件使用较通透的材质，正文壳保留更厚的阅读底色。 */
+  #navbar {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  #navbar > div::before {
+    backdrop-filter: var(--arcaea-mobile-nav-filter);
+    -webkit-backdrop-filter: var(--arcaea-mobile-nav-filter);
+  }
+  #navbar :is(#search-switch, #music-player-switch, #display-settings-switch, #scheme-switch, #nav-menu-switch) {
+    background: var(--arcaea-mobile-control-glass);
+    border: 1px solid var(--arcaea-border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+    backdrop-filter: var(--arcaea-mobile-button-filter);
+    -webkit-backdrop-filter: var(--arcaea-mobile-button-filter);
+  }
+  #category-bar {
+    border-color: var(--arcaea-border-strong);
+    box-shadow: 0 12px 30px rgba(3,8,20,.2), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter: var(--arcaea-mobile-category-filter);
+    -webkit-backdrop-filter: var(--arcaea-mobile-category-filter);
+  }
+  #category-bar .category-scroll {
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+  }
+  #category-bar .category-pill { scroll-snap-align: start; }
+  #post-list-container .post-card-wrapper,
+  #post-container {
+    box-shadow: 0 14px 34px rgba(3,8,20,.2), inset 0 1px 0 rgba(255,255,255,.08);
+    backdrop-filter: var(--arcaea-mobile-content-filter);
+    -webkit-backdrop-filter: var(--arcaea-mobile-content-filter);
+  }
+  .floating-controls-container {
+    bottom: calc(4rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+  .floating-controls-container .floating-btn,
+  #floating-toc-panel,
+  #navbar .float-panel,
+  #nav-menu-panel .mobile-menu-drawer {
+    border-color: var(--arcaea-border-strong) !important;
+    box-shadow: 0 12px 28px rgba(3,8,20,.24), inset 0 1px 0 rgba(255,255,255,.12) !important;
+    backdrop-filter: var(--arcaea-mobile-control-filter) !important;
+    -webkit-backdrop-filter: var(--arcaea-mobile-control-filter) !important;
+  }
+  .banner-home-text-overlay > div { width: 88%; }
+  .banner-home-text-overlay .banner-title { font-size: 1.7rem !important; line-height: 1.75; }
+  .banner-home-text-overlay .banner-subtitle { font-size: .85rem !important; line-height: 1.9; }
+  .arcaea-home-label { font-size: .65rem; letter-spacing: .16em; }
+  #main-grid { padding-inline: 1rem; }
+  .custom-md { overflow-wrap: anywhere; }
+  .custom-md h2 { font-size: 1.4em; }
+  .custom-md table { display: block; max-width: 100%; overflow-x: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+
+/* 背景归 components 层管理，与主题的 important 壁纸规则同层覆盖。 */
+@layer components {
+  @media (max-width: 767px) {
+    /* 手机首屏也保留可读的导航底色；桌面的动态透明阶段不受影响。 */
+    #navbar-wrapper #navbar[data-transparent-mode] > div {
+      background-color: var(--arcaea-mobile-nav-glass) !important;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 6px 22px rgba(0,0,0,.18) !important;
+    }
+    #category-bar, #post-list-container .post-card-wrapper, #post-container {
+      background-color: var(--arcaea-mobile-card-glass) !important;
+    }
+    .floating-controls-container .floating-btn, #floating-toc-panel,
+    #navbar .float-panel, #nav-menu-panel .mobile-menu-drawer {
+      background-color: var(--arcaea-mobile-control-glass) !important;
+    }
+  }
+}
+
+/* 在材质变量处降级，避免被背景规则的 important 优先级重新覆盖。 */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root, :root.dark {
+    --arcaea-mobile-nav-glass: var(--arcaea-bg-main);
+    --arcaea-mobile-card-glass: var(--arcaea-bg-main);
+    --arcaea-mobile-control-glass: var(--arcaea-bg-main);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  :root, :root.dark {
+    --arcaea-mobile-nav-glass: var(--arcaea-bg-main);
+    --arcaea-mobile-card-glass: var(--arcaea-bg-main);
+    --arcaea-mobile-control-glass: var(--arcaea-bg-main);
+    --arcaea-mobile-nav-filter: none;
+    --arcaea-mobile-button-filter: none;
+    --arcaea-mobile-category-filter: none;
+    --arcaea-mobile-content-filter: none;
+    --arcaea-mobile-control-filter: none;
+  }
+}
+
+/*
+ * 旧 Sakurairo 首页兼容层
+ *
+ * 首页首屏恢复旧站的标题、引导卡片、社交入口；文章列表页统一恢复旧站的
+ * 居中单栏和 300px 插画卡片，正文页与资料页继续使用 Firefly 的布局契约。
+ */
+.legacy-home-menu {
+  display: none;
+}
+
+@keyframes sakurairo-homepage-load {
+  0% { opacity: 0; transform: translateY(80px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sakurairo-slide-in-bck-top {
+  0% { opacity: 0; transform: translateZ(700px) translateY(-300px); }
+  100% { opacity: 1; transform: translateZ(0) translateY(0); }
+}
+
+@keyframes sakurairo-blur {
+  0% { filter: blur(8px); }
+  100% { filter: blur(0); }
+}
+
+@keyframes sakurairo-float-down {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(9px); }
+}
+
+/* 旧站卡片的首帧只改变透明度；视口进入时再由 reveal 过渡接管位移和模糊。 */
+@keyframes sakurairo-legacy-card-load {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes sakurairo-glitch-loop-1 {
+  0% { clip: rect(36px, 9999px, 9px, 0); }
+  25% { clip: rect(25px, 9999px, 99px, 0); }
+  50% { clip: rect(50px, 9999px, 102px, 0); }
+  75% { clip: rect(30px, 9999px, 92px, 0); }
+  100% { clip: rect(91px, 9999px, 98px, 0); }
+}
+
+@keyframes sakurairo-glitch-loop-2 {
+  0% { top: -1px; left: 1px; clip: rect(65px, 9999px, 119px, 0); }
+  25% { top: -6px; left: 4px; clip: rect(79px, 9999px, 19px, 0); }
+  50% { top: -3px; left: 2px; clip: rect(68px, 9999px, 11px, 0); }
+  75% { top: 0; left: -4px; clip: rect(95px, 9999px, 53px, 0); }
+  100% { top: -1px; left: -1px; clip: rect(31px, 9999px, 149px, 0); }
+}
+
+html[data-wallpaper-mode="fullscreen"] body.is-home #banner-dim-container .banner-dim-overlay {
+  background: transparent !important;
+}
+
+body.is-home .sakurairo-home-copy {
+  width: min(800px, calc(100% - 24px));
+  max-width: 800px;
+}
+
+body.is-home .arcaea-home-label {
+  display: none;
+}
+
+body.is-home .banner-home-text-overlay .banner-title.center-text {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  color: #d8e6ff !important;
+  font-family: "Zen Old Mincho" !important;
+  font-size: 80px !important;
+  font-weight: 300 !important;
+  line-height: 120px !important;
+  letter-spacing: 0 !important;
+  text-wrap: wrap;
+  text-shadow: 0 0 1px rgba(0, 0, 0, .1) !important;
+  mix-blend-mode: lighten;
+  animation: sakurairo-homepage-load 2s both;
+}
+
+/* 与旧站 glitch 类相同的彩色切片，仅在指针悬停时持续，避免首屏常态抖动。 */
+body.is-home .banner-title.center-text.glitch::before,
+body.is-home .banner-title.center-text.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  background: transparent;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+/* 覆盖层本身让点击穿透；旧站标题仍可接收指针以触发 glitch。 */
+body.is-home .banner-title.center-text.glitch {
+  pointer-events: auto;
+}
+
+body.is-home .banner-home-text-overlay,
+body.is-home .banner-home-text-overlay .focusinfo,
+body.is-home .banner-home-text-overlay .centerbg {
+  pointer-events: auto;
+}
+
+body.is-home .banner-home-text-overlay .focusinfo {
+  z-index: 2;
+}
+
+body.is-home #banner-overlay-container {
+  pointer-events: auto;
+}
+
+body.is-home .banner-title.center-text.glitch::before {
+  left: -1px;
+  color: inherit;
+  text-shadow: 1px 0 #ff3f1a;
+}
+
+body.is-home .banner-title.center-text.glitch::after {
+  left: 1px;
+  color: inherit;
+  text-shadow: -1px 0 #00a7e0;
+}
+
+body.is-home .banner-title.center-text.glitch:hover::before {
+  animation: sakurairo-glitch-loop-1 .8s infinite ease-in-out alternate-reverse;
+}
+
+body.is-home .banner-title.center-text.glitch:hover::after {
+  animation: sakurairo-glitch-loop-2 .8s infinite ease-in-out alternate-reverse;
+}
+
+/* 横幅容器位于负层壁纸堆叠上下文中，指针命中由全局坐标探针补足；
+   动画参数仍复用旧站的 hover keyframes。 */
+body.is-home .banner-title.center-text.glitch.is-pointer-hover::before {
+  animation: sakurairo-glitch-loop-1 .8s infinite ease-in-out alternate-reverse;
+}
+
+body.is-home .banner-title.center-text.glitch.is-pointer-hover::after {
+  animation: sakurairo-glitch-loop-2 .8s infinite ease-in-out alternate-reverse;
+}
+
+body.is-home .banner-home-info.header-info {
+  box-sizing: content-box;
+  width: calc(65% - 3px);
+  max-width: calc(100% - 32px);
+  margin: .1rem auto 0;
+  padding: 12px 15px;
+  color: #fff;
+  font-family: "Zen Old Mincho", "Yu Mincho", "Noto Serif SC", serif;
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 300;
+  white-space: nowrap;
+  background: rgba(51, 51, 51, .58);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 15px;
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  animation: sakurairo-homepage-load 2s both;
+}
+
+body.is-home .banner-awaiting {
+  display: flex;
+  justify-content: center;
+  gap: .35rem;
+  max-width: 70%;
+  margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.is-home .banner-home-info .banner-subtitle {
+  margin: 0;
+  color: #fff !important;
+  font-family: "Zen Old Mincho", "Yu Mincho", "Noto Serif SC", serif !important;
+  font-size: 16px !important;
+  line-height: 30px !important;
+  letter-spacing: 0 !important;
+  text-shadow: none;
+  animation: sakurairo-homepage-load 2s both;
+}
+
+body.is-home .banner-social.top-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 150px;
+  height: 46px;
+  margin: 20px auto 0;
+  pointer-events: auto;
+  animation: sakurairo-homepage-load 2s both;
+}
+
+body.is-home .banner-social.top-social a {
+  display: inline;
+  color: #98b6ff;
+}
+
+body.is-home .banner-social.top-social a:hover {
+  transform: translateY(-3px);
+  background: rgba(152, 182, 255, .28);
+  border-color: rgba(216, 230, 255, .65);
+}
+
+body.is-home .banner-social.top-social img {
+  display: flex;
+  width: 40px;
+  height: 36px;
+  padding: 8px 10px;
+  border: 1px solid rgba(51, 51, 51, .7);
+  border-radius: 15px;
+  background: rgba(51, 51, 51, .58);
+  object-fit: contain;
+  filter: brightness(.58) !important;
+  transform: none !important;
+}
+
+/* The wallpaper wrapper has a generic fullscreen image rule. The legacy
+ * social tiles are images too, so restate their measured box after that rule. */
+body.is-home #wallpaper-wrapper .banner-social.top-social img {
+  width: 40px !important;
+  height: 36px !important;
+  object-fit: contain !important;
+  transform: none !important;
+}
+
+body.is-home .banner-links {
+  display: none !important;
+}
+
+body.is-home .arcaea-horizon {
+  display: none !important;
+}
+
+html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper .scroll-down-indicator {
+  bottom: 50px !important;
+  height: 85px !important;
+  color: #98b6ff;
+  animation: sakurairo-float-down 5s infinite;
+}
+
+html[data-wallpaper-mode="fullscreen"] body.is-home #wallpaper-wrapper .scroll-down-indicator .scroll-down-icon {
+  animation: none;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .45));
+}
+
+/* 首页正文恢复旧站的 860px 外壳 + 820px 卡片单栏。 */
+body.is-home #content-panel-inner {
+  width: min(860px, calc(100% - 2rem)) !important;
+  max-width: 860px !important;
+}
+
+body.is-home #main-grid {
+  display: block !important;
+  width: 100% !important;
+  padding-inline: 20px !important;
+  box-sizing: border-box;
+}
+
+body.is-home #main-grid > #left-sidebar-wrapper,
+body.is-home #main-grid > #left-sidebar-dynamic,
+body.is-home #main-grid > #right-sidebar-static,
+body.is-home #main-grid > #right-sidebar-dynamic {
+  display: none !important;
+}
+
+body.is-home #content-column {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+body.is-home #category-bar-wrapper {
+  display: none !important;
+}
+
+body.is-home .legacy-home-title {
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  margin: 0;
+  padding: 0;
+  color: rgba(238, 238, 238, .9);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  animation: sakurairo-homepage-load 1s both;
+}
+
+body.is-home #content-panel-inner {
+  animation: sakurairo-homepage-load 1s both;
+}
+
+/* The legacy homepage already owns its content entrance on #content-panel-inner.
+ * Do not add the generic 120ms onload fade to the same route. */
+body.is-home #content-wrapper.onload-animation {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+body.is-home #post-list-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 30px !important;
+  width: 100% !important;
+  margin-bottom: 2rem;
+}
+
+body.is-home #post-list-container > .post-card-wrapper {
+  flex: 0 0 300px !important;
+  width: 100% !important;
+  height: 300px !important;
+  min-height: 300px !important;
+  margin: 0 !important;
+  overflow: hidden;
+  border: 1px solid rgba(205, 195, 255, .22) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(151, 127, 255, .15), transparent 28%),
+    linear-gradient(145deg, rgba(55, 39, 91, .58), rgba(17, 18, 39, .68) 49%, rgba(9, 12, 24, .74)) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .3), 0 0 38px rgba(103, 79, 214, .08), inset 0 1px 0 rgba(255, 255, 255, .1) !important;
+  backdrop-filter: blur(26px) saturate(1.35);
+  -webkit-backdrop-filter: blur(26px) saturate(1.35);
+  animation-name: sakurairo-homepage-load !important;
+  animation-duration: .5s !important;
+  animation-fill-mode: both !important;
+  transition: transform .45s ease, border-color .45s ease, box-shadow .45s ease;
+}
+
+body.is-home #post-list-container > .post-card-wrapper:hover {
+  transform: translateY(-4px);
+  border-color: rgba(205, 195, 255, .42) !important;
+  box-shadow: 0 30px 78px rgba(0, 0, 0, .36), 0 0 46px rgba(103, 79, 214, .13), inset 0 1px 0 rgba(255, 255, 255, .15) !important;
+}
+
+body.is-home #post-list-container > .post-card-wrapper::before {
+  display: none;
+}
+
+body.is-home #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image {
+  position: absolute !important;
+  inset: 1px auto 1px 1px !important;
+  z-index: 1;
+  width: 80% !important;
+  height: calc(100% - 2px) !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  border-radius: 21px 0 0 21px !important;
+}
+
+body.is-home #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 81px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 57%, rgba(0, 0, 0, .82) 100%);
+  backdrop-filter: saturate(180%) blur(2px);
+}
+
+body.is-home #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image img {
+  filter: brightness(.58) !important;
+  transition: filter .6s ease, transform .3s ease;
+}
+
+body.is-home #post-list-container.list-mode .post-card-wrapper.has-cover:hover .post-card-image img {
+  filter: brightness(.68) !important;
+}
+
+body.is-home #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-content {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3;
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+body.is-home #post-list-container .post-card-title {
+  position: absolute !important;
+  left: 22.5% !important;
+  bottom: 18px !important;
+  z-index: 4;
+  display: block;
+  width: 58% !important;
+  max-width: 58% !important;
+  margin: 0 !important;
+  color: rgba(238, 238, 238, .9) !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .7);
+  pointer-events: auto;
+}
+
+body.is-home #post-list-container .post-card-title::before {
+  display: none !important;
+}
+
+body.is-home #post-list-container .post-meta {
+  position: absolute !important;
+  top: 18px !important;
+  right: 2% !important;
+  z-index: 4;
+  display: flex !important;
+  max-width: 59% !important;
+  margin: 0 !important;
+  color: rgba(255, 255, 255, .8) !important;
+  font-size: .78rem;
+  pointer-events: auto;
+}
+
+body.is-home #post-list-container .post-card-content .description {
+  display: none !important;
+}
+
+body.is-home #post-list-container .post-card-bottom-tags,
+body.is-home #post-list-container .stats {
+  display: none !important;
+}
+
+body.is-home #post-list-container .post-card-image + .post-card-enter-btn,
+body.is-home #post-list-container .post-card-enter-btn {
+  z-index: 5;
+}
+
+@media (min-width: 861px) {
+  body.is-home.site-header {
+    height: 70px;
+  }
+
+  body.is-home #top-row {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  body.is-home #navbar-wrapper,
+  body.is-home #navbar {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.is-home #navbar > div {
+    height: 70px;
+    padding-inline: 0;
+  }
+
+  body.is-home #navbar > div > div {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: min(calc(100vw - 2rem), calc(43.45vw + 280px));
+    max-width: none !important;
+    height: 45px;
+    margin: 12px auto 0;
+    padding: 5px;
+    border: 1px solid rgba(247, 247, 247, .18);
+    border-radius: 50px;
+    background: rgba(0, 0, 0, .58);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .24);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    animation: sakurairo-slide-in-bck-top 1.2s cubic-bezier(.25, .46, .45, .94) both;
+  }
+
+  body.is-home #navbar > div > div > a:first-child,
+  body.is-home #navbar > div > div > .navbar-controls {
+    display: none !important;
+  }
+
+  body.is-home #navbar > div > div > .navbar-generic-menu {
+    display: none !important;
+  }
+
+  body.is-home #navbar > div > div > .legacy-home-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1px;
+    width: 100%;
+    height: 35px;
+  }
+
+  body.is-home .legacy-home-menu a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 35px;
+    padding: 8px 12px;
+    color: rgba(238, 238, 238, .88);
+    border-radius: 50px;
+    font-size: 15px;
+    line-height: 19px;
+    white-space: nowrap;
+    transition: color .25s ease, background .25s ease, transform .25s ease;
+  }
+
+  body.is-home .legacy-home-menu a:hover,
+  body.is-home .legacy-home-menu a.legacy-home-active {
+    color: #fff;
+    background: rgba(152, 182, 255, .24);
+  }
+
+  body.is-home .legacy-home-menu a:active {
+    transform: scale(.96);
+  }
+}
+
+@media (max-width: 860px) {
+  body.is-home.site-header {
+    height: 50px;
+  }
+
+  body.is-home #navbar > div,
+  body.is-home #navbar > div > div {
+    height: 50px !important;
+  }
+
+  body.is-home .legacy-home-menu {
+    display: none;
+  }
+
+  body.is-home .banner-home-text-overlay > div {
+    width: calc(100% - 24px);
+  }
+
+  body.is-home .banner-home-text-overlay .banner-title.center-text {
+    width: 100%;
+    margin-bottom: 0;
+    font-size: 80px !important;
+    line-height: 120px !important;
+  }
+
+  body.is-home .banner-home-info.header-info {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 10px;
+    white-space: normal;
+    line-height: 24px;
+  }
+
+  body.is-home .banner-awaiting {
+    max-width: 100%;
+    font-size: .8rem;
+    line-height: 24px;
+  }
+
+  body.is-home .banner-home-info .banner-subtitle {
+    font-size: .85rem !important;
+    line-height: 24px !important;
+  }
+
+  body.is-home #content-panel-inner {
+    width: calc(100% - 1rem) !important;
+  }
+
+  body.is-home #main-grid {
+    padding-inline: 8px !important;
+  }
+
+  body.is-home .legacy-home-title {
+    min-height: 50px;
+    font-size: 1.35rem;
+  }
+
+  body.is-home #post-list-container {
+    gap: 16px !important;
+  }
+
+  body.is-home #post-list-container > .post-card-wrapper {
+    flex-basis: 220px !important;
+    height: 220px !important;
+    min-height: 220px !important;
+    border-radius: 16px !important;
+  }
+
+  body.is-home #post-list-container .post-card-image {
+    position: absolute !important;
+    inset: 1px !important;
+    width: calc(100% - 2px) !important;
+    height: calc(100% - 2px) !important;
+    max-height: none !important;
+    border-radius: 15px !important;
+  }
+
+  body.is-home #post-list-container .post-card-image img {
+    filter: brightness(.58) !important;
+  }
+
+  body.is-home #post-list-container .post-card-content {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 3;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+  }
+
+  body.is-home #post-list-container .post-card-title {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 14px !important;
+    width: auto !important;
+    max-width: none !important;
+    font-size: 1rem !important;
+  }
+
+  body.is-home #post-list-container .post-meta {
+    top: 14px !important;
+    left: 14px !important;
+    right: auto !important;
+    max-width: calc(100% - 28px) !important;
+  }
+}
+
+/* Phase 2B: legacy homepage post-list DOM and Sakurairo card geometry. */
+body.legacy-post-list #content-panel {
+  padding-top: 1px !important;
+}
+
+body.legacy-post-list #main-grid {
+  display: block !important;
+  width: 100% !important;
+  padding-inline: 0 !important;
+}
+
+body.legacy-post-list #content {
+  display: block;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  /* Reference .site paints the full article area over the wallpaper. */
+  background: rgba(51, 51, 51, .58) !important;
+}
+
+body.legacy-post-list #primary,
+body.legacy-post-list .site-main {
+  width: 100%;
+  max-width: none;
+}
+
+body.legacy-post-list .site-main {
+  position: relative;
+  padding: 4% 0 0;
+}
+
+body.legacy-post-list .main-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  padding: 0 0 10px;
+  overflow: visible;
+  color: rgba(238, 238, 238, .9);
+  font-family: "JetBrainsMono Nerd Font", ui-monospace, monospace;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 27px;
+  opacity: 1;
+  content-visibility: visible;
+}
+
+body.legacy-post-list #post-list-container > .post-list-thumb.post-list-show {
+  opacity: 1;
+  content-visibility: visible;
+}
+
+body.legacy-post-list #post-list-container {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 2rem !important;
+  padding: 0 !important;
+}
+
+body.legacy-post-list #post-list-container > .post-list-thumb {
+  display: flex;
+  float: left;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+  margin: 15px 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(26, 26, 26, .7);
+  box-shadow: 0 1px 35px -8px rgba(0, 0, 0, .2);
+  opacity: 0;
+  content-visibility: hidden;
+  flex-direction: column;
+  clear: none;
+  transition: transform .4s ease-in-out, box-shadow .4s ease-in-out, background .4s ease-in-out;
+}
+
+body.legacy-post-list #post-list-container > .post-list-thumb:hover {
+  transform: translateY(-.35rem);
+  box-shadow: 0 1px 20px 0 rgba(152, 182, 255, .35);
+  background: rgba(26, 26, 26, .9);
+}
+
+body.legacy-post-list #post-list-container .post-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 80%;
+  height: 100%;
+  display: inline-flex;
+  z-index: 2;
+  overflow: hidden;
+}
+
+body.legacy-post-list #post-list-container .post-thumb a,
+body.legacy-post-list #post-list-container .post-thumb .cover-image-container,
+body.legacy-post-list #post-list-container .post-thumb img {
+  display: block;
+  width: 100%;
+  height: 100% !important;
+  object-fit: cover;
+}
+
+body.legacy-post-list #post-list-container .post-thumb::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 81px;
+  pointer-events: none;
+  background: linear-gradient(#fff0, #000d);
+  backdrop-filter: saturate(180%) blur(10px);
+}
+
+body.legacy-post-list #post-list-container .post-date,
+body.legacy-post-list #post-list-container .post-meta {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  overflow: hidden;
+  border: 1px solid rgba(125, 125, 125, .19);
+  border-radius: 5px;
+  background: rgba(51, 51, 51, .38);
+  color: rgba(255, 255, 255, .8) !important;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  backdrop-filter: saturate(180%) blur(10px);
+}
+
+body.legacy-post-list #post-list-container .post-date {
+  left: 10px;
+  width: max-content;
+}
+
+body.legacy-post-list #post-list-container .post-meta {
+  right: 21.5%;
+  display: inline-flex !important;
+  max-width: 59.5%;
+  gap: 4px 12px;
+  flex-direction: row;
+  text-overflow: ellipsis;
+}
+
+body.legacy-post-list #post-list-container .post-meta > * {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+body.legacy-post-list #post-list-container .post-meta a {
+  color: inherit !important;
+}
+
+body.legacy-post-list #post-list-container .post-title {
+  position: absolute;
+  left: 2%;
+  bottom: 6%;
+  z-index: 3;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 70%;
+  height: fit-content;
+  max-height: 34%;
+  margin: 5px;
+  padding: 10px 15px;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+body.legacy-post-list #post-list-container .post-title h3 {
+  margin: 0;
+  overflow: hidden;
+  color: #eee9e9;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 26px;
+  letter-spacing: 2px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+}
+
+body.legacy-post-list #post-list-container .post-title a {
+  color: inherit;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt {
+  position: absolute;
+  top: 3%;
+  left: 81%;
+  z-index: 1;
+  display: flex;
+  width: 18.5%;
+  max-height: 90%;
+  margin: 0;
+  padding: 0 10px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, .72);
+  font-size: 15px;
+  line-height: 22.5px;
+  letter-spacing: 1px;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt p {
+  max-height: 100%;
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 11;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip {
+  margin-right: 40%;
+  padding-bottom: 2px;
+  color: #ccc;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-thumb {
+  right: 0;
+  left: auto;
+}
+
+body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-excerpt {
+  left: 1%;
+}
+
+body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-title {
+  left: 22%;
+}
+
+body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-date {
+  left: 21.3%;
+}
+
+body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+  right: 1.3%;
+  max-width: 59.5%;
+}
+
+@media (max-width: 860px) {
+  body.legacy-post-list #content {
+    padding-inline: 4%;
+  }
+
+  body.legacy-post-list #main-grid {
+    padding-inline: 0 !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-thumb,
+  body.legacy-post-list #post-list-container .post-thumb:hover {
+    width: 100%;
+    height: 73%;
+  }
+
+  body.legacy-post-list #post-list-container .post-excerpt {
+    top: auto;
+    right: 0;
+    bottom: 5.5%;
+    left: 2%;
+    width: 98%;
+    max-height: 13%;
+    display: block;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  body.legacy-post-list #post-list-container .post-title,
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-title {
+    left: 2%;
+    right: auto;
+    bottom: 20%;
+    width: fit-content;
+    max-width: 85%;
+    font-size: 16px;
+  }
+
+  body.legacy-post-list #post-list-container .post-meta,
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+    top: 10px;
+    right: 10px;
+    max-width: 32%;
+    flex-direction: column;
+  }
+
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-date {
+    left: 10px;
+  }
+}
+
+/*
+ * 文章列表页的旧 Sakurairo 几何契约。
+ * PostPage 是首页和分页页共用的列表所有者；把兼容层挂在 body class 上，
+ * 避免 /2/ 等分页路径继续落回 Firefly 的三栏列表布局。
+ */
+body.legacy-post-list #content-panel-inner {
+  width: min(860px, calc(100% - 2rem)) !important;
+  max-width: 860px !important;
+}
+
+body.legacy-post-list #main-grid {
+  display: block !important;
+  width: 100% !important;
+  padding-inline: 20px !important;
+  box-sizing: border-box;
+}
+
+body.legacy-post-list #main-grid > #left-sidebar-wrapper,
+body.legacy-post-list #main-grid > #left-sidebar-dynamic,
+body.legacy-post-list #main-grid > #right-sidebar-static,
+body.legacy-post-list #main-grid > #right-sidebar-dynamic {
+  display: none !important;
+}
+
+body.legacy-post-list #content-column {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+body.legacy-post-list #category-bar-wrapper {
+  display: none !important;
+}
+
+body.legacy-post-list #post-list-container {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 30px !important;
+  width: 100% !important;
+  margin: 0 0 2rem;
+}
+
+body.legacy-post-list #post-list-container > .post-card-wrapper {
+  flex: 0 0 300px !important;
+  width: 100% !important;
+  height: 300px !important;
+  min-height: 300px !important;
+  margin: 0 !important;
+  overflow: hidden;
+  border: 1px solid rgba(205, 195, 255, .22) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(151, 127, 255, .15), transparent 28%),
+    linear-gradient(145deg, rgba(55, 39, 91, .58), rgba(17, 18, 39, .68) 49%, rgba(9, 12, 24, .74)) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .3), 0 0 38px rgba(103, 79, 214, .08), inset 0 1px 0 rgba(255, 255, 255, .1) !important;
+  backdrop-filter: blur(26px) saturate(1.35);
+  -webkit-backdrop-filter: blur(26px) saturate(1.35);
+  animation: sakurairo-legacy-card-load .5s both !important;
+  filter: blur(4px);
+  transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1), filter .7s ease, border-color .45s ease, box-shadow .45s ease;
+}
+
+body.legacy-post-list #post-list-container > .post-card-wrapper.is-visible {
+  filter: none;
+  transform: none;
+}
+
+body.legacy-post-list #post-list-container > .post-card-wrapper:nth-child(2) { animation-delay: 60ms; }
+body.legacy-post-list #post-list-container > .post-card-wrapper:nth-child(3) { animation-delay: 120ms; }
+body.legacy-post-list #post-list-container > .post-card-wrapper:nth-child(4) { animation-delay: 180ms; }
+
+body.legacy-post-list #post-list-container > .post-card-wrapper:hover {
+  transform: translateY(-4px);
+  border-color: rgba(205, 195, 255, .42) !important;
+  box-shadow: 0 30px 78px rgba(0, 0, 0, .36), 0 0 46px rgba(103, 79, 214, .13), inset 0 1px 0 rgba(255, 255, 255, .15) !important;
+}
+
+body.legacy-post-list #post-list-container > .post-card-wrapper::before {
+  display: none;
+}
+
+body.legacy-post-list #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image {
+  position: absolute !important;
+  inset: 1px auto 1px 1px !important;
+  z-index: 1;
+  width: 80% !important;
+  height: calc(100% - 2px) !important;
+  aspect-ratio: auto !important;
+  border: 0 !important;
+  border-radius: 21px 0 0 21px !important;
+}
+
+body.legacy-post-list #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 81px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 57%, rgba(0, 0, 0, .82) 100%);
+  backdrop-filter: saturate(180%) blur(2px);
+}
+
+body.legacy-post-list #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-image img {
+  filter: brightness(.58) !important;
+  transition: filter .6s ease, transform .3s ease;
+}
+
+body.legacy-post-list #post-list-container.list-mode .post-card-wrapper.has-cover:hover .post-card-image img {
+  filter: brightness(.68) !important;
+}
+
+body.legacy-post-list #post-list-container.list-mode .post-card-wrapper.has-cover .post-card-content {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3;
+  display: block !important;
+  width: 100% !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+body.legacy-post-list #post-list-container .post-card-title {
+  position: absolute !important;
+  left: 22% !important;
+  bottom: 6% !important;
+  z-index: 4;
+  display: block;
+  width: 70% !important;
+  max-width: 70% !important;
+  margin: 0 !important;
+  color: rgba(238, 238, 238, .9) !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  letter-spacing: 1px !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .7);
+  pointer-events: auto;
+}
+
+body.legacy-post-list #post-list-container > .post-card-wrapper:nth-child(even) .post-card-title {
+  left: 2% !important;
+}
+
+body.legacy-post-list #post-list-container .post-card-title::before {
+  display: none !important;
+}
+
+body.legacy-post-list #post-list-container .post-meta {
+  position: absolute !important;
+  top: 10px !important;
+  right: 2% !important;
+  z-index: 4;
+  display: flex !important;
+  max-width: 59% !important;
+  margin: 0 !important;
+  color: rgba(255, 255, 255, .8) !important;
+  font-size: .78rem;
+  pointer-events: auto;
+}
+
+body.legacy-post-list #post-list-container .post-card-content .description,
+body.legacy-post-list #post-list-container .post-card-bottom-tags,
+body.legacy-post-list #post-list-container .stats {
+  display: none !important;
+}
+
+body.legacy-post-list #post-list-container .post-card-image + .post-card-enter-btn,
+body.legacy-post-list #post-list-container .post-card-enter-btn {
+  z-index: 5;
+}
+
+@media (min-width: 861px) {
+  body.legacy-post-list #top-row {
+    width: 100% !important;
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  body.legacy-post-list #navbar-wrapper,
+  body.legacy-post-list #navbar {
+    width: 100% !important;
+    max-width: none !important;
+  }
+
+  body.legacy-post-list #navbar > div {
+    height: 70px;
+    padding-inline: 0;
+  }
+
+  body.legacy-post-list #navbar > div > div {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: min(820px, calc(100vw - 2rem));
+    max-width: none !important;
+    height: 45px;
+    margin: 12px auto 0;
+    padding: 5px;
+    border: 1px solid rgba(247, 247, 247, .18);
+    border-radius: 50px;
+    background: rgba(0, 0, 0, .58);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .24);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
+    animation: sakurairo-slide-in-bck-top 1.2s cubic-bezier(.25, .46, .45, .94) both;
+  }
+
+  body.legacy-post-list #navbar > div > div > a:first-child,
+  body.legacy-post-list #navbar > div > div > .navbar-controls,
+  body.legacy-post-list #navbar > div > div > .navbar-generic-menu {
+    display: none !important;
+  }
+
+  body.legacy-post-list #navbar > div > div > .legacy-home-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    width: 100%;
+    height: 35px;
+  }
+
+  body.legacy-post-list .legacy-home-menu a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 35px;
+    padding: 8px 12px;
+    color: rgba(238, 238, 238, .88);
+    border-radius: 50px;
+    font-size: 15px;
+    line-height: 19px;
+    white-space: nowrap;
+    transition: color .25s ease, background .25s ease, transform .25s ease;
+  }
+
+  body.legacy-post-list .legacy-home-menu a:hover,
+  body.legacy-post-list .legacy-home-menu a.legacy-home-active {
+    color: #fff;
+    background: rgba(152, 182, 255, .24);
+  }
+
+  body.legacy-post-list .legacy-home-menu a:active {
+    transform: scale(.96);
+  }
+}
+
+@media (max-width: 860px) {
+  body.legacy-post-list .legacy-home-menu {
+    display: none;
+  }
+
+  body.legacy-post-list #content-panel-inner {
+    width: calc(100% - 1rem) !important;
+  }
+
+  body.legacy-post-list #main-grid {
+    padding-inline: 8px !important;
+  }
+
+  body.legacy-post-list #post-list-container {
+    gap: 16px !important;
+  }
+
+  body.legacy-post-list #post-list-container > .post-card-wrapper {
+    flex-basis: 320px !important;
+    height: 320px !important;
+    min-height: 320px !important;
+    border-radius: 16px !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-card-image {
+    position: absolute !important;
+    inset: 1px 1px auto !important;
+    width: calc(100% - 2px) !important;
+    height: 73% !important;
+    max-height: none !important;
+    border-radius: 15px 15px 0 0 !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-card-content {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 3;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-card-title,
+  body.legacy-post-list #post-list-container > .post-card-wrapper:nth-child(even) .post-card-title {
+    left: 2% !important;
+    right: auto !important;
+    bottom: 20% !important;
+    width: 92% !important;
+    max-width: 92% !important;
+    font-size: 1rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-meta {
+    top: 46px !important;
+    left: 10px !important;
+    right: auto !important;
+    max-width: calc(100% - 20px) !important;
+  }
+}
+
+/* Phase 2B final precedence: semantic post-list markup owns the outer shell
+ * after the earlier compatibility rules have been loaded. */
+body.legacy-post-list #content-panel-inner {
+  width: min(860px, 100%) !important;
+  max-width: 860px !important;
+  margin-inline: auto !important;
+}
+
+body.legacy-post-list #main-grid {
+  display: block !important;
+  width: 100% !important;
+  padding-inline: 0 !important;
+}
+
+body.legacy-post-list #post-list-container {
+  display: block !important;
+  gap: 0 !important;
+}
+
+@media (max-width: 860px) {
+  body.legacy-post-list #content-panel-inner {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: 0 !important;
+  }
+
+  body.legacy-post-list #main-grid {
+    padding-inline: 0 !important;
+  }
+
+  body.legacy-post-list #post-list-container {
+    gap: 0 !important;
+  }
+}
+
+/* Keep the transition/list owners available to scripts without adding flow
+ * boxes between the Reference heading and its article cards. */
+body.legacy-post-list #swup-container,
+body.legacy-post-list #content-wrapper {
+  display: contents !important;
+  margin: 0 !important;
+}
+
+/* Keep a measurable, zero-flow list owner. The cards float out of this
+ * block just like the Reference articles, while the owner itself remains
+ * available to layout and diagnostics instead of collapsing to 0x0. */
+body.legacy-post-list #post-list-container {
+  display: block !important;
+  width: 100% !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-views,
+body.legacy-post-list #post-list-container .comments-number,
+body.legacy-post-list #post-list-container .meta-author {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+body.legacy-post-list .main-title {
+  height: 37px;
+  opacity: 1;
+  content-visibility: visible;
+}
+
+@keyframes legacy-post-list-reveal {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(80px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+body.legacy-post-list #post-list-container > .post-list-thumb.post-list-show {
+  animation: legacy-post-list-reveal .5s ease;
+  opacity: 1;
+  content-visibility: visible;
+}
+
+/* 旧主题对卡片本身的悬停位移和阴影是运行态契约；静态回归由
+ * tests/visual/stabilize.css 在测试上下文中冻结，不在正常页面禁用它。 */
+body.legacy-post-list #post-list-container > .post-list-thumb:hover {
+  transform: translateY(-0.35rem) !important;
+  box-shadow: 0 1px 20px 10px #e8e8e8 !important;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details {
+  display: contents !important;
+}
+
+body.legacy-post-list #post-list-container .post-date svg,
+body.legacy-post-list #post-list-container .post-date > i {
+  display: inline-block !important;
+  vertical-align: middle;
+}
+
+body.legacy-post-list #post-list-container .post-date {
+  min-width: 119.72px;
+}
+
+body.legacy-post-list #post-list-container .post-title h3 {
+  line-height: 27px;
+  letter-spacing: 1px;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt {
+  margin: 5px 0 0 !important;
+}
+
+@media (min-width: 861px) {
+  body.legacy-post-list #post-list-container .post-meta {
+    width: 56.465% !important;
+    max-width: 56.465% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+  body.legacy-post-list #post-list-container .post-meta {
+    width: 115.53px !important;
+    max-width: 115.53px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-excerpt {
+    left: 2%;
+  }
+}
+
+body.legacy-post-list #post-list-container .post-meta > span,
+body.legacy-post-list #post-list-container .legacy-meta-details > * {
+  display: inline-flex !important;
+  align-items: center;
+  height: 18px;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details .meta-icon {
+  display: inline-flex;
+  align-items: center;
+  width: 14px;
+  height: 18px;
+  margin-right: 4px;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details svg {
+  display: inline-block !important;
+  width: 12px;
+  height: 12px;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details > * > i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 5px;
+  color: rgba(255, 255, 255, .8);
+  font-size: 12px;
+  line-height: 12px;
+}
+
+/* The frozen markup keeps each metadata item as a normal block-level flex
+ * child. Keeping these items out of an inner flex context preserves the
+ * Font Awesome glyph's inline metrics and the reference's text advances. */
+body.legacy-post-list #post-list-container .post-meta > span,
+body.legacy-post-list #post-list-container .legacy-meta-details > * {
+  display: block !important;
+  align-items: initial;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details .meta-icon {
+  display: inline !important;
+  width: auto;
+  height: auto;
+  margin-right: 0;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-views svg,
+body.legacy-post-list #post-list-container .comments-number svg,
+body.legacy-post-list #post-list-container .legacy-meta-views > i,
+body.legacy-post-list #post-list-container .comments-number > i {
+  display: inline-block !important;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  vertical-align: -1px;
+}
+
+/* The slot wrapper is an Astro transport detail.  A flow-root with the
+ * frozen 40px/64px/80px contribution keeps it out of the paint while the
+ * legacy #pagination itself retains Sakurairo's inline-block contract. */
+body.legacy-post-list #legacy-pagination-slot {
+  display: flow-root;
+  clear: both;
+  height: 184px;
+  padding: 0;
+}
+
+body.legacy-post-list #pagination {
+  display: inline-block;
+  clear: none;
+  width: 100%;
+  box-sizing: border-box;
+  height: 64px !important;
+  margin: 40px 0 80px;
+  padding: 20px 0;
+  line-height: 24px;
+  text-align: center;
+  color: #ccc;
+}
+
+body.legacy-post-list #pagination a {
+  display: inline;
+  height: auto;
+  padding: 13px 35px;
+  border: 1px solid rgba(125, 125, 125, .19);
+  border-radius: 50px;
+  background: rgba(26, 26, 26, .6);
+  box-shadow: 0 1px 20px 2px rgba(26, 26, 26, .8);
+  color: #ccc;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+  body.legacy-post-list #post-list-container .post-thumb {
+    width: 80%;
+    height: 100%;
+  }
+
+  body.legacy-post-list #post-list-container .post-excerpt {
+    top: 3%;
+    right: auto;
+    bottom: auto;
+    left: 81%;
+    width: 18.5%;
+    max-height: 90%;
+    display: flex;
+    font-size: 15px;
+    line-height: 22.5px;
+  }
+
+  body.legacy-post-list #post-list-container .post-title,
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-title {
+    left: 2%;
+    right: auto;
+    bottom: 6%;
+    width: fit-content;
+    max-width: 70%;
+    font-size: 18px;
+  }
+
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-excerpt {
+    left: 1%;
+  }
+
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-date {
+    left: 21.3%;
+  }
+
+  body.legacy-post-list #post-list-container .post-meta,
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+    top: 10px !important;
+    right: 21.5% !important;
+    left: auto !important;
+    max-width: 32% !important;
+    max-height: 32% !important;
+    flex-direction: column !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+    right: 1.3% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.legacy-post-list #post-list-container .post-title {
+    background: rgba(51, 51, 51, .7) !important;
+    border: 1px solid rgba(125, 125, 125, .19) !important;
+    box-shadow: 0 1px 30px -4px rgb(26, 26, 26) !important;
+    backdrop-filter: saturate(180%) blur(10px) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(10px) !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-meta,
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+    max-width: 32% !important;
+    max-height: 32% !important;
+    width: 32% !important;
+    flex-direction: column !important;
+  }
+}
+
+@media (min-width: 861px) {
+  /* The compatibility layer above has an !important right: 2%; restore
+   * Sakurairo's alternating metadata anchors after it has loaded. */
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-meta {
+    right: 1.3% !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(even) .post-meta {
+    right: 21.5% !important;
+  }
+}
+
+/* Typography is part of the card geometry: match the live Reference title
+ * face before measuring wrapping or the following excerpt. */
+body.legacy-post-list #post-list-container .post-title {
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+body.legacy-post-list #post-list-container .post-title h3 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 27px !important;
+  letter-spacing: 1px !important;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip {
+  height: 20px !important;
+  line-height: 18px !important;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip svg {
+  display: inline-block !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin-right: 2px;
+  vertical-align: middle;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip > i {
+  display: inline-block !important;
+  width: 14px;
+  height: 13px;
+  margin-right: 5px;
+  color: #888;
+  font-size: 13px;
+  line-height: 13px;
+  vertical-align: middle;
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+  body.legacy-post-list #post-list-container .post-list-thumb:nth-child(odd) .post-title {
+    left: 22% !important;
+  }
+
+  body.legacy-post-list #post-list-container .post-excerpt,
+  body.legacy-post-list #post-list-container .post-excerpt p {
+    font-size: 14px !important;
+    line-height: 21px !important;
+  }
+}
+
+@media (min-width: 861px) {
+  body.legacy-post-list #post-list-container .post-title h3 {
+    letter-spacing: 2px !important;
+  }
+}
+
+/* Cover and card paint responsibilities from the Reference theme. */
+body.legacy-post-list #post-list-container .post-list-thumb {
+  overflow: visible !important;
+  color: #ccc !important;
+  text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+  box-shadow: 0 1px 35px -8px rgba(26, 26, 26, .58) !important;
+}
+
+body.legacy-post-list #post-list-container .post-thumb {
+  overflow: visible !important;
+}
+
+body.legacy-post-list #post-list-container .post-thumb > a {
+  position: relative;
+  overflow: hidden;
+}
+
+body.legacy-post-list #post-list-container .post-thumb img {
+  display: inline !important;
+  /* The Reference lazy-loader keeps the loaded cover sharp and only dims it. */
+  filter: brightness(.58) !important;
+}
+
+body.legacy-post-list #post-list-container .post-title h3 {
+  color: #bbb !important;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt,
+body.legacy-post-list #post-list-container .post-excerpt p {
+  color: #999 !important;
+}
+
+body.legacy-post-list #post-list-container .post-meta,
+body.legacy-post-list #post-list-container .post-date {
+  background: rgba(51, 51, 51, .376) !important;
+}
+
+body.legacy-post-list #post-list-container .post-meta {
+  font-size: 12px !important;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details .meta-icon,
+body.legacy-post-list #post-list-container .legacy-meta-details svg {
+  color: rgba(255, 255, 255, .8) !important;
+}
+
+body.legacy-post-list #pagination {
+  height: 64px !important;
+}
+
+/* Paint-only convergence for the first canonical legacy card. These rules
+ * mirror the frozen Sakurairo responsibility layers while keeping the card
+ * rectangles owned by the Phase 2B geometry block above. */
+/* The reference applies this backdrop on a viewport-wide page layer. The
+ * Astro content panel is the same layer owner; keeping the narrow content
+ * box transparent prevents the card's right-edge blur from sampling its
+ * border instead of the page backdrop. Cards stay above that paint layer. */
+body.legacy-post-list #content {
+  background: transparent !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+body.legacy-post-list #content::before,
+body.legacy-post-list #content::after {
+  display: table;
+  content: "";
+}
+
+body.legacy-post-list #content::after {
+  clear: both;
+}
+
+body.legacy-post-list #content-panel {
+  z-index: 1 !important;
+  background: rgba(51, 51, 51, .58) !important;
+  -webkit-backdrop-filter: saturate(120%) blur(8px) !important;
+  backdrop-filter: saturate(120%) blur(8px) !important;
+}
+
+/* Keep the fixed body image available to the content-panel glass layer. An
+ * opaque root background would hide the wallpaper before backdrop-filter can
+ * sample it once the homepage scrolls below the hero. */
+html:has(body.legacy-post-list):not(.is-page-scrolled) {
+	background-color: #333 !important;
+}
+
+html:has(body.legacy-post-list).is-page-scrolled {
+	background-color: transparent !important;
+}
+
+body.legacy-post-list {
+  background: transparent url('/assets/gallery/sakurairo-reference.jpg') repeat fixed center center / auto !important;
+}
+
+html[data-wallpaper-mode="fullscreen"] body.legacy-post-list #wallpaper-wrapper {
+  position: absolute !important;
+  z-index: 0 !important;
+}
+
+body.legacy-post-list #post-list-container > .post-list-thumb {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+body.legacy-post-list #post-list-container .post-thumb > a {
+  border: 0 none rgb(152, 182, 255) !important;
+  color: rgb(152, 182, 255) !important;
+  object-fit: fill !important;
+}
+
+body.legacy-post-list #post-list-container .post-thumb img {
+  border: 0 none rgb(152, 182, 255) !important;
+  color: rgb(152, 182, 255) !important;
+  vertical-align: baseline !important;
+}
+
+body.legacy-post-list #post-list-container .post-date {
+  overflow: visible !important;
+  will-change: backdrop-filter;
+}
+
+body.legacy-post-list #post-list-container .post-date > i.fa-regular,
+body.legacy-post-list #post-list-container .legacy-meta-views > i.fa-regular,
+body.legacy-post-list #post-list-container .comments-number > i.fa-regular {
+  display: inline-block !important;
+  width: auto;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: baseline;
+  line-height: 12px;
+}
+
+body.legacy-post-list #post-list-container .post-date > i.fa-clock {
+  width: 12px;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-views > i.fa-eye {
+  width: 13.5px;
+}
+
+body.legacy-post-list #post-list-container .comments-number > i.fa-comment {
+  width: 12px;
+}
+
+body.legacy-post-list #post-list-container .post-meta {
+  z-index: 3 !important;
+  will-change: backdrop-filter;
+}
+
+body.legacy-post-list #post-list-container .legacy-meta-details > * > i {
+  display: inline-block !important;
+  width: auto;
+  height: 12px;
+  margin-right: 5px;
+  vertical-align: baseline;
+  line-height: 12px;
+}
+
+body.legacy-post-list #post-list-container .meta-author img {
+  flex-shrink: 0;
+  width: 16px !important;
+  height: 16px !important;
+  display: inline !important;
+  border: 0 none !important;
+  border-radius: 100%;
+  box-shadow: rgb(51, 51, 51) 0 -1px 0 0 inset;
+  filter: brightness(.58);
+  vertical-align: baseline;
+  margin: 0 5px -3px 0;
+}
+
+/* The legacy spans carry a collapsed text node after the icon in the frozen
+ * HTML. Preserve that five-pixel advance while keeping the card's DOM owner. */
+body.legacy-post-list #post-list-container .post-meta > span:nth-child(3) > i,
+body.legacy-post-list #post-list-container .post-meta > span:nth-child(4) > i,
+body.legacy-post-list #post-list-container .post-meta > span:nth-child(5) > i {
+  margin-right: 5px !important;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt {
+  border: 0 none !important;
+}
+
+body.legacy-post-list #post-list-container .post-excerpt p {
+  border: 0 none !important;
+  position: relative;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip {
+  border: 0 none #888 !important;
+  color: #888 !important;
+  float: left;
+}
+
+body.legacy-post-list #post-list-container .ai-excerpt-tip > i {
+  border: 0 none #888 !important;
+  vertical-align: baseline !important;
+}
+
+@media (min-width: 768px) {
+  body.legacy-post-list #post-list-container .post-excerpt {
+    position: relative !important;
+    right: -1% !important;
+    bottom: 5% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 860px) {
+  body.legacy-post-list #post-list-container .post-excerpt {
+    bottom: 5.5% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  body.legacy-post-list #post-list-container.grid-mode .post-thumb::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  body.legacy-post-list #post-list-container.grid-mode .post-excerpt {
+    letter-spacing: normal !important;
+    flex-direction: row !important;
+  }
+
+  body.legacy-post-list #post-list-container.grid-mode .post-excerpt p {
+    display: block !important;
+    max-height: none !important;
+    height: 48px !important;
+    overflow: visible !important;
+  }
+
+  body.legacy-post-list #post-list-container.grid-mode .ai-excerpt-tip {
+    width: 42px !important;
+    margin-right: 10px !important;
+  }
+
+  body.legacy-post-list #post-list-container.grid-mode .ai-excerpt-tip > i {
+    width: 13px !important;
+  }
+}
+
+@media (max-width: 860px) {
+  body.legacy-post-list #post-list-container.grid-mode .post-meta {
+    gap: 4px 12px !important;
+    margin-bottom: 0 !important;
+  }
+}

@@ -1,0 +1,138 @@
+/* Phase 2C footer owner: mirrors the frozen Sakurairo #colophon contract. */
+.site-footer {
+	position: fixed;
+	bottom: -100%;
+	left: 0;
+	right: 0;
+	z-index: 99;
+	width: 90%;
+	max-width: 820px;
+	margin: 15px auto;
+	padding: 20px 0;
+	border-radius: 10px;
+	-webkit-backdrop-filter: saturate(180%) blur(10px);
+	backdrop-filter: saturate(180%) blur(10px);
+	will-change: backdrop-filter;
+	box-shadow: 0 -5px 15px rgba(0, 0, 0, .05);
+	transition: all 1s ease-in-out;
+}
+
+body.legacy-post-list #content-panel-inner > .site-footer {
+	width: 90%;
+	max-width: 820px;
+	margin: 15px auto;
+}
+
+.site-footer.show {
+	bottom: 0;
+	transition: opacity .6s ease-in-out, transform .6s ease-in-out,
+		background .6s ease-in-out, box-shadow .6s ease-in-out,
+		bottom .9s cubic-bezier(.22, .84, .46, 1.04);
+}
+
+.site-info {
+	margin: 0 auto;
+	padding: 0 20px;
+	font-size: 14px;
+}
+
+.img-preload {
+	display: none;
+}
+
+.footer-content {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 15px;
+}
+
+.hitokoto {
+	font-style: italic;
+}
+
+.site-footer p {
+	margin: 0;
+	color: rgba(0, 0, 0, .5);
+}
+
+.theme-info {
+	margin-top: 15px;
+	padding-top: 15px;
+	border-top: 1px solid rgba(0, 0, 0, .05);
+	text-align: center;
+}
+
+.theme-info a {
+	color: rgba(0, 0, 0, .3);
+}
+
+.sakura-icon {
+	display: block;
+	width: 30px;
+	height: 35px;
+	margin: 0 auto;
+}
+
+.sakura-svg {
+	display: block;
+	width: 30px;
+	height: 30px;
+}
+
+html.dark .site-footer,
+body.dark .site-footer {
+	background: rgba(30, 30, 30, .9);
+	box-shadow: 0 -5px 15px rgba(0, 0, 0, .2);
+}
+
+html.dark .site-footer a,
+body.dark .site-footer a {
+	color: #7d7d7d;
+}
+
+html.dark .site-footer p,
+body.dark .site-footer p {
+	color: #7d7d7d;
+}
+
+html.dark .theme-info,
+body.dark .theme-info {
+	border-top-color: rgba(255, 255, 255, .05);
+}
+
+html.dark .theme-info a,
+body.dark .theme-info a {
+	color: rgba(125, 125, 125, .9);
+}
+
+@media (max-width: 1080px) {
+	.footer-content {
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+@media (max-width: 860px) {
+	.site-footer {
+		padding: 15px 0;
+	}
+
+	.site-info {
+		padding: 0 15px;
+	}
+}
+
+/* The frozen homepage is already in Sakurairo's dark palette.  Astro's
+ * global dark theme would otherwise replace this translucent legacy surface
+ * with the newer opaque footer token. */
+body.legacy-post-list #colophon {
+	background: rgba(26, 26, 26, .58) !important;
+	border: 0 none !important;
+	color: #ccc !important;
+}
+
+body.legacy-post-list #colophon .site-info {
+	color: #ccc !important;
+}

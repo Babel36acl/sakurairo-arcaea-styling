@@ -1,0 +1,62 @@
+/* Legacy floating skin menu: keep the original fixed, translated lifecycle. */
+body.legacy-post-list .legacy-skin-menu {
+  position: fixed;
+  right: 50px;
+  bottom: 15px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: auto;
+  height: auto;
+  max-height: 85%;
+  padding: 16px 16px 0;
+  border-radius: 10px;
+  overflow-y: auto;
+  transform: translateY(100%);
+  transition: transform .35s ease-in-out;
+  text-align: center;
+  font: 300 19.2px/28.8px "Zen Old Mincho";
+  color: #ccc;
+}
+body.legacy-post-list .legacy-skin-menu.show { transform: translateY(0); }
+body.legacy-post-list .legacy-skin-menu * { box-sizing: border-box; }
+body.legacy-post-list .legacy-skin-menu .row-container {
+  display:flex; flex-direction:row-reverse; flex-grow:1;
+  height:auto; margin:0; padding:0; text-align:center;
+}
+body.legacy-post-list .legacy-skin-menu .row-container .menu-list,
+body.legacy-post-list .legacy-skin-menu .row-container.font-family-controls {
+  display:flex; flex-wrap:wrap; flex-direction:row; justify-content:space-between;
+  flex-grow:1; padding:5px; margin:5px; max-width:125px;
+  border:1.5px solid rgba(125,125,125,.19); border-radius:10px;
+  background:rgba(26,26,26,.58); box-shadow:0 1px 20px 2px rgba(26,26,26,.8);
+  list-style:none;
+}
+body.legacy-post-list .legacy-skin-menu .menu-list li {
+  display:inline-block; flex-grow:1; width:50px; margin:2.5px;
+  line-height:50px; border:1px solid rgba(125,125,125,.19); border-radius:10px;
+  background:rgba(26,26,26,.8); box-shadow:0 1px 20px 2px rgba(26,26,26,.8);
+}
+body.legacy-post-list .legacy-skin-menu .font-family-controls button {
+  flex-grow:1; min-width:50px; min-height:30px; padding:5px; margin:2.5px;
+  border:1px solid rgba(125,125,125,.19); border-radius:10px;
+  background:rgba(26,26,26,.8); box-shadow:0 1px 20px 2px rgba(26,26,26,.8);
+  color:#ccc; font:12px/12px "Noto Serif SC";
+}
+body.legacy-post-list .legacy-skin-menu .font-family-controls button.selected { border:3px solid #0f1117; box-shadow:none; }
+body.legacy-post-list .legacy-skin-menu .font-family-controls button.control-btn-sans-serif { font-family:"Noto Sans SC"; }
+body.legacy-post-list .legacy-skin-menu .fa-lg { font-size:1.25em; line-height:.05em; vertical-align:-.075em; }
+body.legacy-post-list .legacy-skin-menu .widget-area {
+  display:flex; padding:5px; margin:5px; min-width:255px; max-width:385px; max-height:700px;
+  border:1.5px solid rgba(125,125,125,.19); border-radius:10px; overflow:hidden;
+  background:rgba(26,26,26,.58); box-shadow:0 1px 20px 2px rgba(26,26,26,.8);
+}
+body.legacy-post-list .legacy-skin-menu .widget-area > * { flex:1; min-height:0; overflow-y:auto; }
+body.legacy-post-list .legacy-skin-menu .sakura_widget { height:calc(100% - 30px); max-width:385px; min-width:255px; }
+body.legacy-post-list .legacy-skin-menu h2 { margin:.83em 0; clear:both; font-size:1.5em; font-weight:700; line-height:1.5; border-bottom:1px solid #000; }
+body.legacy-post-list .legacy-skin-menu h2::before { display:block; content:" "; height:80px; margin-top:-80px; visibility:hidden; }
+body.legacy-post-list .legacy-skin-menu ul { margin:1em 0; padding:0; list-style:disc; }
+body.legacy-post-list .legacy-skin-menu .wp-block-latest-posts { list-style:none; }
+body.legacy-post-list .legacy-skin-menu a { color:#98b6ff; text-decoration:none; }
+@media (max-width:860px) { body.legacy-post-list .legacy-skin-menu .widget-area { display:none; } }

@@ -1,0 +1,19 @@
+/* ============================================================
+ * Babel Arcaea Code — Arcaea Light Theme Placeholder
+ * Only placeholder, dark theme is default.
+ * ============================================================ */
+
+html.legacy-article-root {
+  --bac-code-bg: rgba(255, 255, 255, 0.92);
+  --bac-code-border: rgba(200, 210, 230, 0.88);
+  --bac-code-text: #202a40;
+  --bac-code-muted: #555;
+  --bac-code-primary: #101c3c;
+  --bac-code-accent: #8ad8ff;
+}
+
+body.legacy-article pre[class*="language-"] {
+  color: var(--bac-code-text) !important;
+  background: var(--bac-code-bg) !important;
+  border: 1px solid var(--bac-code-border) !important;
+}

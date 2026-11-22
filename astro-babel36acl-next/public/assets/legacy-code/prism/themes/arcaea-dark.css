@@ -1,0 +1,151 @@
+/* ============================================================
+ * Babel Arcaea Code — Prism Arcaea Dark Theme
+ * Visual tokens aligned with sakurairo-arcaea-blog-skill.
+ * ============================================================ */
+
+html.legacy-article-root {
+    --bac-code-bg: rgba(8, 21, 42, 0.42);
+    --bac-code-border: rgba(230, 238, 255, 0.78);
+    --bac-code-text: rgba(238, 244, 255, 0.94);
+    --bac-code-muted: rgba(238, 244, 255, 0.65);
+    --bac-code-primary: rgba(238, 244, 255, 0.96);
+    --bac-code-accent: #9db4ff;
+    --bac-code-sky: #8ad8ff;
+    --bac-code-violet: #c7b6ff;
+    --bac-code-red: rgba(255, 130, 130, 0.78);
+    --bac-code-green: #b8f0d0;
+    --bac-code-yellow: #ffe6a8;
+    --bac-code-orange: #ffc28a;
+}
+
+body.legacy-article pre[class*="language-"] {
+    color: var(--bac-code-text) !important;
+    background: var(--bac-code-bg) !important;
+    border: 1px solid var(--bac-code-border) !important;
+}
+
+body.legacy-article code[class*="language-"],
+body.legacy-article pre[class*="language-"] code {
+    color: var(--bac-code-text) !important;
+}
+
+body.legacy-article :not(pre)>code[class*="language-"] {
+    color: var(--bac-code-primary) !important;
+    background: rgba(230, 238, 255, 0.10) !important;
+    border: 1px solid rgba(230, 238, 255, 0.16);
+}
+
+body.legacy-article .token.comment,
+body.legacy-article .token.prolog,
+body.legacy-article .token.doctype,
+body.legacy-article .token.cdata {
+    color: rgba(238, 244, 255, 0.48) !important;
+    font-style: italic;
+}
+
+body.legacy-article .token.punctuation,
+body.legacy-article .token.operator {
+    color: rgba(238, 244, 255, 0.76) !important;
+    background: transparent !important;
+}
+
+body.legacy-article .token.namespace {
+    opacity: 0.72;
+}
+
+body.legacy-article .token.property,
+body.legacy-article .token.tag,
+body.legacy-article .token.boolean,
+body.legacy-article .token.number,
+body.legacy-article .token.constant,
+body.legacy-article .token.symbol,
+body.legacy-article .token.deleted {
+    color: var(--bac-code-orange) !important;
+}
+
+body.legacy-article .token.selector,
+body.legacy-article .token.attr-name,
+body.legacy-article .token.string,
+body.legacy-article .token.char,
+body.legacy-article .token.builtin,
+body.legacy-article .token.inserted {
+    color: var(--bac-code-green) !important;
+}
+
+body.legacy-article .token.atrule,
+body.legacy-article .token.attr-value,
+body.legacy-article .token.keyword {
+    color: var(--bac-code-sky) !important;
+}
+
+body.legacy-article .token.function,
+body.legacy-article .token.class-name {
+    color: var(--bac-code-violet) !important;
+}
+
+body.legacy-article .token.regex,
+body.legacy-article .token.important,
+body.legacy-article .token.variable {
+    color: var(--bac-code-yellow) !important;
+}
+
+body.legacy-article .token.entity,
+body.legacy-article .token.url {
+    color: var(--bac-code-accent) !important;
+    background: transparent !important;
+}
+
+body.legacy-article .token.bold,
+body.legacy-article .token.important {
+    font-weight: 700;
+}
+
+body.legacy-article .token.italic {
+    font-style: italic;
+}
+
+body.legacy-article .line-numbers .line-numbers-rows {
+    border-right-color: rgba(230, 238, 255, 0.20) !important;
+}
+
+body.legacy-article .line-numbers-rows>span::before {
+    color: rgba(238, 244, 255, 0.38) !important;
+}
+
+body.legacy-article div.code-toolbar>.toolbar button,
+body.legacy-article div.code-toolbar>.toolbar a,
+body.legacy-article div.code-toolbar>.toolbar>.toolbar-item>span {
+    color: rgba(238, 244, 255, 0.84) !important;
+    background: rgba(8, 12, 20, 0.72) !important;
+    border: 1px solid rgba(230, 238, 255, 0.18) !important;
+}
+
+body.legacy-article div.code-toolbar>.toolbar button:hover,
+body.legacy-article div.code-toolbar>.toolbar a:hover,
+body.legacy-article div.code-toolbar>.toolbar>.toolbar-item>span:hover {
+    color: rgba(238, 244, 255, 0.96) !important;
+    background: rgba(139, 167, 255, 0.16) !important;
+    border-color: rgba(138, 216, 255, 0.58) !important;
+}
+
+body.legacy-article pre[class*="language-"] .line-highlight {
+    background: linear-gradient(90deg, rgba(138, 216, 255, 0.13), rgba(157, 180, 255, 0.06)) !important;
+    box-shadow: inset 3px 0 0 rgba(138, 216, 255, 0.55);
+}
+
+body.legacy-article .command-line-prompt {
+    border-right-color: rgba(230, 238, 255, 0.20) !important;
+    color: rgba(138, 216, 255, 0.72) !important;
+}
+
+body.legacy-article pre[class*="language-"]::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+body.legacy-article pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background-color: rgba(138, 216, 255, 0.38);
+}
+
+body.legacy-article pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(138, 216, 255, 0.58);
+}

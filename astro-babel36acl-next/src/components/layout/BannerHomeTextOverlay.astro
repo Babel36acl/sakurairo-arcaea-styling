@@ -1,0 +1,336 @@
+---
+import { Icon } from "astro-icon/components";
+import TypewriterText from "@/components/features/TypewriterText.astro";
+import { backgroundWallpaper } from "@/config";
+import { encodeMailto, MAILTO_ONCLICK_SCRIPT } from "@/utils/email-utils";
+
+interface Props {
+	showHomeText: boolean;
+	initialRandomSubtitle: string | undefined;
+}
+
+const { showHomeText, initialRandomSubtitle } = Astro.props;
+const homeText = backgroundWallpaper.common?.homeText;
+const homeTextLinks = homeText?.links;
+const homeTextLinksEnable = homeText?.linksEnable !== false;
+const legacyFooterSubtitle = "風の音を探しています... 目を閉じれば、音が色になる。";
+
+// 首页保留旧 WordPress 主题的三个圆形社交入口；链接沿用旧站公开配置。
+const legacySocialLinks = [
+    {
+        name: "bilibili",
+        href: "https://space.bilibili.com/25746729",
+        src: "/assets/social/bilibili.webp",
+    },
+    {
+        name: "github",
+        href: "https://github.com/AKCX2002",
+        src: "/assets/social/github.webp",
+    },
+    {
+        name: "E-mail",
+        href: "mailto:chuixin-life@outlook.com",
+        src: "/assets/social/mail.webp",
+    },
+] as const;
+---
+{homeText?.enable && (
+    <div class={`banner-home-text-overlay absolute inset-0 z-20 ${!showHomeText ? 'hidden' : ''}`}>
+        <figure id="centerbg" class="centerbg">
+            <div class="focusinfo">
+                <div class="sakurairo-home-copy text-center">
+                    <div class="flex flex-col">
+                        <p class="arcaea-home-label">Babel36acl <span aria-hidden="true"> / </span> 记录 · 共鸣 · 碎片</p>
+                        {homeText.title && (
+                            <h1 class="banner-title center-text glitch is-glitching Ubuntu-font" data-text={homeText.title} style={{ '--banner-title-size': homeText.titleSize || "3rem" }}>
+                                {homeText.title}
+                            </h1>
+                        )}
+                        {homeText.subtitle && (
+                            <div class="banner-home-info header-info text-white/90">
+                                <i class="fa-solid fa-quote-left" aria-hidden="true"></i>
+                                {homeText.typewriter?.enable ? (
+                                    <TypewriterText
+                                        text={homeText.subtitle}
+                                        speed={homeText.typewriter.speed}
+                                        deleteSpeed={homeText.typewriter.deleteSpeed}
+                                        pauseTime={homeText.typewriter.pauseTime}
+                                        startDelay={homeText.typewriter.startDelay}
+                                        cursorChar={homeText.typewriter.cursorChar}
+                                        class="element legacy-typed-element"
+                                        style="text-align: center; max-width: 70%;"
+                                    />
+                                ) : (
+                                    <span class="element" style="text-align: center; max-width: 70%;">
+                                        {initialRandomSubtitle}
+                                    </span>
+                                )}
+                                <i class="fa-solid fa-quote-right" aria-hidden="true"></i>
+                                <span class="element" aria-hidden="true"></span>
+                                <p class="banner-subtitle">
+                                    <span id="banner-subtitle" data-subtitles={JSON.stringify(homeText.subtitle)}>{legacyFooterSubtitle}</span>
+                                </p>
+                            </div>
+                        )}
+                        <div class="banner-social top-social" aria-label="社交链接">
+                    {legacySocialLinks.map((link) => {
+                        const isMailto = link.href.startsWith("mailto:");
+                        const encodedEmail = isMailto ? encodeMailto(link.href) : undefined;
+                        const isExternal = link.href.startsWith("http");
+                        return (
+                            <a
+                                href={isMailto ? "#" : link.href}
+                                aria-label={link.name}
+                                title={link.name}
+                                data-encoded-email={encodedEmail}
+                                target={!isMailto && isExternal ? "_blank" : undefined}
+                                rel={!isMailto && isExternal ? "noopener" : undefined}
+                                onclick={isMailto ? MAILTO_ONCLICK_SCRIPT : undefined}
+                            >
+                                <img src={link.src} alt={link.name} loading="eager" />
+                            </a>
+                        );
+                    })}
+                        </div>
+                {/* 横幅标题下方的链接图标（subtitle 的兄弟节点，避免被打字机/随机副标题的 textContent 覆盖清掉） */}
+                        {homeTextLinksEnable && homeTextLinks && homeTextLinks.length > 0 && (
+                            <div class="banner-links mt-5 flex items-center justify-center gap-3 pointer-events-auto">
+                        {homeTextLinks.map((link) => {
+                            // mailto 链接做 base64 加密防爬虫（点击时才解码导航，与 Profile 一致）
+                            const isMailto = link.url.startsWith("mailto:");
+                            const encodedEmail = isMailto
+                                ? encodeMailto(link.url)
+                                : undefined;
+                            const isExternal = link.url.startsWith("http");
+                            return (
+                                <a
+                                    href={isMailto ? "#" : link.url}
+                                    aria-label={link.name}
+                                    title={link.name}
+                                    data-encoded-email={encodedEmail}
+                                    target={!isMailto && isExternal ? "_blank" : undefined}
+                                    rel={!isMailto && isExternal ? "noopener" : undefined}
+                                    class={link.showName ? "banner-link banner-link-text" : "banner-link"}
+                                    style="color: #fff"
+                                    onclick={isMailto ? MAILTO_ONCLICK_SCRIPT : undefined}
+                                >
+                                    {/* 内联 fill: currentColor，避免 CSS 加载前 SVG 默认黑色图标闪现 */}
+                                    <Icon name={link.icon} class="text-[1.25rem]" style="fill: currentColor" />
+                                    {link.showName && <span>{link.name}</span>}
+                                </a>
+                            );
+                        })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </figure>
+    </div>
+)}
+
+<style is:global>
+    /* The reference renders the hero copy inside a viewport-sized centerbg/focusinfo pair. */
+    body.is-home .banner-home-text-overlay {
+        display: block;
+        padding: 0 !important;
+        pointer-events: none;
+        /* Sakurairo dark mode applies brightness to the complete first-screen
+         * container. Keep the image and hero copy under the same compositor
+         * treatment instead of approximating it with a color overlay. */
+        backdrop-filter: brightness(.58);
+        -webkit-backdrop-filter: brightness(.58);
+    }
+
+    body.is-home .banner-home-text-overlay .centerbg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        pointer-events: none;
+    }
+
+    /* Match the reference fixed, intrinsic-size gallery crop on the homepage. */
+    body.is-home #banner-images-container {
+        overflow: hidden;
+    }
+
+    body.is-home #banner-images-container img {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: 4096px !important;
+        height: 2088px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: fill !important;
+        transform: translate(-50%, -50%) !important;
+    }
+
+    html[data-wallpaper-mode="fullscreen"] body.is-home #banner-images-container img {
+        width: 4096px !important;
+        height: 2088px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: fill !important;
+    }
+
+  body.is-home #banner-images-container img {
+    filter: none !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+    body.is-home #banner-dim-container .banner-dim-overlay {
+        background: transparent !important;
+    }
+
+    body.is-home .banner-home-text-overlay .focusinfo {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        width: min(800px, 100%);
+        max-width: 800px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: center;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        pointer-events: none;
+    }
+
+    body.is-home .banner-home-text-overlay .sakurairo-home-copy {
+        width: 100%;
+        max-width: none;
+        pointer-events: auto;
+    }
+
+    body.is-home .banner-home-text-overlay .center-text {
+        width: 100%;
+        margin: 0 !important;
+        color: #d8e6ff !important;
+        font-family: "Zen Old Mincho" !important;
+        font-size: 80px !important;
+        font-weight: 300 !important;
+        line-height: 120px !important;
+        letter-spacing: 0 !important;
+        text-wrap: wrap;
+    }
+
+    body.is-home .banner-home-text-overlay .banner-home-info.header-info {
+        box-sizing: content-box;
+        width: 65%;
+        max-width: calc(100% - 32px);
+        margin: 22px auto 0;
+        padding: 15px;
+        font-family: "Zen Old Mincho" !important;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 30px;
+        white-space: nowrap;
+        border: 1px solid rgba(51, 51, 51, .7);
+        backdrop-filter: saturate(180%) blur(10px);
+        -webkit-backdrop-filter: saturate(180%) blur(10px);
+        text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+    }
+
+    body.is-home .banner-home-text-overlay .banner-home-info .banner-subtitle {
+        margin: 0;
+        font-family: "Zen Old Mincho" !important;
+        font-size: 16px !important;
+        line-height: 30px !important;
+        text-shadow: 0 0 1px rgba(0, 0, 0, .1) !important;
+    }
+
+    body.is-home .banner-home-text-overlay .banner-social.top-social {
+        pointer-events: auto;
+        text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+    }
+
+    @media (max-width: 860px) {
+        body.is-home .banner-home-text-overlay .focusinfo {
+            top: 45%;
+            width: 100%;
+            max-width: none;
+        }
+
+        body.is-home .banner-home-text-overlay .center-text {
+            width: 100%;
+            font-size: 80px !important;
+            line-height: 120px !important;
+        }
+
+        body.is-home .banner-home-text-overlay .banner-home-info.header-info {
+            width: 65%;
+            max-width: none;
+            padding: 15px;
+            font-size: 15px;
+            line-height: 25px;
+            white-space: normal;
+            border: 1px solid rgba(51, 51, 51, .7);
+            backdrop-filter: saturate(180%) blur(10px);
+            -webkit-backdrop-filter: saturate(180%) blur(10px);
+            text-shadow: 0 0 1px rgba(0, 0, 0, .1);
+        }
+
+        body.is-home .banner-home-text-overlay .banner-home-info .banner-subtitle {
+            font-size: 15px !important;
+            line-height: 25px !important;
+            white-space: nowrap;
+            text-shadow: 0 0 1px rgba(0, 0, 0, .1) !important;
+        }
+    }
+</style>
+
+<script is:inline>
+    function setRandomSubtitle() {
+        const subtitleElement = document.getElementById('banner-subtitle');
+        if (!subtitleElement) return;
+
+    const subtitlesData = subtitleElement.dataset.subtitles;
+    if (!subtitlesData) return;
+		if (window.__VISUAL_TEST__) {
+			subtitleElement.textContent = '風の音を探しています... 目を閉じれば、音が色になる。';
+			return;
+		}
+
+        try {
+            const subtitles = JSON.parse(subtitlesData);
+            // Only randomize if it's an array and typewriter is NOT enabled (check for typewriter class)
+            if (Array.isArray(subtitles) && subtitles.length > 0 && !subtitleElement.querySelector('.typewriter')) {
+                // Use a global variable to persist the subtitle across Swup navigations
+                // This variable will be reset on full page reload (F5), meeting the requirement
+                if (!window.fireflyCachedSubtitle) {
+                    const randomIndex = Math.floor(Math.random() * subtitles.length);
+                    window.fireflyCachedSubtitle = subtitles[randomIndex];
+                }
+                subtitleElement.textContent = window.fireflyCachedSubtitle;
+            }
+        } catch (e) {
+            console.error("Failed to parse subtitles", e);
+        }
+    }
+
+    // Run on initial load
+    setRandomSubtitle();
+
+    // Fullscreen 壁纸层位于页面负层，浏览器不会把指针命中交给其中的标题；
+    // 用全局坐标保持与旧站 hover 区域相同，避免改动壁纸堆叠顺序。
+    if (!window.__legacyGlitchPointerInit) {
+        window.__legacyGlitchPointerInit = true;
+        const syncLegacyGlitchPointer = (event) => {
+            document.querySelectorAll('.banner-title.center-text.glitch').forEach((element) => {
+                const rect = element.getBoundingClientRect();
+                const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+                element.classList.toggle('is-pointer-hover', inside);
+            });
+        };
+        document.addEventListener('pointermove', syncLegacyGlitchPointer, { passive: true });
+        document.addEventListener('pointerleave', () => {
+            document.querySelectorAll('.banner-title.center-text.glitch.is-pointer-hover').forEach((element) => element.classList.remove('is-pointer-hover'));
+        }, { passive: true });
+    }
+</script>

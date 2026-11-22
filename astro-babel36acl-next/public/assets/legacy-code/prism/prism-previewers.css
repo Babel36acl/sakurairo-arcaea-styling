@@ -1,0 +1,243 @@
+body.legacy-article .prism-previewer,
+body.legacy-article .prism-previewer:before,
+body.legacy-article .prism-previewer:after {
+	position: absolute;
+	pointer-events: none;
+}
+body.legacy-article .prism-previewer,
+body.legacy-article .prism-previewer:after {
+	left: 50%;
+}
+body.legacy-article .prism-previewer {
+	margin-top: -48px;
+	width: 32px;
+	height: 32px;
+	margin-left: -16px;
+	z-index: 10;
+
+	opacity: 0;
+	-webkit-transition: opacity .25s;
+	-o-transition: opacity .25s;
+	transition: opacity .25s;
+}
+body.legacy-article .prism-previewer.flipped {
+	margin-top: 0;
+	margin-bottom: -48px;
+}
+body.legacy-article .prism-previewer:before,
+body.legacy-article .prism-previewer:after {
+	content: '';
+	position: absolute;
+	pointer-events: none;
+}
+body.legacy-article .prism-previewer:before {
+	top: -5px;
+	right: -5px;
+	left: -5px;
+	bottom: -5px;
+	border-radius: 10px;
+	border: 5px solid #fff;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5) inset, 0 0 10px rgba(0, 0, 0, 0.75);
+}
+body.legacy-article .prism-previewer:after {
+	top: 100%;
+	width: 0;
+	height: 0;
+	margin: 5px 0 0 -7px;
+	border: 7px solid transparent;
+	border-color: rgba(255, 0, 0, 0);
+	border-top-color: #fff;
+}
+body.legacy-article .prism-previewer.flipped:after {
+	top: auto;
+	bottom: 100%;
+	margin-top: 0;
+	margin-bottom: 5px;
+	border-top-color: rgba(255, 0, 0, 0);
+	border-bottom-color: #fff;
+}
+body.legacy-article .prism-previewer.active {
+	opacity: 1;
+}
+
+body.legacy-article .prism-previewer-angle:before {
+	border-radius: 50%;
+	background: #fff;
+}
+body.legacy-article .prism-previewer-angle:after {
+	margin-top: 4px;
+}
+body.legacy-article .prism-previewer-angle svg {
+	width: 32px;
+	height: 32px;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+body.legacy-article .prism-previewer-angle[data-negative] svg {
+	-webkit-transform: scaleX(-1) rotate(-90deg);
+	-moz-transform: scaleX(-1) rotate(-90deg);
+	-ms-transform: scaleX(-1) rotate(-90deg);
+	-o-transform: scaleX(-1) rotate(-90deg);
+	transform: scaleX(-1) rotate(-90deg);
+}
+body.legacy-article .prism-previewer-angle circle {
+	fill: transparent;
+	stroke: hsl(200, 10%, 20%);
+	stroke-opacity: 0.9;
+	stroke-width: 32;
+	stroke-dasharray: 0, 500;
+}
+
+body.legacy-article .prism-previewer-gradient {
+	background-image: linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb), linear-gradient(45deg, #bbb 25%, #eee 25%, #eee 75%, #bbb 75%, #bbb);
+	background-size: 10px 10px;
+	background-position: 0 0, 5px 5px;
+
+	width: 64px;
+	margin-left: -32px;
+}
+body.legacy-article .prism-previewer-gradient:before {
+	content: none;
+}
+body.legacy-article .prism-previewer-gradient div {
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	right: -5px;
+	bottom: -5px;
+	border-radius: 10px;
+	border: 5px solid #fff;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.5) inset, 0 0 10px rgba(0, 0, 0, 0.75);
+}
+
+body.legacy-article .prism-previewer-color {
+	background-image: linear-gradient(45deg, #bbb 25%, transparent 25%, transparent 75%, #bbb 75%, #bbb), linear-gradient(45deg, #bbb 25%, #eee 25%, #eee 75%, #bbb 75%, #bbb);
+	background-size: 10px 10px;
+	background-position: 0 0, 5px 5px;
+}
+body.legacy-article .prism-previewer-color:before {
+	background-color: inherit;
+	background-clip: padding-box;
+}
+
+body.legacy-article .prism-previewer-easing {
+	margin-top: -76px;
+	margin-left: -30px;
+	width: 60px;
+	height: 60px;
+	background: #333;
+}
+body.legacy-article .prism-previewer-easing.flipped {
+	margin-bottom: -116px;
+}
+body.legacy-article .prism-previewer-easing svg {
+	width: 60px;
+	height: 60px;
+}
+body.legacy-article .prism-previewer-easing circle {
+	fill: hsl(200, 10%, 20%);
+	stroke: white;
+}
+body.legacy-article .prism-previewer-easing path {
+	fill: none;
+	stroke: white;
+	stroke-linecap: round;
+	stroke-width: 4;
+}
+body.legacy-article .prism-previewer-easing line {
+	stroke: white;
+	stroke-opacity: 0.5;
+	stroke-width: 2;
+}
+
+@-webkit-keyframes legacy-article-prism-previewer-time {
+	0% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 100, 500;
+		stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: -100;
+	}
+}
+
+@-o-keyframes legacy-article-prism-previewer-time {
+	0% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 100, 500;
+		stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: -100;
+	}
+}
+
+@-moz-keyframes legacy-article-prism-previewer-time {
+	0% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 100, 500;
+		stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: -100;
+	}
+}
+
+@keyframes legacy-article-prism-previewer-time {
+	0% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 100, 500;
+		stroke-dashoffset: 0;
+	}
+	100% {
+		stroke-dasharray: 0, 500;
+		stroke-dashoffset: -100;
+	}
+}
+
+body.legacy-article .prism-previewer-time:before {
+	border-radius: 50%;
+	background: #fff;
+}
+body.legacy-article .prism-previewer-time:after {
+	margin-top: 4px;
+}
+body.legacy-article .prism-previewer-time svg {
+	width: 32px;
+	height: 32px;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+body.legacy-article .prism-previewer-time circle {
+	fill: transparent;
+	stroke: hsl(200, 10%, 20%);
+	stroke-opacity: 0.9;
+	stroke-width: 32;
+	stroke-dasharray: 0, 500;
+	stroke-dashoffset: 0;
+	-webkit-animation: legacy-article-prism-previewer-time linear infinite 3s;
+	-moz-animation: prism-previewer-time linear infinite 3s;
+	-o-animation: prism-previewer-time linear infinite 3s;
+	animation: legacy-article-prism-previewer-time linear infinite 3s;
+}

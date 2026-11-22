@@ -1,0 +1,1319 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/pages/common.css";
+
+const title = "STM32 TIM 计算器";
+const description =
+	"输入定时器时钟、PSC、ARR、CCR，实时计算更新频率、周期、分辨率与 PWM 占空比，并按目标频率反算 PSC / ARR / CCR。";
+---
+
+<MainGridLayout title={title} description={description}>
+  <stm32-tim-calc class="stm32-tim">
+    <div class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32">
+      <div class="card-base tim-card z-10 px-9 py-6 relative w-full">
+        <div class="mb-4">
+          <div class="page-heading">
+            <div class="page-icon" aria-hidden="true">
+              <Icon name="material-symbols:calculate" />
+            </div>
+            <div>
+              <h2>{title}</h2>
+              <p>{description}</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="tim-lead">
+          所有计算都在浏览器本地完成，不发送任何网络请求。边沿对齐
+          <code class="font-mono">fU = fCK / ((PSC+1) × (ARR+1))</code>，中心对齐
+          <code class="font-mono">fU = fCK / ((PSC+1) × 2 × ARR)</code>；占空比在边沿对齐为
+          <code class="font-mono">CCR / (ARR+1)</code>，中心对齐为
+          <code class="font-mono">CCR / ARR</code>。
+        </p>
+
+        <section class="tim-section" aria-labelledby="tim-params-title">
+          <div class="tim-section__head">
+            <Icon name="material-symbols:tune" class="text-(--primary) text-xl" />
+            <h3 class="tim-section__title text-90" id="tim-params-title">时钟与计数参数</h3>
+          </div>
+
+          <div class="tim-grid">
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-preset">时钟预设</label>
+              <select class="tim-select" id="tim-preset" data-preset>
+                <option value="">自定义</option>
+                <option value="72">STM32F1 · 72 MHz</option>
+                <option value="48">STM32F0 · 48 MHz</option>
+                <option value="72">STM32F3 · 72 MHz</option>
+                <option value="84">STM32F4 · 84 MHz</option>
+                <option value="168">STM32F4 · 168 MHz</option>
+                <option value="216">STM32F7 · 216 MHz</option>
+                <option value="64">STM32G0 · 64 MHz</option>
+                <option value="170">STM32G4 · 170 MHz</option>
+                <option value="240">STM32H7 · 240 MHz</option>
+              </select>
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-fck">
+                定时器时钟 fCK <span class="tim-field__unit">MHz</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-fck"
+                data-fck
+                type="number"
+                inputmode="decimal"
+                min="1"
+                max="600"
+                step="0.001"
+                value="72"
+              />
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-mode">计数模式</label>
+              <select class="tim-select" id="tim-mode" data-mode>
+                <option value="edge" selected>边沿对齐（UP）</option>
+                <option value="center">中心对齐（CENTERALIGNED1）</option>
+              </select>
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-width">计数器位宽</label>
+              <select class="tim-select" id="tim-width" data-width>
+                <option value="16" selected>16 位（ARR ≤ 65535）</option>
+                <option value="32">32 位（TIM2 / TIM5）</option>
+              </select>
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-psc">
+                预分频 PSC <span class="tim-field__unit">0–65535</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-psc"
+                data-psc
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="65535"
+                step="1"
+                value="71"
+              />
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-arr">
+                自动重装 ARR <span class="tim-field__unit">0–65535</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-arr"
+                data-arr
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="65535"
+                step="1"
+                value="999"
+              />
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-ccr">
+                比较值 CCR <span class="tim-field__unit">0–ARR</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-ccr"
+                data-ccr
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="999"
+                step="1"
+                value="500"
+              />
+            </div>
+
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-duty">
+                目标占空比 <span class="tim-field__unit">%</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-duty"
+                data-duty
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="100"
+                step="0.1"
+                value="50"
+              />
+            </div>
+          </div>
+
+          <p class="tim-hint">
+            输入框里填的是寄存器值：硬件实际分频为 PSC+1，计数上限为 ARR+1。超出范围会即时夹紧并给出提示。
+            PSC、ARR、CCR 与占空比互相联动，最后编辑的那一项作为换算基准。
+          </p>
+        </section>
+
+        <div class="tim-warn" data-warn-box role="status" aria-live="polite" hidden>
+          <div class="tim-warn__title text-90">
+            <Icon name="material-symbols:warning-rounded" class="text-(--admonitions-color-warning) text-base" />
+            <span>参数提示</span>
+            <span class="tim-warn__count" data-warn-count></span>
+          </div>
+          <ul class="tim-warn__list text-75" data-warnings></ul>
+        </div>
+
+        <section class="tim-section" aria-labelledby="tim-result-title">
+          <div class="tim-section__head">
+            <Icon name="material-symbols:speed" class="text-(--primary) text-xl" />
+            <h3 class="tim-section__title text-90" id="tim-result-title">实时结果</h3>
+          </div>
+
+          <dl class="tim-results" data-results aria-live="polite">
+            <div class="tim-result">
+              <dt>更新频率 fU</dt>
+              <dd data-out="fu">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>更新周期 T</dt>
+              <dd data-out="period">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>计数周期 tTick</dt>
+              <dd data-out="tick">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>计数周期数 N</dt>
+              <dd data-out="counts">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>分辨率（log2 N）</dt>
+              <dd data-out="bits">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>占空比（CCR / N）</dt>
+              <dd data-out="duty">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>占空比对应 CCR</dt>
+              <dd data-out="ccr">—</dd>
+            </div>
+            <div class="tim-result">
+              <dt>占空比误差</dt>
+              <dd data-out="duty-error">—</dd>
+            </div>
+          </dl>
+
+          <p class="tim-hint">
+            边沿对齐时 N = ARR+1，中心对齐时 N = 2×ARR（ARR ≥ 1）。占空比误差用百分点（pp）表示，
+            是实际占空比与目标占空比的差值。
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <div class="flex w-full rounded-(--radius-large) overflow-hidden relative mt-4">
+      <div class="card-base tim-card z-10 px-9 py-6 relative w-full">
+        <section class="tim-section" aria-labelledby="tim-solver-title">
+          <div class="tim-section__head">
+            <Icon name="material-symbols:swap-horiz" class="text-(--primary) text-xl" />
+            <h3 class="tim-section__title text-90" id="tim-solver-title">反算：目标频率 → PSC / ARR</h3>
+          </div>
+
+          <div class="tim-grid">
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-target-fu">
+                目标更新频率 <span class="tim-field__unit">Hz</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-target-fu"
+                data-target-fu
+                type="number"
+                inputmode="decimal"
+                min="0.001"
+                step="any"
+                value="1000"
+              />
+            </div>
+            <div class="tim-field">
+              <label class="tim-field__label text-90" for="tim-target-duty">
+                目标占空比 <span class="tim-field__unit">%</span>
+              </label>
+              <input
+                class="tim-input"
+                id="tim-target-duty"
+                data-target-duty
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="100"
+                step="0.1"
+                value="50"
+              />
+            </div>
+          </div>
+
+          <p class="tim-hint">
+            对候选 ARR 逐个求 PSC = round(fCK / (fU × N) − 1)，跳过 PSC 越界的组合，按频率误差排序；
+            误差相同时优先更大的 ARR（更高分辨率）。候选集合包含 PSC 落在 0 附近的解析解及其 ±2 邻域、
+            2ⁿ−1（n = 4…16）系列，单次最多尝试 4096 组。
+          </p>
+
+          <p class="tim-solve-note text-90" data-out="solve-note" aria-live="polite">—</p>
+
+          <div class="tim-table-wrap">
+            <table class="tim-table">
+              <caption class="sr-only">反算推荐的 PSC、ARR、CCR 与备选方案</caption>
+              <thead>
+                <tr>
+                  <th scope="col">方案</th>
+                  <th scope="col">PSC</th>
+                  <th scope="col">ARR</th>
+                  <th scope="col">CCR</th>
+                  <th scope="col">实际 fU</th>
+                  <th scope="col">频率误差</th>
+                  <th scope="col">占空比</th>
+                  <th scope="col">分辨率</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-solution="0">
+                  <th scope="row">推荐</th>
+                  <td data-cell="psc">—</td>
+                  <td data-cell="arr">—</td>
+                  <td data-cell="ccr">—</td>
+                  <td data-cell="fu">—</td>
+                  <td data-cell="error">—</td>
+                  <td data-cell="duty">—</td>
+                  <td data-cell="bits">—</td>
+                </tr>
+                <tr data-solution="1">
+                  <th scope="row">备选 1</th>
+                  <td data-cell="psc">—</td>
+                  <td data-cell="arr">—</td>
+                  <td data-cell="ccr">—</td>
+                  <td data-cell="fu">—</td>
+                  <td data-cell="error">—</td>
+                  <td data-cell="duty">—</td>
+                  <td data-cell="bits">—</td>
+                </tr>
+                <tr data-solution="2">
+                  <th scope="row">备选 2</th>
+                  <td data-cell="psc">—</td>
+                  <td data-cell="arr">—</td>
+                  <td data-cell="ccr">—</td>
+                  <td data-cell="fu">—</td>
+                  <td data-cell="error">—</td>
+                  <td data-cell="duty">—</td>
+                  <td data-cell="bits">—</td>
+                </tr>
+                <tr data-solution="3">
+                  <th scope="row">备选 3</th>
+                  <td data-cell="psc">—</td>
+                  <td data-cell="arr">—</td>
+                  <td data-cell="ccr">—</td>
+                  <td data-cell="fu">—</td>
+                  <td data-cell="error">—</td>
+                  <td data-cell="duty">—</td>
+                  <td data-cell="bits">—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="flex w-full rounded-(--radius-large) overflow-hidden relative mt-4">
+      <div class="card-base tim-card z-10 px-9 py-6 relative w-full">
+        <section class="tim-section" aria-labelledby="tim-quick-title">
+          <div class="tim-section__head">
+            <Icon name="material-symbols:bolt" class="text-(--primary) text-xl" />
+            <h3 class="tim-section__title text-90" id="tim-quick-title">常用值速查</h3>
+          </div>
+
+          <dl class="tim-quick">
+            <div class="tim-quick__item">
+              <dt>1 µs 时基</dt>
+              <dd data-out="q-tick">—</dd>
+            </div>
+            <div class="tim-quick__item">
+              <dt>1 ms 定时</dt>
+              <dd data-out="q-ms">—</dd>
+            </div>
+            <div class="tim-quick__item">
+              <dt>最大周期</dt>
+              <dd data-out="q-max">—</dd>
+            </div>
+            <div class="tim-quick__item">
+              <dt>最小周期</dt>
+              <dd data-out="q-min">—</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="tim-section" aria-labelledby="tim-code-title">
+          <div class="tim-section__head">
+            <Icon name="material-symbols:code" class="text-(--primary) text-xl" />
+            <h3 class="tim-section__title text-90" id="tim-code-title">生成初始化代码</h3>
+            <div class="tim-section__tools">
+              <button class="tim-btn" type="button" data-copy>
+                <Icon name="material-symbols:content-copy-rounded" class="text-base" />
+                <span>复制</span>
+              </button>
+              <span class="tim-copy-status text-75" data-out="copy-status" role="status" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <pre class="tim-code"><code data-out="code">—</code></pre>
+          <p class="tim-hint">
+            HAL 风格片段按当前参数生成，外设名与通道按实际工程替换。复制失败时页面会自动选中代码，
+            可直接按 Ctrl / Cmd + C。
+          </p>
+        </section>
+      </div>
+    </div>
+  </stm32-tim-calc>
+</MainGridLayout>
+
+<script>
+	const MAX_ARR_16 = 65535;
+	const MAX_ARR_32 = 4294967295;
+
+	type TimMode = "edge" | "center";
+
+	interface TimSolution {
+		psc: number;
+		arr: number;
+		ccr: number;
+		fu: number;
+		duty: number;
+		error: number;
+		bits: number;
+	}
+
+	type UpdateSource =
+		| "init"
+		| "preset"
+		| "fck"
+		| "mode"
+		| "width"
+		| "psc"
+		| "arr"
+		| "duty"
+		| "ccr"
+		| "solver";
+
+	function significant(value: number, digits: number): string {
+		if (!Number.isFinite(value)) return "—";
+		const rounded = Number(value.toPrecision(digits));
+		return String(rounded);
+	}
+
+	function formatFrequency(hz: number): string {
+		if (hz === 0) return "0 Hz";
+		if (!Number.isFinite(hz) || hz <= 0) return "—";
+		if (hz >= 1e6) return `${significant(hz / 1e6, 6)} MHz`;
+		if (hz >= 1e3) return `${significant(hz / 1e3, 6)} kHz`;
+		if (hz >= 1) return `${significant(hz, 6)} Hz`;
+		if (hz >= 1e-3) return `${significant(hz * 1e3, 6)} mHz`;
+		return `${significant(hz, 6)} Hz`;
+	}
+
+	function formatDuration(seconds: number): string {
+		if (!Number.isFinite(seconds) || seconds <= 0) return "—";
+		if (seconds >= 1) return `${significant(seconds, 6)} s`;
+		if (seconds >= 1e-3) return `${significant(seconds * 1e3, 6)} ms`;
+		if (seconds >= 1e-6) return `${significant(seconds * 1e6, 6)} µs`;
+		return `${significant(seconds * 1e9, 6)} ns`;
+	}
+
+	function formatPercent(value: number): string {
+		if (!Number.isFinite(value)) return "—";
+		return `${significant(value, 5)}%`;
+	}
+
+	class Stm32TimCalc extends HTMLElement {
+		private ready = false;
+		private retries = 0;
+		private lastEdited: "duty" | "ccr" = "duty";
+
+		connectedCallback(): void {
+			this.mount();
+		}
+
+		refresh(): void {
+			this.mount();
+		}
+
+		private mount(): void {
+			if (this.ready) {
+				this.update("init");
+				return;
+			}
+			if (!this.querySelector("[data-fck]")) {
+				if (this.retries < 10) {
+					this.retries += 1;
+					requestAnimationFrame(() => this.mount());
+				}
+				return;
+			}
+			this.ready = true;
+			this.addEventListener("input", this.handleInput);
+			this.addEventListener("change", this.handleInput);
+			this.addEventListener("click", this.handleClick);
+			this.update("init");
+		}
+
+		private handleInput = (event: Event): void => {
+			const target = event.target;
+			if (!(target instanceof HTMLElement)) return;
+			if (target.matches("[data-preset]")) {
+				this.applyPreset();
+				this.update("preset");
+				return;
+			}
+			if (target.matches("[data-fck]")) {
+				this.syncPreset();
+				this.update("fck");
+				return;
+			}
+			if (target.matches("[data-mode]")) {
+				this.update("mode");
+				return;
+			}
+			if (target.matches("[data-width]")) {
+				this.update("width");
+				return;
+			}
+			if (target.matches("[data-psc]")) {
+				this.update("psc");
+				return;
+			}
+			if (target.matches("[data-arr]")) {
+				this.update("arr");
+				return;
+			}
+			if (target.matches("[data-ccr]")) {
+				this.lastEdited = "ccr";
+				this.update("ccr");
+				return;
+			}
+			if (target.matches("[data-duty]")) {
+				this.lastEdited = "duty";
+				this.update("duty");
+				return;
+			}
+			if (target.matches("[data-target-fu]") || target.matches("[data-target-duty]")) {
+				this.update("solver");
+			}
+		};
+
+		private handleClick = (event: MouseEvent): void => {
+			const target = event.target;
+			if (!(target instanceof Element)) return;
+			if (target.closest("[data-copy]")) {
+				void this.copyCode();
+			}
+		};
+
+		private applyPreset(): void {
+			const select = this.querySelector<HTMLSelectElement>("[data-preset]");
+			const fck = this.querySelector<HTMLInputElement>("[data-fck]");
+			if (!select || !fck || select.value === "") return;
+			const mhz = Number(select.value);
+			if (!Number.isFinite(mhz) || mhz <= 0) return;
+			fck.value = String(mhz);
+		}
+
+		private syncPreset(): void {
+			const select = this.querySelector<HTMLSelectElement>("[data-preset]");
+			const fck = this.querySelector<HTMLInputElement>("[data-fck]");
+			if (!select || !fck) return;
+			const mhz = Number(fck.value);
+			const match = Array.from(select.options).find(
+				(option) => option.value !== "" && Number(option.value) === mhz,
+			);
+			select.value = match ? match.value : "";
+		}
+
+		private numberFrom(element: HTMLInputElement | null, fallback: number): number {
+			if (!element) return fallback;
+			const value = Number(element.value);
+			return Number.isFinite(value) ? value : fallback;
+		}
+
+		private setText(name: string, value: string): void {
+			const element = this.querySelector<HTMLElement>(`[data-out="${name}"]`);
+			if (element) element.textContent = value;
+		}
+
+		private solve(
+			targetFu: number,
+			targetDuty: number,
+			fck: number,
+			maxArr: number,
+			mode: TimMode,
+		): TimSolution[] {
+			const solutions: TimSolution[] = [];
+			if (!Number.isFinite(targetFu) || targetFu <= 0 || !Number.isFinite(fck)) {
+				return solutions;
+			}
+
+			const candidates = new Set<number>();
+			const add = (value: number): void => {
+				if (!Number.isFinite(value)) return;
+				const arr = Math.round(value);
+				if (arr >= 1 && arr <= maxArr) candidates.add(arr);
+			};
+
+			const idealCounts = fck / targetFu;
+			const baseArr = mode === "center" ? idealCounts / 2 : idealCounts - 1;
+			add(baseArr);
+			for (let offset = -2; offset <= 2; offset += 1) add(baseArr + offset);
+			for (let power = 4; power <= 16; power += 1) add(2 ** power - 1);
+
+			const seen = new Set<string>();
+			let attempts = 0;
+
+			for (const arr of candidates) {
+				if (attempts >= 4096) break;
+				attempts += 1;
+
+				const counts = mode === "center" ? 2 * arr : arr + 1;
+				if (counts <= 0) continue;
+
+				const psc = Math.round(fck / (targetFu * counts) - 1);
+				if (psc < 0 || psc > 65535) continue;
+
+				const key = `${psc}:${arr}`;
+				if (seen.has(key)) continue;
+				seen.add(key);
+
+				const fu = fck / ((psc + 1) * counts);
+				const error = Math.abs(fu - targetFu) / targetFu;
+				const nCcr = mode === "center" ? arr : arr + 1;
+				const ccr = Math.max(
+					0,
+					Math.min(arr, Math.round((targetDuty / 100) * nCcr)),
+				);
+				const duty = nCcr > 0 ? (ccr / nCcr) * 100 : 0;
+
+				solutions.push({
+					psc,
+					arr,
+					ccr,
+					fu,
+					duty,
+					error,
+					bits: Math.log2(counts),
+				});
+			}
+
+			solutions.sort((a, b) => {
+				if (a.error === b.error) return b.arr - a.arr;
+				return a.error - b.error;
+			});
+
+			return solutions;
+		}
+
+		private update(source: UpdateSource): void {
+			const warnings: string[] = [];
+
+			const modeSelect = this.querySelector<HTMLSelectElement>("[data-mode]");
+			const mode: TimMode = modeSelect?.value === "center" ? "center" : "edge";
+			const widthSelect = this.querySelector<HTMLSelectElement>("[data-width]");
+			const width = widthSelect?.value === "32" ? 32 : 16;
+			const maxArr = width === 32 ? MAX_ARR_32 : MAX_ARR_16;
+
+			const fckEl = this.querySelector<HTMLInputElement>("[data-fck]");
+			const pscEl = this.querySelector<HTMLInputElement>("[data-psc]");
+			const arrEl = this.querySelector<HTMLInputElement>("[data-arr]");
+			const ccrEl = this.querySelector<HTMLInputElement>("[data-ccr]");
+			const dutyEl = this.querySelector<HTMLInputElement>("[data-duty]");
+
+			let fckMhz = this.numberFrom(fckEl, 72);
+			if (fckMhz <= 0) {
+				fckMhz = 72;
+				warnings.push("定时器时钟必须大于 0，已按 72 MHz 计算。");
+			}
+			if (fckMhz < 1) {
+				fckMhz = 1;
+				warnings.push("fCK 低于 1 MHz，已按 1 MHz 计算。");
+			}
+			if (fckMhz > 600) {
+				fckMhz = 600;
+				warnings.push("fCK 高于 600 MHz，已按 600 MHz 计算。");
+			}
+			const fck = fckMhz * 1e6;
+
+			const pscRaw = this.numberFrom(pscEl, 0);
+			let psc = Math.round(pscRaw);
+			if (!Number.isFinite(psc)) psc = 0;
+			if (psc < 0) {
+				psc = 0;
+				warnings.push("PSC 不能为负，已按 0 计算。");
+			}
+			if (psc > MAX_ARR_16) {
+				psc = MAX_ARR_16;
+				warnings.push("PSC 超过 65535（PSC+1 会大于 65536，属于非法值），已夹紧到 65535。");
+			}
+			if (pscEl && (pscRaw < 0 || pscRaw > MAX_ARR_16)) pscEl.value = String(psc);
+
+			const arrRaw = this.numberFrom(arrEl, 0);
+			let arr = Math.round(arrRaw);
+			if (!Number.isFinite(arr)) arr = 0;
+			if (arr < 0) {
+				arr = 0;
+				warnings.push("ARR 不能为负，已按 0 计算。");
+			}
+			if (arr > maxArr) {
+				arr = maxArr;
+				warnings.push(`ARR 超过 ${width} 位上限 ${maxArr}，已夹紧到 ${maxArr}。`);
+			}
+			if (arrEl) {
+				arrEl.max = String(maxArr);
+				if (arrRaw < 0 || arrRaw > maxArr) arrEl.value = String(arr);
+			}
+
+			const ccrRaw = this.numberFrom(ccrEl, 0);
+			let ccr = Math.round(ccrRaw);
+			if (!Number.isFinite(ccr)) ccr = 0;
+			if (ccr < 0) {
+				ccr = 0;
+				warnings.push("CCR 不能为负，已按 0 计算。");
+			}
+			if (ccr > arr) {
+				ccr = arr;
+				warnings.push(`CCR 超过 ARR=${arr}，已夹紧到 ${arr}。`);
+			}
+			if (ccrEl) {
+				ccrEl.max = String(arr);
+				if (ccrRaw < 0 || ccrRaw > arr) ccrEl.value = String(ccr);
+			}
+
+			let duty = this.numberFrom(dutyEl, 50);
+			if (!Number.isFinite(duty)) duty = 0;
+
+			const nCounts = mode === "center" ? (arr >= 1 ? 2 * arr : 0) : arr + 1;
+			const nCcr = mode === "center" ? arr : arr + 1;
+
+			if (mode === "center" && arr < 1) {
+				warnings.push("中心对齐模式要求 ARR ≥ 1；当前 ARR = 0 不会产生更新事件。");
+			}
+
+			const authority: "duty" | "ccr" =
+				source === "ccr" ? "ccr" : source === "duty" ? "duty" : this.lastEdited;
+
+			if (authority === "duty") {
+				if (nCcr > 0) {
+					const ideal = Math.round((duty / 100) * nCcr);
+					const clamped = Math.max(0, Math.min(arr, ideal));
+					if (duty < 0 || duty > 100) {
+						warnings.push(`占空比 ${formatPercent(duty)} 超出 0–100%，已按边界换算。`);
+					}
+					if (ideal !== clamped) {
+						warnings.push(
+							`目标占空比 ${formatPercent(duty)} 对应 CCR=${ideal}，超出 0–ARR 范围，已夹紧到 ${clamped}；实际占空比 ${formatPercent((clamped / nCcr) * 100)}。`,
+						);
+					}
+					ccr = clamped;
+					if (ccrEl && ccrEl.value !== String(ccr) && document.activeElement !== ccrEl) {
+						ccrEl.value = String(ccr);
+					}
+				}
+			} else if (nCcr > 0) {
+				duty = (ccr / nCcr) * 100;
+				if (dutyEl && document.activeElement !== dutyEl) {
+					const next = significant(duty, 6);
+					if (dutyEl.value !== next) dutyEl.value = next;
+				}
+			}
+
+			const fu = nCounts > 0 ? fck / ((psc + 1) * nCounts) : Number.NaN;
+			const period = Number.isFinite(fu) && fu > 0 ? 1 / fu : Number.NaN;
+			const tick = (psc + 1) / fck;
+			const bits = nCounts > 0 ? Math.log2(nCounts) : Number.NaN;
+			const dutyActual = nCcr > 0 ? (ccr / nCcr) * 100 : Number.NaN;
+			const dutyError = Number.isFinite(dutyActual) ? dutyActual - duty : Number.NaN;
+
+			if (arr === 0 && mode === "edge") {
+				warnings.push(
+					"ARR = 0：每个计数周期都会触发一次更新事件（fU = fCK/(PSC+1)），此时无法形成有效的 PWM 占空比。",
+				);
+			}
+			if (Number.isFinite(fu) && fu > fck / 2) {
+				warnings.push(`更新频率 ${formatFrequency(fu)} 高于 fCK/2，每周期不足 2 个计数，实际不可用。`);
+			}
+			if (Number.isFinite(fu) && fu < 1) {
+				warnings.push(`更新频率 ${formatFrequency(fu)} 低于 1 Hz，周期过长。`);
+			}
+
+			this.setText("fu", formatFrequency(fu));
+			this.setText("period", formatDuration(period));
+			this.setText("tick", formatDuration(tick));
+			this.setText("counts", nCounts > 0 ? String(nCounts) : "—");
+			this.setText("bits", Number.isFinite(bits) ? `${bits.toFixed(2)} bits` : "—");
+			this.setText("duty", formatPercent(dutyActual));
+			this.setText("ccr", nCcr > 0 ? String(ccr) : "—");
+			this.setText(
+				"duty-error",
+				Number.isFinite(dutyError)
+					? `${dutyError >= 0 ? "+" : ""}${dutyError.toFixed(2)} pp`
+					: "—",
+			);
+
+			const targetFuEl = this.querySelector<HTMLInputElement>("[data-target-fu]");
+			const targetDutyEl = this.querySelector<HTMLInputElement>("[data-target-duty]");
+			const targetFu = this.numberFrom(targetFuEl, 1000);
+			const targetDuty = this.numberFrom(targetDutyEl, 50);
+
+			let solutions: TimSolution[] = [];
+			if (!(targetFu > 0)) {
+				warnings.push("目标频率必须大于 0，反算暂不可用。");
+			} else {
+				if (targetFu < 1) {
+					warnings.push(`目标频率 ${formatFrequency(targetFu)} 低于 1 Hz，实际周期会很长。`);
+				}
+				solutions = this.solve(targetFu, targetDuty, fck, maxArr, mode);
+			}
+
+			const best = solutions.length > 0 ? solutions[0] : null;
+			const alternatives: TimSolution[] = [];
+			if (best) {
+				const usedBuckets = new Set<number>([Math.round(best.bits)]);
+				for (const solution of solutions) {
+					if (solution === best) continue;
+					const bucket = Math.round(solution.bits);
+					if (usedBuckets.has(bucket)) continue;
+					usedBuckets.add(bucket);
+					alternatives.push(solution);
+					if (alternatives.length >= 3) break;
+				}
+				const errorBudget = Math.max(best.error * 2, 0.002);
+				const moreBits = solutions.find(
+					(solution) =>
+						solution !== best &&
+						solution.bits >= best.bits + 0.5 &&
+						solution.error <= errorBudget &&
+						!alternatives.includes(solution),
+				);
+				if (moreBits) {
+					if (alternatives.length < 3) alternatives.push(moreBits);
+					else if (moreBits.bits > alternatives[2].bits + 0.5) alternatives[2] = moreBits;
+				}
+			}
+
+			for (let index = 0; index < 4; index += 1) {
+				const solution = index === 0 ? best : (alternatives[index - 1] ?? null);
+				this.setSolutionRow(index, solution);
+			}
+
+			if (best) {
+				const diffHz = Math.abs(best.fu - targetFu);
+				this.setText(
+					"solve-note",
+					`最优：PSC = ${best.psc}，ARR = ${best.arr}，CCR = ${best.ccr}；实际 ${formatFrequency(best.fu)}，误差 ${formatFrequency(diffHz)} / ${(best.error * 100).toFixed(2)}%，分辨率 ${best.bits.toFixed(2)} bits。`,
+				);
+				if (best.error > 0.05) {
+					warnings.push(
+						`目标 ${formatFrequency(targetFu)} 在当前 fCK 下无法达到：最优方案为 ${formatFrequency(best.fu)}，误差 ${(best.error * 100).toFixed(2)}%（> 5%）。`,
+					);
+				}
+			} else {
+				this.setText(
+					"solve-note",
+					"没有找到可行的 PSC / ARR 组合，请调整目标频率、时钟或位宽。",
+				);
+			}
+
+			this.renderQuickReference(fck, maxArr, mode);
+			this.setText("code", this.buildCode(psc, arr, ccr, mode, fck, fu));
+
+			const warningBox = this.querySelector<HTMLElement>("[data-warn-box]");
+			const warningList = this.querySelector<HTMLElement>("[data-warnings]");
+			const warningCount = this.querySelector<HTMLElement>("[data-warn-count]");
+			if (warningBox && warningList) {
+				warningList.replaceChildren();
+				for (const text of warnings) {
+					const item = document.createElement("li");
+					item.className = "tim-warn__item";
+					item.textContent = text;
+					warningList.append(item);
+				}
+				warningBox.hidden = warnings.length === 0;
+			}
+			if (warningCount) {
+				warningCount.textContent = warnings.length > 0 ? `${warnings.length} 条` : "";
+			}
+		}
+
+		private setSolutionRow(index: number, solution: TimSolution | null): void {
+			const row = this.querySelector<HTMLElement>(`[data-solution="${index}"]`);
+			if (!row) return;
+			const write = (cell: string, text: string): void => {
+				const target = row.querySelector<HTMLElement>(`[data-cell="${cell}"]`);
+				if (target) target.textContent = text;
+			};
+			if (!solution) {
+				write("psc", "—");
+				write("arr", "—");
+				write("ccr", "—");
+				write("fu", "—");
+				write("error", "—");
+				write("duty", "—");
+				write("bits", "—");
+				return;
+			}
+			write("psc", String(solution.psc));
+			write("arr", String(solution.arr));
+			write("ccr", String(solution.ccr));
+			write("fu", formatFrequency(solution.fu));
+			write("error", `${(solution.error * 100).toFixed(2)}%`);
+			write("duty", formatPercent(solution.duty));
+			write("bits", solution.bits.toFixed(2));
+		}
+
+		private renderQuickReference(fck: number, maxArr: number, mode: TimMode): void {
+			const pscMicro = Math.max(0, Math.min(MAX_ARR_16, Math.round(fck / 1e6 - 1)));
+			const tickMicro = (pscMicro + 1) / fck;
+			const exact = Math.abs(tickMicro - 1e-6) < 1e-12;
+			this.setText(
+				"q-tick",
+				exact
+					? `PSC = ${pscMicro}（精确 1 µs 时基）`
+					: `PSC = ${pscMicro}（近似值：实际 tTick = ${formatDuration(tickMicro)}）`,
+			);
+
+			const countsMs = 0.001 / tickMicro;
+			const arrMsRaw = mode === "center" ? Math.round(countsMs / 2) : Math.round(countsMs) - 1;
+			const arrMsMin = mode === "center" ? 1 : 0;
+			const arrMs = Math.max(arrMsMin, Math.min(maxArr, arrMsRaw));
+			const countsMsActual = mode === "center" ? 2 * arrMs : arrMs + 1;
+			const periodMs = ((pscMicro + 1) * countsMsActual) / fck;
+			this.setText(
+				"q-ms",
+				`PSC = ${pscMicro}，ARR = ${arrMs}（实际 T = ${formatDuration(periodMs)}）`,
+			);
+
+			const maxCounts = mode === "center" ? 2 * maxArr : maxArr + 1;
+			const maxPeriod = (65536 * maxCounts) / fck;
+			this.setText(
+				"q-max",
+				`PSC = 65535，ARR = ${maxArr}（T = ${formatDuration(maxPeriod)}，fU = ${formatFrequency(1 / maxPeriod)}）`,
+			);
+
+			const minArr = mode === "center" ? 1 : 0;
+			const minCounts = mode === "center" ? 2 : 1;
+			const minPeriod = minCounts / fck;
+			this.setText(
+				"q-min",
+				`PSC = 0，ARR = ${minArr}（T = ${formatDuration(minPeriod)}，fU = ${formatFrequency(1 / minPeriod)}）`,
+			);
+		}
+
+		private buildCode(
+			psc: number,
+			arr: number,
+			ccr: number,
+			mode: TimMode,
+			fck: number,
+			fu: number,
+		): string {
+			const counterMode =
+				mode === "center" ? "TIM_COUNTERMODE_CENTERALIGNED1" : "TIM_COUNTERMODE_UP";
+			const suffix = arr > 65535 ? "U" : "";
+			const nCcr = mode === "center" ? arr : arr + 1;
+			const duty = nCcr > 0 ? (ccr / nCcr) * 100 : 0;
+			const lines = [
+				"/* TIM1 PWM 初始化：由 STM32 TIM 计算器生成，按实际外设替换 TIM1 / htim1 */",
+				`/* fCK = ${formatFrequency(fck)}，更新频率 ${formatFrequency(fu)}，占空比 ${formatPercent(duty)} */`,
+				"TIM_HandleTypeDef htim1;",
+				"",
+				"htim1.Instance = TIM1;",
+				`htim1.Init.Prescaler = ${psc};`,
+				`htim1.Init.Period = ${arr}${suffix};`,
+				`htim1.Init.CounterMode = ${counterMode};`,
+				"htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;",
+				"htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;",
+				"if (HAL_TIM_PWM_Init(&htim1) != HAL_OK) {",
+				"    Error_Handler();",
+				"}",
+				"",
+				"/* 通道 1 比较值与启动 */",
+				`__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, ${ccr});`,
+				`__HAL_TIM_SET_AUTORELOAD(&htim1, ${arr}${suffix});`,
+				"HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);",
+			];
+			return lines.join("\n");
+		}
+
+		private async copyCode(): Promise<void> {
+			const code = this.querySelector<HTMLElement>('[data-out="code"]');
+			const status = this.querySelector<HTMLElement>('[data-out="copy-status"]');
+			const text = code?.textContent ?? "";
+			if (!text) return;
+			const setStatus = (message: string): void => {
+				if (status) status.textContent = message;
+			};
+
+			try {
+				if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+					await navigator.clipboard.writeText(text);
+					setStatus("已复制到剪贴板");
+					return;
+				}
+			} catch {
+				// 剪贴板 API 被拒绝时继续走 execCommand 回退
+			}
+
+			try {
+				const area = document.createElement("textarea");
+				area.value = text;
+				area.setAttribute("readonly", "");
+				area.style.position = "fixed";
+				area.style.top = "-1000px";
+				area.style.opacity = "0";
+				document.body.appendChild(area);
+				area.select();
+				const copied = document.execCommand("copy");
+				area.remove();
+				if (copied) {
+					setStatus("已复制到剪贴板");
+					return;
+				}
+			} catch {
+				// 忽略，最后回退为选中代码
+			}
+
+			this.selectCode(code);
+			setStatus("复制被浏览器拒绝，代码已选中，请按 Ctrl / Cmd + C");
+		}
+
+		private selectCode(code: HTMLElement | null): void {
+			if (!code) return;
+			const selection = window.getSelection();
+			if (!selection) return;
+			const range = document.createRange();
+			range.selectNodeContents(code);
+			selection.removeAllRanges();
+			selection.addRange(range);
+		}
+	}
+
+	if (!customElements.get("stm32-tim-calc")) {
+		customElements.define("stm32-tim-calc", Stm32TimCalc);
+	}
+
+	type PageLoadWindow = Window & { __stm32TimPageLoad?: boolean };
+
+	const pageLoadWindow = window as PageLoadWindow;
+	if (!pageLoadWindow.__stm32TimPageLoad) {
+		pageLoadWindow.__stm32TimPageLoad = true;
+		document.addEventListener("astro:page-load", () => {
+			document.querySelectorAll<Stm32TimCalc>("stm32-tim-calc").forEach((element) => {
+				element.refresh();
+			});
+		});
+	}
+</script>
+
+<style>
+	.stm32-tim {
+		display: block;
+	}
+
+	.stm32-tim .tim-lead {
+		margin: 0.75rem 0 0;
+		font-size: 0.875rem;
+		line-height: 1.7;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-lead code {
+		padding: 0.1rem 0.3rem;
+		border-radius: 0.35rem;
+		background: var(--btn-regular-bg);
+		color: var(--btn-content);
+		font-size: 0.8rem;
+	}
+
+	.stm32-tim .tim-section {
+		margin-top: 1.75rem;
+	}
+
+	.stm32-tim .tim-section__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.45rem;
+		margin-bottom: 0.9rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--line-divider);
+	}
+
+	.stm32-tim .tim-section__title {
+		margin: 0;
+		font-size: 1.05rem;
+		font-weight: 700;
+		line-height: 1.4;
+	}
+
+	.stm32-tim .tim-section__tools {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin-left: auto;
+	}
+
+	.stm32-tim .tim-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+		gap: 0.9rem 1rem;
+	}
+
+	.stm32-tim .tim-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		min-width: 0;
+	}
+
+	.stm32-tim .tim-field__label {
+		font-size: 0.8rem;
+		font-weight: 600;
+		line-height: 1.5;
+	}
+
+	.stm32-tim .tim-field__unit {
+		font-weight: 400;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-input,
+	.stm32-tim .tim-select {
+		width: 100%;
+		min-width: 0;
+		padding: 0.5rem 0.65rem;
+		border: 1px solid var(--line-divider);
+		border-radius: 0.7rem;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		font-size: 0.9rem;
+		line-height: 1.4;
+		transition:
+			border-color 150ms ease,
+			box-shadow 150ms ease;
+	}
+
+	.stm32-tim .tim-select option {
+		background: var(--card-bg);
+		color: inherit;
+	}
+
+	.stm32-tim .tim-input:focus-visible,
+	.stm32-tim .tim-select:focus-visible {
+		outline: none;
+		border-color: var(--primary);
+		box-shadow: 0 0 0 2px color-mix(in oklch, var(--primary) 25%, transparent);
+	}
+
+	:root.dark .stm32-tim .tim-input {
+		color-scheme: dark;
+	}
+
+	.stm32-tim .tim-hint {
+		margin: 0.65rem 0 0;
+		font-size: 0.78rem;
+		line-height: 1.65;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-warn {
+		margin-top: 1rem;
+		padding: 0.7rem 0.9rem;
+		border: 1px solid color-mix(in oklch, var(--admonitions-color-warning) 45%, transparent);
+		border-radius: 0.75rem;
+		background: color-mix(in oklch, var(--admonitions-color-warning) 10%, transparent);
+	}
+
+	.stm32-tim .tim-warn__title {
+		display: flex;
+		align-items: center;
+		gap: 0.35rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+
+	.stm32-tim .tim-warn__count {
+		font-weight: 400;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-warn__list {
+		margin: 0.4rem 0 0;
+		padding-left: 1.1rem;
+		font-size: 0.82rem;
+		line-height: 1.65;
+	}
+
+	.stm32-tim :global(.tim-warn__item) {
+		margin: 0.15rem 0;
+	}
+
+	.stm32-tim .tim-results {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+		gap: 0.7rem 0.8rem;
+		margin: 0;
+	}
+
+	.stm32-tim .tim-result,
+	.stm32-tim .tim-quick__item {
+		min-width: 0;
+		padding: 0.55rem 0.7rem;
+		border: 1px solid var(--line-divider);
+		border-radius: 0.7rem;
+	}
+
+	.stm32-tim .tim-result dt,
+	.stm32-tim .tim-quick__item dt {
+		margin: 0;
+		font-size: 0.75rem;
+		line-height: 1.5;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-result dd,
+	.stm32-tim .tim-quick__item dd {
+		margin: 0.15rem 0 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+		line-height: 1.55;
+		font-variant-numeric: tabular-nums;
+		overflow-wrap: anywhere;
+	}
+
+	.stm32-tim .tim-solve-note {
+		margin: 0.9rem 0 0;
+		font-size: 0.85rem;
+		line-height: 1.65;
+	}
+
+	.stm32-tim .tim-table-wrap {
+		width: 100%;
+		margin-top: 0.6rem;
+		overflow-x: auto;
+	}
+
+	.stm32-tim .tim-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.8rem;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.stm32-tim .tim-table th,
+	.stm32-tim .tim-table td {
+		padding: 0.45rem 0.5rem;
+		border-bottom: 1px solid var(--line-divider);
+		text-align: right;
+		white-space: nowrap;
+	}
+
+	.stm32-tim .tim-table thead th {
+		font-weight: 600;
+		color: var(--content-meta);
+	}
+
+	.stm32-tim .tim-table th:first-child,
+	.stm32-tim .tim-table td:first-child {
+		text-align: left;
+	}
+
+	.stm32-tim .tim-quick {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+		gap: 0.7rem 0.8rem;
+		margin: 0;
+	}
+
+	.stm32-tim .tim-code {
+		margin: 0;
+		padding: 0.85rem 1rem;
+		border: 1px solid var(--line-divider);
+		border-radius: 0.75rem;
+		background: var(--btn-regular-bg);
+		overflow-x: auto;
+		font-size: 0.78rem;
+		line-height: 1.6;
+	}
+
+	.stm32-tim .tim-code code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		white-space: pre;
+	}
+
+	.stm32-tim .tim-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.35rem 0.7rem;
+		border: 1px solid var(--line-divider);
+		border-radius: 0.6rem;
+		background: var(--btn-regular-bg);
+		color: var(--btn-content);
+		font: inherit;
+		font-size: 0.8rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition:
+			background-color 150ms ease,
+			border-color 150ms ease;
+	}
+
+	.stm32-tim .tim-btn:hover {
+		background: var(--btn-regular-bg-hover);
+	}
+
+	.stm32-tim .tim-btn:active {
+		background: var(--btn-regular-bg-active);
+	}
+
+	.stm32-tim .tim-btn:focus-visible {
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+	}
+
+	.stm32-tim .tim-copy-status {
+		font-size: 0.75rem;
+	}
+
+	@media (max-width: 640px) {
+		.stm32-tim :global(.tim-card) {
+			padding-left: 1.25rem;
+			padding-right: 1.25rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.stm32-tim .tim-input,
+		.stm32-tim .tim-select,
+		.stm32-tim .tim-btn {
+			transition: none;
+		}
+	}
+</style>

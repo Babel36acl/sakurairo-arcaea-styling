@@ -1,0 +1,33 @@
+body.legacy-article .bac-code-shell.bac-code-collapsible .code-toolbar > pre[class*="language-"],
+body.legacy-article .bac-code-shell.bac-code-collapsible > pre[class*="language-"] {
+  position: relative;
+}
+
+body.legacy-article .bac-code-shell.bac-code-collapsed .code-toolbar > pre[class*="language-"],
+body.legacy-article .bac-code-shell.bac-code-collapsed > pre[class*="language-"] {
+  max-height: var(--bac-code-collapse-height, 32rem);
+  overflow: hidden !important;
+  -webkit-mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 72%, transparent 100%);
+}
+
+body.legacy-article .bac-code-fold-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid rgba(160, 220, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(9, 18, 34, 0.62);
+  color: rgba(235, 240, 248, 0.88);
+  font-family: var(--bac-code-font);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+body.legacy-article .bac-code-fold-toggle:hover {
+  border-color: rgba(160, 220, 255, 0.32);
+  background: rgba(13, 24, 44, 0.75);
+}

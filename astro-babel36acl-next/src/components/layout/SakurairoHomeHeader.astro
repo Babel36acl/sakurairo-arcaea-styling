@@ -1,0 +1,382 @@
+---
+import { Icon } from "astro-icon/components";
+interface Props { article?: boolean; articleTitle?: string; }
+const { article = false, articleTitle = "" } = Astro.props;
+const links = [
+  ["首页", "/"], ["学习记录", "/学习记录/"], ["嵌入式专题", "/embedded-topics/"],
+  ["工具箱", "/toolbox/"], ["工程复盘", "/engineering-retrospective/"],
+  ["方法与工具", "/方法与工具/"], ["架构与重构", "/architecture-and-refactoring/"],
+  ["🌌音乐", "/emotional-artcore/"], ["🎮 游戏", "/games/"], ["关于", "/about/"],
+];
+---
+<header class:list={["site-header sakurairo-home-header no-select", { "sakurairo-article-header": article }]} role="banner">
+  <div class="nav-search-wrapper">
+    <nav aria-label="首页导航">
+      <ul class="menu">
+        {links.map(([name, href]) => <li><a href={href} aria-current={href === "/" ? "page" : undefined}>{name}</a></li>)}
+      </ul>
+    </nav>
+    {article && <div class="nav-article-title">{articleTitle}</div>}
+    <div class="nav-search-divider"></div>
+    <a class="header-tool" href="/search/" aria-label="搜索">{article ? <i class="fa-solid fa-magnifying-glass"></i> : <Icon name="fa7-solid:magnifying-glass" />}</a>
+    {!article && <button class="header-tool" id="home-background-next" aria-label="随机换张背景"><Icon name="fa7-solid:dice" /></button>}
+  </div>
+  <a class="user-menu-wrapper" href="/about/" aria-label="关于博主">{article ? <i class="fa-solid fa-circle-user"></i> : <Icon name="fa7-solid:circle-user" />}</a>
+  <button type="button" class="mo-nav-button" aria-label="打开导航菜单" aria-controls="mobile-navigation" aria-expanded="false">
+    <Icon name="fa7-solid:bars" aria-hidden="true" />
+  </button>
+  {article && <button class="mo-toc-button" type="button" aria-label="文章目录" aria-expanded="false" aria-controls="legacy-mobile-toc"><i class="fa-solid fa-bookmark" aria-hidden="true"></i></button>}
+  {article && <div id="legacy-mobile-toc" class="mo_toc_panel" inert><div class="mo-user-options" hidden></div><div class="mo_toc"></div></div>}
+  <div class="mobile-nav" id="mobile-navigation" inert>
+    <div class="mo-menu-search">
+      <form action="/search/" role="search"><input name="q" type="search" placeholder="搜索..." aria-label="搜索" /></form>
+    </div>
+    <div class="mo_nav_item"><ul class="menu">{links.map(([name, href]) => <li><a href={href}>{name}</a></li>)}</ul></div>
+  </div>
+</header>
+
+<style>
+	.site-header {
+		position: fixed;
+		inset: 0 0 auto;
+		width: 100%;
+		height: 70px;
+		z-index: 999;
+		padding: 0 20px;
+		gap: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #ccc;
+		text-shadow: 0 0 1px #0000001a;
+		font: inherit;
+		transition: all .4s ease-in-out;
+	}
+
+	.site-header.mo-hide {
+		transform: translateY(-100%);
+		transition: all .6s, transform .5s;
+	}
+
+	.site-header.bg {
+		background: #fffc;
+		border-bottom: 1.5px solid #00000014;
+		backdrop-filter: saturate(180%) blur(10px);
+	}
+
+	.nav-search-wrapper, .user-menu-wrapper {
+		position: relative;
+		background: #00000094;
+		padding: 5px;
+		border-radius: 50px;
+		height: 45px;
+		display: flex;
+		align-items: center;
+		backdrop-filter: saturate(180%) blur(10px);
+		border: 1px solid #222;
+		box-shadow: 0 4px 12px #21212180;
+	}
+
+	.nav-search-wrapper {
+		flex: 0 832px;
+		gap: 3px;
+		width: 832px;
+		max-width: calc(100% - 400px);
+		overflow: visible;
+	}
+
+	nav {
+		flex: 0 auto;
+		min-width: 0;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+
+	.menu {
+		display: flex;
+		gap: 1.5px;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		white-space: nowrap;
+		list-style: none;
+	}
+
+	.menu li {
+		flex: none;
+	}
+
+	.menu a {
+		display: flex;
+		height: 100%;
+		padding: 8px 12px;
+		border-radius: 50px;
+		align-items: center;
+		justify-content: center;
+		font-size: 15px;
+		line-height: 1.5;
+		color: inherit;
+	}
+
+	.menu a:hover, .header-tool:hover {
+		background: #98b6ff3d;
+	}
+
+	.nav-search-divider {
+		flex-shrink: 0;
+		margin: 0 4px;
+		width: 1px;
+		height: 24px;
+		background: #ffffff1a;
+	}
+
+	.header-tool {
+		flex: 0 0 33px;
+		width: 33px;
+		height: 33px;
+		border: 0;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	.header-tool svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.user-menu-wrapper {
+		flex: 0 0 45px;
+		width: 45px;
+		justify-content: center;
+		color: inherit;
+	}
+
+	.user-menu-wrapper svg {
+		box-sizing: border-box;
+		width: 35px;
+		height: 35px;
+		padding: 4.5px;
+	}
+
+	.mo-nav-button {
+		display: none;
+		border: 0;
+		border-radius: 0;
+		padding: 0;
+		background: none;
+		color: inherit;
+		box-shadow: none;
+		line-height: inherit;
+		cursor: pointer;
+	}
+
+	.mobile-nav {
+		display: flex;
+		flex-direction: column;
+		max-height: 0;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	@media (width >= 861px) {
+		.mobile-nav {
+			display: none;
+		}
+	}
+
+	@media (width <= 860px) {
+		.site-header {
+			height: 50px;
+			gap: 3px;
+			justify-content: flex-start;
+			border-bottom: 1.5px solid #0000;
+		}
+
+		.nav-search-wrapper, .user-menu-wrapper {
+			display: none;
+		}
+
+		.mo-nav-button {
+			font-size: 16px;
+			width: 50px;
+			height: 50px;
+			opacity: 1;
+			overflow: hidden;
+			flex: none;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: all .3s, transform .5s cubic-bezier(0, 1.3, .55, 1.5);
+		}
+
+		.mo-nav-button svg {
+			box-sizing: content-box;
+			width: 14px;
+			height: 16px;
+			padding: 10px;
+			border: 2px solid #0000;
+			border-radius: 10px;
+			transition: all .3s;
+		}
+
+		.mo-nav-button:hover svg, .mo-nav-button.open svg {
+			color: var(--primary);
+			border-color: var(--primary);
+			background: none;
+		}
+
+		.mobile-nav {
+			position: fixed;
+			inset: 50px 0 auto;
+			width: 100%;
+			padding: 0;
+			background: #ffffffe6;
+			z-index: 9;
+			transition: all .4s cubic-bezier(.07, .53, .65, .95);
+		}
+
+		.mobile-nav.open {
+			max-height: 100vh;
+			transition: all .7s;
+		}
+
+		.mo-menu-search {
+			width: 100%;
+		}
+
+		.mo-menu-search form {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			padding: 5px 0;
+			border-bottom: 1px solid #0000001f;
+			box-sizing: border-box;
+		}
+
+		.mo-menu-search input {
+			width: 95%;
+			padding: 8px 16px;
+			font-size: 1em;
+			border: 1px solid #0000001f;
+			border-radius: 10px;
+			box-sizing: border-box;
+		}
+
+		.mobile-nav .menu {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.mobile-nav .menu > li {
+			padding: 10px;
+			margin-right: 8px;
+			border-bottom: 1px solid #0000001a;
+			border-radius: 4px;
+			transition: color .3s;
+		}
+
+		.mobile-nav a {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+			margin-left: 10px;
+			transition: color .3s;
+		}
+
+		.mobile-nav .menu > li:hover {
+			color: var(--primary);
+		}
+	}
+</style>
+<style is:global>
+	body:not(.is-home) .sakurairo-home-header { display: none; }
+	body.is-home #top-row { display: none !important; }
+
+	@media (max-width: 860px) {
+		body.dark .sakurairo-home-header.bg, html.dark .sakurairo-home-header.bg { background: rgba(38,38,38,.8); border-bottom-color: rgba(125,125,125,.18); backdrop-filter: saturate(180%) blur(10px); }
+		body.dark .sakurairo-home-header .mobile-nav { background: rgba(38,38,38,.9); }
+	}
+</style>
+
+<script>
+  const homeHeader = document.querySelector<HTMLElement>(".sakurairo-home-header");
+  const homeNavButton = homeHeader?.querySelector<HTMLButtonElement>(".mo-nav-button");
+  const homeNavPanel = homeHeader?.querySelector<HTMLElement>(".mobile-nav");
+
+  if (homeHeader && homeNavButton && homeNavPanel && !homeNavButton.dataset.bound) {
+    homeNavButton.dataset.bound = "true";
+
+    const closeHomeMenu = (immediate = false) => {
+      homeNavButton.setAttribute("aria-expanded", "false");
+      homeNavButton.setAttribute("aria-label", "打开导航菜单");
+      homeNavButton.classList.remove("open");
+      homeNavPanel.inert = true;
+      homeNavPanel.classList.remove("open");
+      if (immediate) homeHeader.classList.remove("bg");
+      else window.setTimeout(() => {
+        if (!homeNavPanel.classList.contains("open")) homeHeader.classList.remove("bg");
+      }, 700);
+    };
+
+    homeNavButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (homeNavPanel.classList.contains("open")) closeHomeMenu();
+      else {
+        const hadBackground = homeHeader.classList.contains("bg");
+        homeHeader.classList.add("bg");
+        homeNavButton.setAttribute("aria-expanded", "true");
+        homeNavButton.setAttribute("aria-label", "关闭导航菜单");
+        homeNavButton.classList.add("open");
+        homeNavPanel.inert = false;
+        // Sakurairo first animates the header background for 400ms, then
+        // starts the panel's 700ms max-height transition on transitionend.
+        const openPanel = (event?: TransitionEvent) => {
+          if (event && (event.target !== homeHeader || event.propertyName !== "background-color")) return;
+          homeNavPanel.classList.add("open");
+          homeHeader.removeEventListener("transitionend", openPanel);
+        };
+        if (hadBackground) openPanel();
+        else homeHeader.addEventListener("transitionend", openPanel);
+      }
+    });
+
+    homeNavPanel.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeHomeMenu()));
+    document.addEventListener("click", (event) => {
+      if (homeNavPanel.classList.contains("open") && event.target instanceof Node && !homeNavPanel.contains(event.target) && !homeNavButton.contains(event.target)) closeHomeMenu();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && homeNavPanel.classList.contains("open")) {
+        closeHomeMenu();
+        homeNavButton.focus();
+      }
+    });
+
+    let lastScrollTop = 0;
+    const scrollThreshold = Math.max(1, document.documentElement.scrollHeight * .01);
+    window.addEventListener("scroll", () => {
+      if (window.innerWidth >= 860) return;
+      const current = window.scrollY || document.documentElement.scrollTop;
+      if (current > scrollThreshold && current > lastScrollTop) {
+        homeHeader.classList.add("mo-hide");
+        closeHomeMenu(true);
+      } else if (current < lastScrollTop) {
+        homeHeader.classList.remove("mo-hide");
+        homeHeader.classList.add("bg");
+      } else if (current <= 0 && !homeNavPanel.classList.contains("open")) {
+        homeHeader.classList.remove("bg");
+      }
+      if (current <= 0 && !homeNavPanel.classList.contains("open")) {
+        homeHeader.classList.remove("bg");
+      }
+      lastScrollTop = current;
+    }, { passive: true });
+  }
+</script>

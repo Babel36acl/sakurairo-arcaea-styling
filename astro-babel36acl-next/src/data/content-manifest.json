@@ -1,0 +1,1465 @@
+{
+  "generatedAt": "2026-10-03T18:57:12.083Z",
+  "source": "tmp\\astro-wp-inventory.json",
+  "posts": [
+    {
+      "id": 1178,
+      "title": "STM32 CMake 工程实践 — 从 CubeMX 到分层架构",
+      "description": "2019 年接手一个 STM32F103RCT6 的工业控制项目。接手时仓库里有 6 个 .c 文件和一份 Keil .uvpro ...",
+      "published": "2026-06-02",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "学习笔记",
+        "嵌入式实战",
+        "工程复盘",
+        "架构与重构"
+      ],
+      "primaryCategory": "学习笔记",
+      "legacyId": 1178,
+      "contentType": "post",
+      "canonicalPath": "/2026/06/02/stm32-cmake-工程实践-从-cubemx-到分层架构/",
+      "legacyUrls": [
+        "/2026/06/02/stm32-cmake-%e5%b7%a5%e7%a8%8b%e5%ae%9e%e8%b7%b5-%e4%bb%8e-cubemx-%e5%88%b0%e5%88%86%e5%b1%82%e6%9e%b6%e6%9e%84/",
+        "/?p=1178",
+        "/index.php?p=1178",
+        "/2026/06/02/stm32-cmake-工程实践-从-cubemx-到分层架构.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/06/02/stm32-cmake-%e5%b7%a5%e7%a8%8b%e5%ae%9e%e8%b7%b5-%e4%bb%8e-cubemx-%e5%88%b0%e5%88%86%e5%b1%82%e6%9e%b6%e6%9e%84/",
+      "sourceSlug": "stm32-cmake-%e5%b7%a5%e7%a8%8b%e5%ae%9e%e8%b7%b5-%e4%bb%8e-cubemx-%e5%88%b0%e5%88%86%e5%b1%82%e6%9e%b6%e6%9e%84",
+      "file": "src\\content\\posts\\wp-1178.md"
+    },
+    {
+      "id": 1275,
+      "title": "HMIS-BAM V3 分片传输协议设计与并发 Bug 诊治复盘",
+      "description": "本文拆解了在 20 字节固定串口协议通道上，通过设计 HMIS-BAM V3 分片传输协议（Window = 1，Stop-and-Wait ACK/NACK，32 位 TID）解决大报文传输难题的实践。同时深度复",
+      "published": "2026-06-09",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "工程复盘",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 1275,
+      "contentType": "post",
+      "canonicalPath": "/2026/06/09/hmis-bam-v3-protocol-design-and-concurrency-bug-postmortem-2/",
+      "legacyUrls": [
+        "/2026/06/09/hmis-bam-v3-protocol-design-and-concurrency-bug-postmortem-2/",
+        "/?p=1275",
+        "/index.php?p=1275",
+        "/2026/06/09/hmis-bam-v3-protocol-design-and-concurrency-bug-postmortem-2.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/06/09/hmis-bam-v3-protocol-design-and-concurrency-bug-postmortem-2/",
+      "sourceSlug": "hmis-bam-v3-protocol-design-and-concurrency-bug-postmortem-2",
+      "file": "src\\content\\posts\\wp-1275.md"
+    },
+    {
+      "id": 1326,
+      "title": "MCGS MCP 文件结构与修改：控件记录、嵌套长度和脚本字节码",
+      "description": "聚焦 MCGS MCP 的 Access/BLOB 分层、CArchive 字符串、WndUser 控件记录、嵌套长度、变量绑定与脚本字节码，并说明 GPT-6 如何将结构分析落地为受限修改方式。",
+      "published": "2026-09-07",
+      "updated": "2026-09-07",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 1326,
+      "contentType": "post",
+      "canonicalPath": "/2026/09/07/mcgs-mcp-reverse-engineering/",
+      "legacyUrls": [
+        "/2026/09/07/mcgs-mcp-reverse-engineering/",
+        "/?p=1326",
+        "/index.php?p=1326",
+        "/2026/09/07/mcgs-mcp-reverse-engineering.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/09/07/mcgs-mcp-reverse-engineering/",
+      "sourceSlug": "mcgs-mcp-reverse-engineering",
+      "file": "src\\content\\posts\\wp-1326.md"
+    },
+    {
+      "id": 149,
+      "title": "SFUD 值不值得上：从通用串行 Flash 驱动的能力、边界到移植思路",
+      "description": "这篇文章把一份偏资料摘录式的 SFUD 笔记，重构成面向读者的发布版：它解决什么问题、适合什么场景、怎么接进工程、有哪些边界。",
+      "published": "2026-04-22",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "学习笔记",
+        "方法与工具"
+      ],
+      "primaryCategory": "学习笔记",
+      "legacyId": 149,
+      "contentType": "post",
+      "canonicalPath": "/2026/04/22/sfud-serial-flash-driver-note/",
+      "legacyUrls": [
+        "/2026/04/22/sfud-serial-flash-driver-note/",
+        "/?p=149",
+        "/index.php?p=149",
+        "/2026/04/22/sfud-serial-flash-driver-note.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/04/22/sfud-serial-flash-driver-note/",
+      "sourceSlug": "sfud-serial-flash-driver-note",
+      "file": "src\\content\\posts\\wp-149.md"
+    },
+    {
+      "id": 170,
+      "title": "UART DMA 为什么会“静默死亡”：一次噪声就让接收口永久失联",
+      "description": "在 `HAL_UART_Receive_DMA()` 模式下，串口帧错误或噪声错误可能让 HAL 结束接收却不自动恢复，结果是通信口看起来还在，实际上已经永远收不到数据。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 170,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/uart-dma-silent-death/",
+      "legacyUrls": [
+        "/2026/05/26/uart-dma-silent-death/",
+        "/?p=170",
+        "/index.php?p=170",
+        "/2026/05/26/uart-dma-silent-death.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/uart-dma-silent-death/",
+      "sourceSlug": "uart-dma-silent-death",
+      "file": "src\\content\\posts\\wp-170.md"
+    },
+    {
+      "id": 171,
+      "title": "一个字符就能让 MCU 起不来：FreeRTOS `configASSERT` 的边界值陷阱",
+      "description": "任务名长度刚好卡在 `configMAX_TASK_NAME_LEN` 的边界时，FreeRTOS 会直接触发 `configASSERT`，表现成上电后整机静默。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 171,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/freertos-configassert-task-name-boundary/",
+      "legacyUrls": [
+        "/2026/05/26/freertos-configassert-task-name-boundary/",
+        "/?p=171",
+        "/index.php?p=171",
+        "/2026/05/26/freertos-configassert-task-name-boundary.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/freertos-configassert-task-name-boundary/",
+      "sourceSlug": "freertos-configassert-task-name-boundary",
+      "file": "src\\content\\posts\\wp-171.md"
+    },
+    {
+      "id": 172,
+      "title": "CubeMX 的 GPIO 分组陷阱：为什么一个引脚会被隔壁外设带偏",
+      "description": "同一个引脚如果同时出现在两个外设分组里，CubeMX 生成的初始化代码可能让后者覆盖前者，最后表现成引脚功能对了、模式却错了。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 172,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/cubemx-gpio-grouping-trap/",
+      "legacyUrls": [
+        "/2026/05/26/cubemx-gpio-grouping-trap/",
+        "/?p=172",
+        "/index.php?p=172",
+        "/2026/05/26/cubemx-gpio-grouping-trap.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/cubemx-gpio-grouping-trap/",
+      "sourceSlug": "cubemx-gpio-grouping-trap",
+      "file": "src\\content\\posts\\wp-172.md"
+    },
+    {
+      "id": 173,
+      "title": "两个 Bug 为什么能互相抵消：一次运动时间公式的误导性正确",
+      "description": "当两个独立错误恰好把结果拉回到“看起来差不多”时，测试通过不代表公式正确，尤其是在运动控制这类边界敏感场景里。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 173,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/two-bugs-cancel-each-other/",
+      "legacyUrls": [
+        "/2026/05/26/two-bugs-cancel-each-other/",
+        "/?p=173",
+        "/index.php?p=173",
+        "/2026/05/26/two-bugs-cancel-each-other.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/two-bugs-cancel-each-other/",
+      "sourceSlug": "two-bugs-cancel-each-other",
+      "file": "src\\content\\posts\\wp-173.md"
+    },
+    {
+      "id": 174,
+      "title": "加一层包装却不删旧入口，补丁很快就会变成第二套架构",
+      "description": "新增适配层如果不同时收口旧入口，工程里就会长期并存两套调用路径，文档规则只能暂时兜底，架构本身并没有真正收敛。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "架构与重构"
+      ],
+      "primaryCategory": "架构与重构",
+      "legacyId": 174,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/wrapper-without-removing-old-entrypoints/",
+      "legacyUrls": [
+        "/2026/05/26/wrapper-without-removing-old-entrypoints/",
+        "/?p=174",
+        "/index.php?p=174",
+        "/2026/05/26/wrapper-without-removing-old-entrypoints.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/wrapper-without-removing-old-entrypoints/",
+      "sourceSlug": "wrapper-without-removing-old-entrypoints",
+      "file": "src\\content\\posts\\wp-174.md"
+    },
+    {
+      "id": 175,
+      "title": "状态机退出不清理标志，下一状态就会捡到上一状态的烂摊子",
+      "description": "当状态机没有统一的退出清理契约时，完成标志、守卫变量和阶段残留会沿着流程一路串台，最后演变成偶发又难复现的动作错误。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "工程复盘"
+      ],
+      "primaryCategory": "工程复盘",
+      "legacyId": 175,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/state-exit-without-cleanup/",
+      "legacyUrls": [
+        "/2026/05/26/state-exit-without-cleanup/",
+        "/?p=175",
+        "/index.php?p=175",
+        "/2026/05/26/state-exit-without-cleanup.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/state-exit-without-cleanup/",
+      "sourceSlug": "state-exit-without-cleanup",
+      "file": "src\\content\\posts\\wp-175.md"
+    },
+    {
+      "id": 176,
+      "title": "一台 STM32 设备是怎么在 83 次修复里暴露出自己的问题分布的",
+      "description": "这份发布版报告把一组嵌入式项目修复记录收拢成问题分布图，重点展示哪些故障最常见、哪些类别最贵、哪些风险具有重复性。",
+      "published": "2026-05-26",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "工程复盘"
+      ],
+      "primaryCategory": "工程复盘",
+      "legacyId": 176,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/26/embedded-project-problem-evolution-report/",
+      "legacyUrls": [
+        "/2026/05/26/embedded-project-problem-evolution-report/",
+        "/?p=176",
+        "/index.php?p=176",
+        "/2026/05/26/embedded-project-problem-evolution-report.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/26/embedded-project-problem-evolution-report/",
+      "sourceSlug": "embedded-project-problem-evolution-report",
+      "file": "src\\content\\posts\\wp-176.md"
+    },
+    {
+      "id": 407,
+      "title": "AI Agent + AGENTS.md 知识库——嵌入式开发的 AI 辅助体系实战（双 Agent + 45 Skills + MCP + 项目宪法）",
+      "description": "很多搞嵌入式的朋友看到 AI 辅助开发，第一反应是「那玩意儿写写前端还行，嵌入式能用？」 坦白说，两年前我也是这么想的。但现在我的 ...",
+      "published": "2026-05-28",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 407,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/tutorial-ai/",
+      "legacyUrls": [
+        "/2026/05/28/tutorial-ai/",
+        "/?p=407",
+        "/index.php?p=407",
+        "/2026/05/28/tutorial-ai.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/tutorial-ai/",
+      "sourceSlug": "tutorial-ai",
+      "file": "src\\content\\posts\\wp-407.md"
+    },
+    {
+      "id": 523,
+      "title": "三层重构不是靠文档做到，是靠构建系统",
+      "description": "一个 3 万行嵌入式项目的三层物理隔离实战——当你的构建系统不允许 APP 层 include BSP 头文件时，架构才算真正落地。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "方法与工具",
+        "架构与重构"
+      ],
+      "primaryCategory": "方法与工具",
+      "legacyId": 523,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/architecture-is-enforced-by-build-system/",
+      "legacyUrls": [
+        "/2026/05/28/architecture-is-enforced-by-build-system/",
+        "/?p=523",
+        "/index.php?p=523",
+        "/2026/05/28/architecture-is-enforced-by-build-system.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/architecture-is-enforced-by-build-system/",
+      "sourceSlug": "architecture-is-enforced-by-build-system",
+      "file": "src\\content\\posts\\wp-523.md"
+    },
+    {
+      "id": 524,
+      "title": "不要用超时保护开环步进电机",
+      "description": "开环步进轴没有传感器反馈时，超时保护靠不住。脉冲溢出才是唯一的硬保护线。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 524,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/open-loop-stepper-overflow-protection/",
+      "legacyUrls": [
+        "/2026/05/28/open-loop-stepper-overflow-protection/",
+        "/?p=524",
+        "/index.php?p=524",
+        "/2026/05/28/open-loop-stepper-overflow-protection.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/open-loop-stepper-overflow-protection/",
+      "sourceSlug": "open-loop-stepper-overflow-protection",
+      "file": "src\\content\\posts\\wp-524.md"
+    },
+    {
+      "id": 525,
+      "title": "不要让你的 RTOS 状态机堵在 UART 上",
+      "description": "一个专用 I/O 任务（CommTask）救回被串口阻塞的 RTOS 状态机——模式、陷阱与适用边界。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 525,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/rtos-comm-task-blocking-io-pattern/",
+      "legacyUrls": [
+        "/2026/05/28/rtos-comm-task-blocking-io-pattern/",
+        "/?p=525",
+        "/index.php?p=525",
+        "/2026/05/28/rtos-comm-task-blocking-io-pattern.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/rtos-comm-task-blocking-io-pattern/",
+      "sourceSlug": "rtos-comm-task-blocking-io-pattern",
+      "file": "src\\content\\posts\\wp-525.md"
+    },
+    {
+      "id": 526,
+      "title": "工业控制固件与 HMI 的工程架构复盘：从 STM32 到 Flutter 的全链路实践",
+      "description": "一个完整的工业控制嵌入式系统项目复盘：四轮重构、七任务 RTOS、APP/Service/BSP 三层物理隔离、18 状态循环流程、Flutter HMI 双串口架构。311 次提交沉淀的工程经验。",
+      "published": "2026-05-28",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "工程复盘",
+        "方法与工具",
+        "架构与重构"
+      ],
+      "primaryCategory": "工程复盘",
+      "legacyId": 526,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/embedded-firmware-hmi-engineering-retrospective/",
+      "legacyUrls": [
+        "/2026/05/28/embedded-firmware-hmi-engineering-retrospective/",
+        "/?p=526",
+        "/index.php?p=526",
+        "/2026/05/28/embedded-firmware-hmi-engineering-retrospective.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/embedded-firmware-hmi-engineering-retrospective/",
+      "sourceSlug": "embedded-firmware-hmi-engineering-retrospective",
+      "file": "src\\content\\posts\\wp-526.md"
+    },
+    {
+      "id": 528,
+      "title": "状态机设计的正确模式：回调注册表替代 switch-case",
+      "description": "一个 18 状态的嵌入式状态机如果全部塞在一个 switch-case 里，一个文件 900 行。回调注册表模式让每个状态独立文件、三回调驱动，新增状态零侵入。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "架构与重构"
+      ],
+      "primaryCategory": "架构与重构",
+      "legacyId": 528,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/callback-registry-state-machine-pattern/",
+      "legacyUrls": [
+        "/2026/05/28/callback-registry-state-machine-pattern/",
+        "/?p=528",
+        "/index.php?p=528",
+        "/2026/05/28/callback-registry-state-machine-pattern.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/callback-registry-state-machine-pattern/",
+      "sourceSlug": "callback-registry-state-machine-pattern",
+      "file": "src\\content\\posts\\wp-528.md"
+    },
+    {
+      "id": 529,
+      "title": "嵌入式执行器架构：统一动作表实现与两阶段执行深度解析",
+      "description": "一张声明式表格描述每个状态对应的全部执行器输出。MotorTask 周期遍历，一次性下发。新增状态只需加一行表。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 529,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/unified-actuator-action-table-pattern/",
+      "legacyUrls": [
+        "/2026/05/28/unified-actuator-action-table-pattern/",
+        "/?p=529",
+        "/index.php?p=529",
+        "/2026/05/28/unified-actuator-action-table-pattern.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/unified-actuator-action-table-pattern/",
+      "sourceSlug": "unified-actuator-action-table-pattern",
+      "file": "src\\content\\posts\\wp-529.md"
+    },
+    {
+      "id": 532,
+      "title": "嵌入式工程中最容易忽略的 10 个问题",
+      "description": "来自一个 STM32+FreeRTOS 工业控制项目的真实复盘。中断快照、协议回复时机、残余 done、隐式斩杀、超时错觉……每一个都踩过。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "工程复盘",
+        "方法与工具"
+      ],
+      "primaryCategory": "工程复盘",
+      "legacyId": 532,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/embedded-engineering-10-hidden-pitfalls/",
+      "legacyUrls": [
+        "/2026/05/28/embedded-engineering-10-hidden-pitfalls/",
+        "/?p=532",
+        "/index.php?p=532",
+        "/2026/05/28/embedded-engineering-10-hidden-pitfalls.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/embedded-engineering-10-hidden-pitfalls/",
+      "sourceSlug": "embedded-engineering-10-hidden-pitfalls",
+      "file": "src\\content\\posts\\wp-532.md"
+    },
+    {
+      "id": 533,
+      "title": "从 #define 到 EEPROM：嵌入式参数持久化的迁移实战",
+      "description": "项目初期所有参数都是 #define。要从编译期宏迁移到运行时 EEPROM 持久化，需要一条安全的四步路径。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 533,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/define-to-eeprom-parameter-migration/",
+      "legacyUrls": [
+        "/2026/05/28/define-to-eeprom-parameter-migration/",
+        "/?p=533",
+        "/index.php?p=533",
+        "/2026/05/28/define-to-eeprom-parameter-migration.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/define-to-eeprom-parameter-migration/",
+      "sourceSlug": "define-to-eeprom-parameter-migration",
+      "file": "src\\content\\posts\\wp-533.md"
+    },
+    {
+      "id": 535,
+      "title": "看门狗双层策略：IWDG + 通信看门狗组合",
+      "description": "IWDG 保证死机后能重启。通信看门狗保证没死但聋了时能报警。两层互补覆盖嵌入式设备最常见的两类无声故障。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 535,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/iwdg-comm-watchdog-combo-strategy/",
+      "legacyUrls": [
+        "/2026/05/28/iwdg-comm-watchdog-combo-strategy/",
+        "/?p=535",
+        "/index.php?p=535",
+        "/2026/05/28/iwdg-comm-watchdog-combo-strategy.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/iwdg-comm-watchdog-combo-strategy/",
+      "sourceSlug": "iwdg-comm-watchdog-combo-strategy",
+      "file": "src\\content\\posts\\wp-535.md"
+    },
+    {
+      "id": 536,
+      "title": "FreeRTOS 任务通知链：xTaskNotifyGive 的三种模式",
+      "description": "任务通知比信号量快约 40%。项目中 xTaskNotifyGive 承担了状态推送、ISR 唤醒、UART 驱动三种不同模式。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 536,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/freertos-task-notification-three-patterns/",
+      "legacyUrls": [
+        "/2026/05/28/freertos-task-notification-three-patterns/",
+        "/?p=536",
+        "/index.php?p=536",
+        "/2026/05/28/freertos-task-notification-three-patterns.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/freertos-task-notification-three-patterns/",
+      "sourceSlug": "freertos-task-notification-three-patterns",
+      "file": "src\\content\\posts\\wp-536.md"
+    },
+    {
+      "id": 537,
+      "title": "双工具链构建系统：GCC ARM 和 LLVM 在同一项目中共存",
+      "description": "同一个 STM32 项目同时支持 GCC ARM 和 LLVM/Clang。GCC 日常开发，LLVM 发布优化。两个工具链文件不到 70 行。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "方法与工具"
+      ],
+      "primaryCategory": "方法与工具",
+      "legacyId": 537,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/dual-toolchain-gcc-llvm-arm-embedded/",
+      "legacyUrls": [
+        "/2026/05/28/dual-toolchain-gcc-llvm-arm-embedded/",
+        "/?p=537",
+        "/index.php?p=537",
+        "/2026/05/28/dual-toolchain-gcc-llvm-arm-embedded.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/dual-toolchain-gcc-llvm-arm-embedded/",
+      "sourceSlug": "dual-toolchain-gcc-llvm-arm-embedded",
+      "file": "src\\content\\posts\\wp-537.md"
+    },
+    {
+      "id": 538,
+      "title": "软件 I2C + AT24C02 EEPROM：BSP 驱动的分层设计与时序实现",
+      "description": "三层隔离：GPIO bit-bang 时序、AT24C02 芯片协议、统一接口。展示了 BSP 层设计的四个核心原则。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 538,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/soft-i2c-at24c02-bsp-layered-design/",
+      "legacyUrls": [
+        "/2026/05/28/soft-i2c-at24c02-bsp-layered-design/",
+        "/?p=538",
+        "/index.php?p=538",
+        "/2026/05/28/soft-i2c-at24c02-bsp-layered-design.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/soft-i2c-at24c02-bsp-layered-design/",
+      "sourceSlug": "soft-i2c-at24c02-bsp-layered-design",
+      "file": "src\\content\\posts\\wp-538.md"
+    },
+    {
+      "id": 539,
+      "title": "状态机引擎内部：回调注册表、子流程模块与事件系统如何协同",
+      "description": "从状态机引擎内部视角看 psh_task_once 完整执行流、sm_* 子流程注册模式、事件系统解耦、子阶段枚举、状态切换全链路。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 539,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/state-machine-engine-internals-callbacks-sm-events/",
+      "legacyUrls": [
+        "/2026/05/28/state-machine-engine-internals-callbacks-sm-events/",
+        "/?p=539",
+        "/index.php?p=539",
+        "/2026/05/28/state-machine-engine-internals-callbacks-sm-events.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/state-machine-engine-internals-callbacks-sm-events/",
+      "sourceSlug": "state-machine-engine-internals-callbacks-sm-events",
+      "file": "src\\content\\posts\\wp-539.md"
+    },
+    {
+      "id": 541,
+      "title": "BSP 实现总览：10 个驱动模块的设计模式",
+      "description": "硬件映射表、错误码枚举映射、DMA+回调通知、纯格式化+回调分发、直接寄存器——BSP 层 10 个驱动的五种模式。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 541,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/bsp-implementation-patterns-overview/",
+      "legacyUrls": [
+        "/2026/05/28/bsp-implementation-patterns-overview/",
+        "/?p=541",
+        "/index.php?p=541",
+        "/2026/05/28/bsp-implementation-patterns-overview.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/bsp-implementation-patterns-overview/",
+      "sourceSlug": "bsp-implementation-patterns-overview",
+      "file": "src\\content\\posts\\wp-541.md"
+    },
+    {
+      "id": 542,
+      "title": "HMI 串口会话协议进化史：从 DGUS 到 HMIS 再到 HMIS-BAM",
+      "description": "V1.1 废弃 DGUS 5A A5，改为 HMI Session Protocol。SEQ 序号匹配、能力位图、参数目录动态发现、日志事件独立推送。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 542,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/hmis-session-protocol-replaces-dgus/",
+      "legacyUrls": [
+        "/2026/05/28/hmis-session-protocol-replaces-dgus/",
+        "/?p=542",
+        "/index.php?p=542",
+        "/2026/05/28/hmis-session-protocol-replaces-dgus.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/hmis-session-protocol-replaces-dgus/",
+      "sourceSlug": "hmis-session-protocol-replaces-dgus",
+      "file": "src\\content\\posts\\wp-542.md"
+    },
+    {
+      "id": 543,
+      "title": "运行时参数框架 (Runtime Config Framework)",
+      "description": "参数描述表驱动读写、CRC 校验 EEPROM 完整性、写操作不自动保存防寿命耗尽、HMIS 协议动态参数发现。",
+      "published": "2026-05-28",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战",
+        "架构与重构"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 543,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/runtime-config-internals-param-table-crc/",
+      "legacyUrls": [
+        "/2026/05/28/runtime-config-internals-param-table-crc/",
+        "/?p=543",
+        "/index.php?p=543",
+        "/2026/05/28/runtime-config-internals-param-table-crc.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/runtime-config-internals-param-table-crc/",
+      "sourceSlug": "runtime-config-internals-param-table-crc",
+      "file": "src\\content\\posts\\wp-543.md"
+    },
+    {
+      "id": 547,
+      "title": "同定时器多轴联动：四路步进共享一个 TIM 的工程实践",
+      "description": "TIM4 只有一个 ARR，四个通道共享同一频率。运行位图、start_group 同步启动、手动通道关闭避坑、二次挂轴不重置软起步——来自 1121 行步进驱动的真实工程经验。",
+      "published": "2026-05-28",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [
+        "ARCH"
+      ],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 547,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/28/shared-timer-multi-axis-stepper/",
+      "legacyUrls": [
+        "/2026/05/28/shared-timer-multi-axis-stepper/",
+        "/?p=547",
+        "/index.php?p=547",
+        "/2026/05/28/shared-timer-multi-axis-stepper.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/28/shared-timer-multi-axis-stepper/",
+      "sourceSlug": "shared-timer-multi-axis-stepper",
+      "file": "src\\content\\posts\\wp-547.md"
+    },
+    {
+      "id": 761,
+      "title": "加热器软件 PWM 设计",
+      "description": "关键词：STM32F103、IR2104 H-Bridge、NMOS 继电器、软件 PWM、packer_power_limit、 ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 761,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/加热器软件-pwm-设计/",
+      "legacyUrls": [
+        "/2026/05/29/%e5%8a%a0%e7%83%ad%e5%99%a8%e8%bd%af%e4%bb%b6-pwm-%e8%ae%be%e8%ae%a1/",
+        "/?p=761",
+        "/index.php?p=761",
+        "/2026/05/29/加热器软件-pwm-设计.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e5%8a%a0%e7%83%ad%e5%99%a8%e8%bd%af%e4%bb%b6-pwm-%e8%ae%be%e8%ae%a1/",
+      "sourceSlug": "%e5%8a%a0%e7%83%ad%e5%99%a8%e8%bd%af%e4%bb%b6-pwm-%e8%ae%be%e8%ae%a1",
+      "file": "src\\content\\posts\\wp-761.md"
+    },
+    {
+      "id": 765,
+      "title": "状态机引擎与故障管理系统：回调注册表、报警锁存与监控任务",
+      "description": "本文将一个工业控制器状态机子系统拆解为两大模块协同运作：packer_state_handler（状态切换引擎 + 事件系统）和  ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 765,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/工业控制器故障锁存与报警监控系统-packer_fault_latch-设计/",
+      "legacyUrls": [
+        "/2026/05/29/%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e6%95%85%e9%9a%9c%e9%94%81%e5%ad%98%e4%b8%8e%e6%8a%a5%e8%ad%a6%e7%9b%91%e6%8e%a7%e7%b3%bb%e7%bb%9f-packer_fault_latch-%e8%ae%be%e8%ae%a1/",
+        "/?p=765",
+        "/index.php?p=765",
+        "/2026/05/29/工业控制器故障锁存与报警监控系统-packer_fault_latch-设计.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e6%95%85%e9%9a%9c%e9%94%81%e5%ad%98%e4%b8%8e%e6%8a%a5%e8%ad%a6%e7%9b%91%e6%8e%a7%e7%b3%bb%e7%bb%9f-packer_fault_latch-%e8%ae%be%e8%ae%a1/",
+      "sourceSlug": "%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e6%95%85%e9%9a%9c%e9%94%81%e5%ad%98%e4%b8%8e%e6%8a%a5%e8%ad%a6%e7%9b%91%e6%8e%a7%e7%b3%bb%e7%bb%9f-packer_fault_latch-%e8%ae%be%e8%ae%a1",
+      "file": "src\\content\\posts\\wp-765.md"
+    },
+    {
+      "id": 766,
+      "title": "20B 固定帧协议完整实现：从帧编解码到命令分发网关",
+      "description": "本文完整呈现一套基于 20 字节固定帧的通信协议栈，覆盖物理层、数据链路层 CRC 校验、滑动窗口解码器、类型安全的数据视图、13 ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 766,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/20b-协议服务器实现-stm32f103-工业控制器上的命令校验/",
+      "legacyUrls": [
+        "/2026/05/29/20b-%e5%8d%8f%e8%ae%ae%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%ae%9e%e7%8e%b0-stm32f103-%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e4%b8%8a%e7%9a%84%e5%91%bd%e4%bb%a4%e6%a0%a1%e9%aa%8c/",
+        "/?p=766",
+        "/index.php?p=766",
+        "/2026/05/29/20b-协议服务器实现-stm32f103-工业控制器上的命令校验.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/20b-%e5%8d%8f%e8%ae%ae%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%ae%9e%e7%8e%b0-stm32f103-%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e4%b8%8a%e7%9a%84%e5%91%bd%e4%bb%a4%e6%a0%a1%e9%aa%8c/",
+      "sourceSlug": "20b-%e5%8d%8f%e8%ae%ae%e6%9c%8d%e5%8a%a1%e5%99%a8%e5%ae%9e%e7%8e%b0-stm32f103-%e5%b7%a5%e4%b8%9a%e6%8e%a7%e5%88%b6%e5%99%a8%e4%b8%8a%e7%9a%84%e5%91%bd%e4%bb%a4%e6%a0%a1%e9%aa%8c",
+      "file": "src\\content\\posts\\wp-766.md"
+    },
+    {
+      "id": 767,
+      "title": "CommTask 异步调度",
+      "description": "九、UART 错误恢复流程 CommTask 的 app_main_consume_uart_recovery_flags() 消 ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 767,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/commtask-异步调度与打印机驱动：防止状态机被-uart-阻塞的/",
+      "legacyUrls": [
+        "/2026/05/29/commtask-%e5%bc%82%e6%ad%a5%e8%b0%83%e5%ba%a6%e4%b8%8e%e6%89%93%e5%8d%b0%e6%9c%ba%e9%a9%b1%e5%8a%a8%ef%bc%9a%e9%98%b2%e6%ad%a2%e7%8a%b6%e6%80%81%e6%9c%ba%e8%a2%ab-uart-%e9%98%bb%e5%a1%9e%e7%9a%84/",
+        "/?p=767",
+        "/index.php?p=767",
+        "/2026/05/29/commtask-异步调度与打印机驱动：防止状态机被-uart-阻塞的.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/commtask-%e5%bc%82%e6%ad%a5%e8%b0%83%e5%ba%a6%e4%b8%8e%e6%89%93%e5%8d%b0%e6%9c%ba%e9%a9%b1%e5%8a%a8%ef%bc%9a%e9%98%b2%e6%ad%a2%e7%8a%b6%e6%80%81%e6%9c%ba%e8%a2%ab-uart-%e9%98%bb%e5%a1%9e%e7%9a%84/",
+      "sourceSlug": "commtask-%e5%bc%82%e6%ad%a5%e8%b0%83%e5%ba%a6%e4%b8%8e%e6%89%93%e5%8d%b0%e6%9c%ba%e9%a9%b1%e5%8a%a8%ef%bc%9a%e9%98%b2%e6%ad%a2%e7%8a%b6%e6%80%81%e6%9c%ba%e8%a2%ab-uart-%e9%98%bb%e5%a1%9e%e7%9a%84",
+      "file": "src\\content\\posts\\wp-767.md"
+    },
+    {
+      "id": 768,
+      "title": "嵌入式子状态机协作：5个流程的协同设计",
+      "description": "发表于 2026-05-29 · 分类：嵌入式实战 · 预计阅读 12 分钟 一、问题的提出 在一个典型的工业控制器项目中，我们面 ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 768,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/嵌入式子状态机协作：5个流程的协同设计/",
+      "legacyUrls": [
+        "/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%ad%90%e7%8a%b6%e6%80%81%e6%9c%ba%e5%8d%8f%e4%bd%9c%ef%bc%9a5%e4%b8%aa%e6%b5%81%e7%a8%8b%e7%9a%84%e5%8d%8f%e5%90%8c%e8%ae%be%e8%ae%a1/",
+        "/?p=768",
+        "/index.php?p=768",
+        "/2026/05/29/嵌入式子状态机协作：5个流程的协同设计.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%ad%90%e7%8a%b6%e6%80%81%e6%9c%ba%e5%8d%8f%e4%bd%9c%ef%bc%9a5%e4%b8%aa%e6%b5%81%e7%a8%8b%e7%9a%84%e5%8d%8f%e5%90%8c%e8%ae%be%e8%ae%a1/",
+      "sourceSlug": "%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%ad%90%e7%8a%b6%e6%80%81%e6%9c%ba%e5%8d%8f%e4%bd%9c%ef%bc%9a5%e4%b8%aa%e6%b5%81%e7%a8%8b%e7%9a%84%e5%8d%8f%e5%90%8c%e8%ae%be%e8%ae%a1",
+      "file": "src\\content\\posts\\wp-768.md"
+    },
+    {
+      "id": 771,
+      "title": "嵌入式物理输入采集与消抖",
+      "description": "1. 问题背景 工业现场的数字量输入信号——行程开关、光电传感器、接近开关——在物理触点切换的瞬间会持续产生 机械抖动（bounc ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 771,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/嵌入式物理输入采集与消抖/",
+      "legacyUrls": [
+        "/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e7%89%a9%e7%90%86%e8%be%93%e5%85%a5%e9%87%87%e9%9b%86%e4%b8%8e%e6%b6%88%e6%8a%96/",
+        "/?p=771",
+        "/index.php?p=771",
+        "/2026/05/29/嵌入式物理输入采集与消抖.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e7%89%a9%e7%90%86%e8%be%93%e5%85%a5%e9%87%87%e9%9b%86%e4%b8%8e%e6%b6%88%e6%8a%96/",
+      "sourceSlug": "%e5%b5%8c%e5%85%a5%e5%bc%8f%e7%89%a9%e7%90%86%e8%be%93%e5%85%a5%e9%87%87%e9%9b%86%e4%b8%8e%e6%b6%88%e6%8a%96",
+      "file": "src\\content\\posts\\wp-771.md"
+    },
+    {
+      "id": 776,
+      "title": "bsp_uart UART DMA+IDLE 深度解析",
+      "description": "系列文章 S2 · GENERIC_DEVICE_CONTROLLER 嵌入式实战 · 2026 1. 概述 GENERIC_DE ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 776,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/bsp_uart-uart-dmaidle-深度解析/",
+      "legacyUrls": [
+        "/2026/05/29/bsp_uart-uart-dmaidle-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90/",
+        "/?p=776",
+        "/index.php?p=776",
+        "/2026/05/29/bsp_uart-uart-dmaidle-深度解析.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/bsp_uart-uart-dmaidle-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90/",
+      "sourceSlug": "bsp_uart-uart-dmaidle-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90",
+      "file": "src\\content\\posts\\wp-776.md"
+    },
+    {
+      "id": 779,
+      "title": "S6: bsp_log 日志系统",
+      "description": "在嵌入式 MCU 开发中，日志系统是调试与运行状态监控的核心基础设施。本文介绍 bsp_log —— 一个专为 STM32F103 ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "方法与工具"
+      ],
+      "primaryCategory": "方法与工具",
+      "legacyId": 779,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/s6-bsp_log-日志系统/",
+      "legacyUrls": [
+        "/2026/05/29/s6-bsp_log-%e6%97%a5%e5%bf%97%e7%b3%bb%e7%bb%9f/",
+        "/?p=779",
+        "/index.php?p=779",
+        "/2026/05/29/s6-bsp_log-日志系统.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/s6-bsp_log-%e6%97%a5%e5%bf%97%e7%b3%bb%e7%bb%9f/",
+      "sourceSlug": "s6-bsp_log-%e6%97%a5%e5%bf%97%e7%b3%bb%e7%bb%9f",
+      "file": "src\\content\\posts\\wp-779.md"
+    },
+    {
+      "id": 780,
+      "title": "AT24C02 EEPROM 驱动 — Software Bit-Bang I2C on STM32F103",
+      "description": "本文记录了 GENERIC_DEVICE_CONTROLLER 项目中 AT24C02 EEPROM 驱动的完整实现。设计采用双层 ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 780,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/article-s5-at24c02-eeprom-驱动-software-bit-bang-i2c-on-stm32f103/",
+      "legacyUrls": [
+        "/2026/05/29/article-s5-at24c02-eeprom-%e9%a9%b1%e5%8a%a8-software-bit-bang-i2c-on-stm32f103/",
+        "/?p=780",
+        "/index.php?p=780",
+        "/2026/05/29/article-s5-at24c02-eeprom-驱动-software-bit-bang-i2c-on-stm32f103.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/article-s5-at24c02-eeprom-%e9%a9%b1%e5%8a%a8-software-bit-bang-i2c-on-stm32f103/",
+      "sourceSlug": "article-s5-at24c02-eeprom-%e9%a9%b1%e5%8a%a8-software-bit-bang-i2c-on-stm32f103",
+      "file": "src\\content\\posts\\wp-780.md"
+    },
+    {
+      "id": 782,
+      "title": "bsp_adc 深度解析：ADC1 DMA 采样与多任务协作",
+      "description": "系列文章 S4 · 2026-05-29 1. 概述 本篇文章深入分析 bsp_adc 模块的实现——基于 STM32F103 的 ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 782,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/bsp_adc-深度解析：adc1-dma-采样与多任务协作/",
+      "legacyUrls": [
+        "/2026/05/29/bsp_adc-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90%ef%bc%9aadc1-dma-%e9%87%87%e6%a0%b7%e4%b8%8e%e5%a4%9a%e4%bb%bb%e5%8a%a1%e5%8d%8f%e4%bd%9c/",
+        "/?p=782",
+        "/index.php?p=782",
+        "/2026/05/29/bsp_adc-深度解析：adc1-dma-采样与多任务协作.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/bsp_adc-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90%ef%bc%9aadc1-dma-%e9%87%87%e6%a0%b7%e4%b8%8e%e5%a4%9a%e4%bb%bb%e5%8a%a1%e5%8d%8f%e4%bd%9c/",
+      "sourceSlug": "bsp_adc-%e6%b7%b1%e5%ba%a6%e8%a7%a3%e6%9e%90%ef%bc%9aadc1-dma-%e9%87%87%e6%a0%b7%e4%b8%8e%e5%a4%9a%e4%bb%bb%e5%8a%a1%e5%8d%8f%e4%bd%9c",
+      "file": "src\\content\\posts\\wp-782.md"
+    },
+    {
+      "id": 788,
+      "title": "SA3｜遗留 DGUS 串口屏驱动：从裸协议到推送引擎的归档解读",
+      "description": "技术归档说明：本文是包装机项目早期基于 DWIN DGUS 内核的串口屏驱动（V1/V2）的技术实现归档。该系统目前已被更安全的  ...",
+      "published": "2026-05-29",
+      "updated": "2026-08-18",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "方法与工具"
+      ],
+      "primaryCategory": "方法与工具",
+      "legacyId": 788,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/sa3｜遗留-dgus-串口屏驱动：从裸协议到推送引擎的归档/",
+      "legacyUrls": [
+        "/2026/05/29/sa3%ef%bd%9c%e9%81%97%e7%95%99-dgus-%e4%b8%b2%e5%8f%a3%e5%b1%8f%e9%a9%b1%e5%8a%a8%ef%bc%9a%e4%bb%8e%e8%a3%b8%e5%8d%8f%e8%ae%ae%e5%88%b0%e6%8e%a8%e9%80%81%e5%bc%95%e6%93%8e%e7%9a%84%e5%bd%92%e6%a1%a3/",
+        "/?p=788",
+        "/index.php?p=788",
+        "/2026/05/29/sa3｜遗留-dgus-串口屏驱动：从裸协议到推送引擎的归档.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/sa3%ef%bd%9c%e9%81%97%e7%95%99-dgus-%e4%b8%b2%e5%8f%a3%e5%b1%8f%e9%a9%b1%e5%8a%a8%ef%bc%9a%e4%bb%8e%e8%a3%b8%e5%8d%8f%e8%ae%ae%e5%88%b0%e6%8e%a8%e9%80%81%e5%bc%95%e6%93%8e%e7%9a%84%e5%bd%92%e6%a1%a3/",
+      "sourceSlug": "sa3%ef%bd%9c%e9%81%97%e7%95%99-dgus-%e4%b8%b2%e5%8f%a3%e5%b1%8f%e9%a9%b1%e5%8a%a8%ef%bc%9a%e4%bb%8e%e8%a3%b8%e5%8d%8f%e8%ae%ae%e5%88%b0%e6%8e%a8%e9%80%81%e5%bc%95%e6%93%8e%e7%9a%84%e5%bd%92%e6%a1%a3",
+      "file": "src\\content\\posts\\wp-788.md"
+    },
+    {
+      "id": 791,
+      "title": "嵌入式开发环境搭建完全指南：从 WSL2 到完整 STM32 工具链",
+      "description": "嵌入式开发环境的搭建是对接硬件之前的第一个坑。本文把整套环境从零到完整的搭建过程整合为一，覆盖 WSL2 配置、工具链安装、VSC ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战",
+        "方法与工具"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 791,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/嵌入式开发环境搭建完全指南：从-wsl2-到完整-stm32-工具/",
+      "legacyUrls": [
+        "/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97%ef%bc%9a%e4%bb%8e-wsl2-%e5%88%b0%e5%ae%8c%e6%95%b4-stm32-%e5%b7%a5%e5%85%b7/",
+        "/?p=791",
+        "/index.php?p=791",
+        "/2026/05/29/嵌入式开发环境搭建完全指南：从-wsl2-到完整-stm32-工具.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97%ef%bc%9a%e4%bb%8e-wsl2-%e5%88%b0%e5%ae%8c%e6%95%b4-stm32-%e5%b7%a5%e5%85%b7/",
+      "sourceSlug": "%e5%b5%8c%e5%85%a5%e5%bc%8f%e5%bc%80%e5%8f%91%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%ae%8c%e5%85%a8%e6%8c%87%e5%8d%97%ef%bc%9a%e4%bb%8e-wsl2-%e5%88%b0%e5%ae%8c%e6%95%b4-stm32-%e5%b7%a5%e5%85%b7",
+      "file": "src\\content\\posts\\wp-791.md"
+    },
+    {
+      "id": 796,
+      "title": "步进电机完整驱动指南：BSP 驱动层到运动控制算法",
+      "description": "TL;DR：STM32F103 上四轴步进电机驱动从 BSP 层到运动算法的完整工程模式。硬件层用 TMC2209 UART 配置 ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "嵌入式实战"
+      ],
+      "primaryCategory": "嵌入式实战",
+      "legacyId": 796,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/步进电机完整驱动指南：bsp-驱动层到运动控制算法/",
+      "legacyUrls": [
+        "/2026/05/29/%e6%ad%a5%e8%bf%9b%e7%94%b5%e6%9c%ba%e5%ae%8c%e6%95%b4%e9%a9%b1%e5%8a%a8%e6%8c%87%e5%8d%97%ef%bc%9absp-%e9%a9%b1%e5%8a%a8%e5%b1%82%e5%88%b0%e8%bf%90%e5%8a%a8%e6%8e%a7%e5%88%b6%e7%ae%97%e6%b3%95/",
+        "/?p=796",
+        "/index.php?p=796",
+        "/2026/05/29/步进电机完整驱动指南：bsp-驱动层到运动控制算法.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/%e6%ad%a5%e8%bf%9b%e7%94%b5%e6%9c%ba%e5%ae%8c%e6%95%b4%e9%a9%b1%e5%8a%a8%e6%8c%87%e5%8d%97%ef%bc%9absp-%e9%a9%b1%e5%8a%a8%e5%b1%82%e5%88%b0%e8%bf%90%e5%8a%a8%e6%8e%a7%e5%88%b6%e7%ae%97%e6%b3%95/",
+      "sourceSlug": "%e6%ad%a5%e8%bf%9b%e7%94%b5%e6%9c%ba%e5%ae%8c%e6%95%b4%e9%a9%b1%e5%8a%a8%e6%8c%87%e5%8d%97%ef%bc%9absp-%e9%a9%b1%e5%8a%a8%e5%b1%82%e5%88%b0%e8%bf%90%e5%8a%a8%e6%8e%a7%e5%88%b6%e7%ae%97%e6%b3%95",
+      "file": "src\\content\\posts\\wp-796.md"
+    },
+    {
+      "id": 798,
+      "title": "HPM SDK Cmake 开发记录",
+      "description": "去年帮一个团队从 STM32F407 迁移到 HPM6880，对方提了两个要求：第一，CANFD 不能丢帧；第二，LVGL 要跑满 ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "学习笔记",
+        "嵌入式实战"
+      ],
+      "primaryCategory": "学习笔记",
+      "legacyId": 798,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/hpm-sdk-工程化开发指南：环境搭建到双核部署/",
+      "legacyUrls": [
+        "/2026/05/29/hpm-sdk-%e5%b7%a5%e7%a8%8b%e5%8c%96%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97%ef%bc%9a%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%88%b0%e5%8f%8c%e6%a0%b8%e9%83%a8%e7%bd%b2/",
+        "/?p=798",
+        "/index.php?p=798",
+        "/2026/05/29/hpm-sdk-工程化开发指南：环境搭建到双核部署.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/hpm-sdk-%e5%b7%a5%e7%a8%8b%e5%8c%96%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97%ef%bc%9a%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%88%b0%e5%8f%8c%e6%a0%b8%e9%83%a8%e7%bd%b2/",
+      "sourceSlug": "hpm-sdk-%e5%b7%a5%e7%a8%8b%e5%8c%96%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97%ef%bc%9a%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e5%88%b0%e5%8f%8c%e6%a0%b8%e9%83%a8%e7%bd%b2",
+      "file": "src\\content\\posts\\wp-798.md"
+    },
+    {
+      "id": 861,
+      "title": "Flutter HMI 上位机架构全解：串口抽象、协议桥接与仪表盘面板设计",
+      "description": "TL;DR —— Flutter HMI 上位机从串口硬件抽象到仪表盘面板共四层架构，核心文件 hmi_dashboard_pag ...",
+      "published": "2026-05-29",
+      "updated": "2026-06-02",
+      "draft": false,
+      "image": "",
+      "tags": [],
+      "categories": [
+        "方法与工具"
+      ],
+      "primaryCategory": "方法与工具",
+      "legacyId": 861,
+      "contentType": "post",
+      "canonicalPath": "/2026/05/29/flutter-工业-hmi-仪表盘-ui-架构：3746-行的响应式控制面板设计/",
+      "legacyUrls": [
+        "/2026/05/29/flutter-%e5%b7%a5%e4%b8%9a-hmi-%e4%bb%aa%e8%a1%a8%e7%9b%98-ui-%e6%9e%b6%e6%9e%84%ef%bc%9a3746-%e8%a1%8c%e7%9a%84%e5%93%8d%e5%ba%94%e5%bc%8f%e6%8e%a7%e5%88%b6%e9%9d%a2%e6%9d%bf%e8%ae%be%e8%ae%a1/",
+        "/?p=861",
+        "/index.php?p=861",
+        "/2026/05/29/flutter-工业-hmi-仪表盘-ui-架构：3746-行的响应式控制面板设计.html"
+      ],
+      "sourceUrl": "https://babel36acl.xyz/2026/05/29/flutter-%e5%b7%a5%e4%b8%9a-hmi-%e4%bb%aa%e8%a1%a8%e7%9b%98-ui-%e6%9e%b6%e6%9e%84%ef%bc%9a3746-%e8%a1%8c%e7%9a%84%e5%93%8d%e5%ba%94%e5%bc%8f%e6%8e%a7%e5%88%b6%e9%9d%a2%e6%9d%bf%e8%ae%be%e8%ae%a1/",
+      "sourceSlug": "flutter-%e5%b7%a5%e4%b8%9a-hmi-%e4%bb%aa%e8%a1%a8%e7%9b%98-ui-%e6%9e%b6%e6%9e%84%ef%bc%9a3746-%e8%a1%8c%e7%9a%84%e5%93%8d%e5%ba%94%e5%bc%8f%e6%8e%a7%e5%88%b6%e9%9d%a2%e6%9d%bf%e8%ae%be%e8%ae%a1",
+      "file": "src\\content\\posts\\wp-861.md"
+    }
+  ],
+  "pages": [
+    {
+      "id": 786,
+      "title": "方法与工具",
+      "description": "嵌入式开发中的方法论总结、工具链技巧与工作流设计。 一、Flutter HMI 工具链 Flutter HMI 完整架构 — 串口 ...",
+      "published": "2026-05-29",
+      "updated": "2026-05-29",
+      "draft": false,
+      "slug": "方法与工具",
+      "legacyId": 786,
+      "canonicalPath": "/方法与工具/",
+      "legacyUrls": [
+        "/%e6%96%b9%e6%b3%95%e4%b8%8e%e5%b7%a5%e5%85%b7/",
+        "/?page_id=786",
+        "/index.php?page_id=786",
+        "/方法与工具.html"
+      ],
+      "sourceSlug": "方法与工具",
+      "file": "src\\content\\pages\\wp-786.md"
+    },
+    {
+      "id": 430,
+      "title": "🌌音乐",
+      "description": "EmotionalArtcoreArchive 有些音乐不像歌曲。 更像：深夜的城市、雨中的列车、 漂浮的电子钢琴、崩塌的世界、  ...",
+      "published": "2026-05-28",
+      "updated": "2026-05-28",
+      "draft": false,
+      "slug": "emotional-artcore",
+      "legacyId": 430,
+      "canonicalPath": "/emotional-artcore/",
+      "legacyUrls": [
+        "/emotional-artcore/",
+        "/?page_id=430",
+        "/index.php?page_id=430",
+        "/emotional-artcore.html"
+      ],
+      "sourceSlug": "emotional-artcore",
+      "file": "src\\content\\pages\\wp-430.md"
+    },
+    {
+      "id": 375,
+      "title": "🎮 游戏",
+      "description": "这里收和游戏有关的记录、体验与观察，适合放游玩感受、机制印象和一些愿意单独写下来的片段。",
+      "published": "2026-05-26",
+      "updated": "2026-05-28",
+      "draft": false,
+      "slug": "games",
+      "legacyId": 375,
+      "canonicalPath": "/games/",
+      "legacyUrls": [
+        "/games/",
+        "/?page_id=375",
+        "/index.php?page_id=375",
+        "/games.html"
+      ],
+      "sourceSlug": "games",
+      "file": "src\\content\\pages\\wp-375.md"
+    },
+    {
+      "id": 373,
+      "title": "游记",
+      "description": "这里收纳旅途中留下来的记录：路线、见闻、片段和途中那些值得写下来的细节。",
+      "published": "2026-05-26",
+      "updated": "2026-05-28",
+      "draft": false,
+      "slug": "travel-notes",
+      "legacyId": 373,
+      "canonicalPath": "/travel-notes/",
+      "legacyUrls": [
+        "/travel-notes/",
+        "/?page_id=373",
+        "/index.php?page_id=373",
+        "/travel-notes.html"
+      ],
+      "sourceSlug": "travel-notes",
+      "file": "src\\content\\pages\\wp-373.md"
+    },
+    {
+      "id": 201,
+      "title": "首页",
+      "description": "首页",
+      "published": "2025-01-01",
+      "updated": null,
+      "draft": true,
+      "slug": "home",
+      "legacyId": 201,
+      "canonicalPath": "/home/",
+      "legacyUrls": [
+        "/",
+        "/?page_id=201",
+        "/index.php?page_id=201",
+        "/home.html"
+      ],
+      "sourceSlug": "home",
+      "file": "src\\content\\pages\\wp-201.md"
+    },
+    {
+      "id": 192,
+      "title": "搜索",
+      "description": "站内搜索入口页，适合按关键词查找文章、专题和工具。",
+      "published": "2026-05-26",
+      "updated": "2026-05-26",
+      "draft": false,
+      "slug": "search",
+      "legacyId": 192,
+      "canonicalPath": "/search/",
+      "legacyUrls": [
+        "/search/",
+        "/?page_id=192",
+        "/index.php?page_id=192",
+        "/search.html"
+      ],
+      "sourceSlug": "search",
+      "file": "src\\content\\pages\\wp-192.md"
+    },
+    {
+      "id": 190,
+      "title": "关于",
+      "description": "这是一个围绕嵌入式实战、工程复盘、架构重构、工具实践，以及生活记录展开的个人站点。",
+      "published": "2026-05-26",
+      "updated": "2026-05-28",
+      "draft": false,
+      "slug": "about",
+      "legacyId": 190,
+      "canonicalPath": "/about/",
+      "legacyUrls": [
+        "/about/",
+        "/?page_id=190",
+        "/index.php?page_id=190",
+        "/about.html"
+      ],
+      "sourceSlug": "about",
+      "file": "src\\content\\pages\\wp-190.md"
+    },
+    {
+      "id": 188,
+      "title": "工具箱",
+      "description": "这里集中放站点里的可交互工具和实用页面，目前已收录 J1939 DM1 计算器。",
+      "published": "2026-05-26",
+      "updated": "2026-06-11",
+      "draft": false,
+      "slug": "toolbox",
+      "legacyId": 188,
+      "canonicalPath": "/toolbox/",
+      "legacyUrls": [
+        "/toolbox/",
+        "/?page_id=188",
+        "/index.php?page_id=188",
+        "/toolbox.html"
+      ],
+      "sourceSlug": "toolbox",
+      "file": "src\\content\\pages\\wp-188.md"
+    },
+    {
+      "id": 186,
+      "title": "架构与重构",
+      "description": "这里集中放职责边界、补丁层、参数语义和跨层耦合等结构性问题。",
+      "published": "2026-05-26",
+      "updated": "2026-05-29",
+      "draft": false,
+      "slug": "architecture-and-refactoring",
+      "legacyId": 186,
+      "canonicalPath": "/architecture-and-refactoring/",
+      "legacyUrls": [
+        "/architecture-and-refactoring/",
+        "/?page_id=186",
+        "/index.php?page_id=186",
+        "/architecture-and-refactoring.html"
+      ],
+      "sourceSlug": "architecture-and-refactoring",
+      "file": "src\\content\\pages\\wp-186.md"
+    },
+    {
+      "id": 184,
+      "title": "工程复盘",
+      "description": "这里集中放站内偏复盘和问题归因的文章，重点不是修了什么，而是为什么相似问题会反复出现。",
+      "published": "2026-05-26",
+      "updated": "2026-05-29",
+      "draft": false,
+      "slug": "engineering-retrospective",
+      "legacyId": 184,
+      "canonicalPath": "/engineering-retrospective/",
+      "legacyUrls": [
+        "/engineering-retrospective/",
+        "/?page_id=184",
+        "/index.php?page_id=184",
+        "/engineering-retrospective.html"
+      ],
+      "sourceSlug": "engineering-retrospective",
+      "file": "src\\content\\pages\\wp-184.md"
+    },
+    {
+      "id": 182,
+      "title": "嵌入式专题",
+      "description": "站内嵌入式内容的总入口，按实战、复盘、重构和方法四条线组织。",
+      "published": "2026-05-26",
+      "updated": "2026-05-29",
+      "draft": false,
+      "slug": "embedded-topics",
+      "legacyId": 182,
+      "canonicalPath": "/embedded-topics/",
+      "legacyUrls": [
+        "/embedded-topics/",
+        "/?page_id=182",
+        "/index.php?page_id=182",
+        "/embedded-topics.html"
+      ],
+      "sourceSlug": "embedded-topics",
+      "file": "src\\content\\pages\\wp-182.md"
+    },
+    {
+      "id": 110,
+      "title": "J1939 DM1计算器",
+      "description": "用于计算和校验 J1939 DM1 诊断报文的工具页，适合在联调和报文排查时快速验证结果。",
+      "published": "2026-01-21",
+      "updated": "2026-05-26",
+      "draft": false,
+      "slug": "j1939-dm1计算器",
+      "legacyId": 110,
+      "canonicalPath": "/j1939-dm1计算器/",
+      "legacyUrls": [
+        "/j1939-dm1%e8%ae%a1%e7%ae%97%e5%99%a8/",
+        "/?page_id=110",
+        "/index.php?page_id=110",
+        "/j1939-dm1计算器.html"
+      ],
+      "sourceSlug": "j1939-dm1计算器",
+      "file": "src\\content\\pages\\wp-110.md"
+    },
+    {
+      "id": 12,
+      "title": "学习记录",
+      "description": "这里主要收录偏资料型、阅读型和方法型的学习笔记，适合按时间线浏览。",
+      "published": "2025-11-25",
+      "updated": "2026-05-26",
+      "draft": false,
+      "slug": "学习记录",
+      "legacyId": 12,
+      "canonicalPath": "/学习记录/",
+      "legacyUrls": [
+        "/%e5%ad%a6%e4%b9%a0%e8%ae%b0%e5%bd%95/",
+        "/?page_id=12",
+        "/index.php?page_id=12",
+        "/学习记录.html"
+      ],
+      "sourceSlug": "学习记录",
+      "file": "src\\content\\pages\\wp-12.md"
+    },
+    {
+      "id": 3,
+      "title": "隐私政策",
+      "description": "隐私政策",
+      "published": "2025-01-01",
+      "updated": null,
+      "draft": true,
+      "slug": "privacy-policy",
+      "legacyId": 3,
+      "canonicalPath": "/privacy-policy/",
+      "legacyUrls": [
+        "/",
+        "/?page_id=3",
+        "/index.php?page_id=3",
+        "/privacy-policy.html"
+      ],
+      "sourceSlug": "privacy-policy",
+      "file": "src\\content\\pages\\wp-3.md"
+    }
+  ]
+}

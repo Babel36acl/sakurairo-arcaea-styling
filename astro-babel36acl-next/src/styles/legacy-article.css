@@ -1,0 +1,35 @@
+/* Article shell and runtime adapters. Content paint lives in the scoped
+ * reference stylesheet; these rules connect it to the shared Astro components. */
+html.legacy-article-root { background: #333; overflow-y: unset; }
+body.legacy-article { background-image: url('/assets/gallery/sakurairo-reference.jpg'); background-attachment: fixed; background-position: center; background-size: auto; }
+body.legacy-article .sakurairo-home-header { display: flex !important; }
+body.legacy-article .blank { padding-top: 75px; }
+body.legacy-article .sakurairo-article-header .nav-search-wrapper { flex-basis: auto; width: max-content; }
+body.legacy-article .nav-article-title { display: block; }
+body.legacy-article .nav-search-wrapper[data-scrollswap] { overflow: hidden; }
+body.legacy-article .site-header:not(:hover) .nav-search-wrapper[data-scrollswap] { flex-basis: var(--article-title-width); width: var(--article-title-width); }
+body.legacy-article .nav-search-wrapper[data-scrollswap] .nav-article-title { opacity: 1; }
+body.legacy-article .site-header:hover .nav-article-title { opacity: 0; }
+body.legacy-article .sakurairo-article-header .mo-toc-button { display: none; padding: 0; border: 0; background: transparent; color: inherit; box-shadow: none; font-size: 16px; line-height: inherit; }
+@media(max-width:860px) { body.legacy-article .sakurairo-article-header .mo-toc-button { display: flex; } }
+body.legacy-article .background_blur { position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; transition: none; pointer-events: none; z-index: 0; }
+body.legacy-article .current_blur { -webkit-backdrop-filter: saturate(1.2) blur(8px); backdrop-filter: saturate(1.2) blur(8px); }
+body.legacy-article img { display: inline; vertical-align: baseline; }
+body.legacy-article .fa-brands, body.legacy-article .fa-solid, body.legacy-article .fa-regular { font-style: normal; line-height: 1; }
+body.legacy-article .user-menu-wrapper .fa-circle-user { font-size: 35px; }
+body.legacy-article #colophon svg { display: inline; vertical-align: baseline; }
+body.legacy-article .entry-content ul { list-style: disc; }
+body.legacy-article .entry-content ol { list-style: decimal; }
+body.legacy-article .entry-content .mermaid { visibility: visible; }
+body.legacy-article .fa-feather { --fa: '\f52d'; }
+body.legacy-article .fa-circle-user { --fa: '\f2bd'; }
+body.legacy-article .fa-magnifying-glass { --fa: '\f002'; }
+body.legacy-article .fa-caret-up { --fa: '\f0d8'; }
+body.legacy-article .fa-compass-drafting { --fa: '\f568'; }
+body.legacy-article .fa-lg { font-size: 1.25em; line-height: .05em; vertical-align: -.075em; }
+body.legacy-article .fa-calendar-day { --fa: '\f783'; }
+body.legacy-article .fa-brands { font-family: 'Font Awesome 6 Brands'; font-weight: 400; }
+body.legacy-article .fa-brands::before { content: var(--fa); }
+body.legacy-article .fa-creative-commons { --fa: '\f25e'; }
+body.legacy-article .fa-creative-commons-by { --fa: '\f4e7'; }
+body.legacy-article .fa-creative-commons-sa { --fa: '\f4ef'; }

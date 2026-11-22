@@ -1,0 +1,14 @@
+@font-face{font-family:"FiraCode Nerd Font Propo";font-style:normal;font-weight:400;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783133-FiraCodeNerdFontPropo-Regular.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Propo";font-style:normal;font-weight:300;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783134-FiraCodeNerdFontPropo-Light.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Propo";font-style:normal;font-weight:600;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783135-FiraCodeNerdFontPropo-SemiBold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Propo";font-style:normal;font-weight:700;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783137-FiraCodeNerdFontPropo-Bold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Mono";font-style:normal;font-weight:400;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783154-FiraCodeNerdFontMono-Regular.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Mono";font-style:normal;font-weight:700;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783156-FiraCodeNerdFontMono-Bold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Mono";font-style:normal;font-weight:600;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783157-FiraCodeNerdFontMono-SemiBold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font Mono";font-style:normal;font-weight:300;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783157-FiraCodeNerdFontMono-Light.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font";font-style:normal;font-weight:700;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783175-FiraCodeNerdFont-Bold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font";font-style:normal;font-weight:300;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783176-FiraCodeNerdFont-Light.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font";font-style:normal;font-weight:400;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783177-FiraCodeNerdFont-Regular.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font";font-style:normal;font-weight:600;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783179-FiraCodeNerdFont-SemiBold.ttf') format('truetype');}
+@font-face{font-family:"FiraCode Nerd Font";font-style:normal;font-weight:500;font-display:fallback;src:url('/assets/legacy-code/fonts/1779783179-FiraCodeNerdFont-Medium.ttf') format('truetype');}
+@font-face{font-family:"Font Awesome 6 Brands";font-style:normal;font-weight:400;font-display:block;src:url("/assets/legacy-code/fonts/fa-brands-400.woff2") format("woff2")}

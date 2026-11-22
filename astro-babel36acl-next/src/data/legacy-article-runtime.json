@@ -1,0 +1,379 @@
+{
+  "config": {
+    "lineNumbers": "1",
+    "prismEnabled": "1",
+    "mermaidEnabled": "1",
+    "katexEnabled": "1",
+    "mermaidCompatMode": "auto"
+  },
+  "manifest": {
+    "groups": {
+      "prism": {
+        "scripts": [
+          "bac-prism-core",
+          "bac-prism-toolbar",
+          "bac-prism-lang",
+          "bac-prism-norm",
+          "bac-prism-cmd",
+          "bac-prism-tree",
+          "bac-prism-ln",
+          "bac-prism-lh",
+          "bac-prism-braces",
+          "bac-prism-previewers",
+          "bac-prism-copy",
+          "bac-prism-autoloader",
+          "bac-prism-titlebar",
+          "bac-prism-fold",
+          "bac-prism-previewers-init",
+          "bac-prism-init"
+        ],
+        "styles": [
+          "bac-prism-base",
+          "bac-prism-toolbar",
+          "bac-prism-arcaea-common",
+          "bac-prism-arcaea-theme",
+          "bac-prism-wrap",
+          "bac-prism-ln",
+          "bac-prism-lh",
+          "bac-prism-previewers",
+          "bac-prism-previewers-arcaea",
+          "bac-prism-titlebar",
+          "bac-prism-fold"
+        ]
+      },
+      "zoom": {
+        "scripts": [
+          "bac-medium-zoom",
+          "bac-image-zoom-init"
+        ],
+        "styles": []
+      },
+      "mermaid": {
+        "scripts": [
+          "bac-mermaid-init",
+          "bac-mermaid-enhance"
+        ],
+        "styles": [
+          "bac-mermaid",
+          "bac-mermaid-enhance"
+        ]
+      },
+      "math": {
+        "scripts": [
+          "bac-katex-js",
+          "bac-katex-autorender",
+          "bac-katex-init"
+        ],
+        "styles": [
+          "bac-katex",
+          "bac-latex"
+        ]
+      }
+    },
+    "scripts": {
+      "bac-prism-core": {
+        "src": "/assets/legacy-code/prism/prism.js?ver=1791339618",
+        "deps": [],
+        "before": [
+          false,
+          "window.Prism=window.Prism||{};window.Prism.manual=true;"
+        ],
+        "after": []
+      },
+      "bac-prism-toolbar": {
+        "src": "/assets/legacy-code/prism/prism-toolbar.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-lang": {
+        "src": "/assets/legacy-code/prism/prism-show-language.js?ver=1791339618",
+        "deps": [
+          "bac-prism-toolbar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-norm": {
+        "src": "/assets/legacy-code/prism/prism-normalize-whitespace.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-cmd": {
+        "src": "/assets/legacy-code/prism/prism-command-line.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-tree": {
+        "src": "/assets/legacy-code/prism/prism-treeview.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-ln": {
+        "src": "/assets/legacy-code/prism/prism-line-numbers.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-lh": {
+        "src": "/assets/legacy-code/prism/prism-line-highlight.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-braces": {
+        "src": "/assets/legacy-code/prism/prism-match-braces.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-previewers": {
+        "src": "/assets/legacy-code/prism/prism-previewers.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-copy": {
+        "src": "/assets/legacy-code/prism/prism-copy.js?ver=1791339618",
+        "deps": [
+          "bac-prism-toolbar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-autoloader": {
+        "src": "/assets/legacy-code/prism/prism-autoloader.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core"
+        ],
+        "before": [
+          "var BAC_Prism = {\"langPath\":\"/assets/legacy-code/prism/components/\"};"
+        ],
+        "after": [
+          false,
+          "if(window.Prism&&Prism.plugins&&Prism.plugins.autoloader&&window.BAC_Prism){Prism.plugins.autoloader.languages_path=BAC_Prism.langPath;Prism.plugins.autoloader.use_minified=false;}"
+        ]
+      },
+      "bac-prism-titlebar": {
+        "src": "/assets/legacy-code/prism/prism-titlebar.js?ver=1791339618",
+        "deps": [
+          "bac-prism-core",
+          "bac-prism-toolbar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-fold": {
+        "src": "/assets/legacy-code/prism/prism-fold.js?ver=1791339618",
+        "deps": [
+          "bac-prism-titlebar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-previewers-init": {
+        "src": "/assets/legacy-code/prism/prism-previewers-init.js?ver=1791339618",
+        "deps": [
+          "bac-prism-previewers"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-init": {
+        "src": "/assets/legacy-code/prism/prism-init.js?ver=1791339618",
+        "deps": [
+          "bac-prism-titlebar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-medium-zoom": {
+        "src": "/assets/legacy-code/js/medium-zoom.min.js?ver=1.1.0",
+        "deps": [],
+        "before": [],
+        "after": []
+      },
+      "bac-image-zoom-init": {
+        "src": "/assets/legacy-code/js/image-zoom-init.js?ver=1791339618",
+        "deps": [
+          "bac-medium-zoom"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-mermaid-init": {
+        "src": "/assets/legacy-code/mermaid/mermaid-init.js?ver=1791339618",
+        "deps": [],
+        "before": [
+          "var BAC_Mermaid = {\"mermaidUrl\":\"/assets/legacy-code/mermaid/mermaid.esm.min.mjs\"};"
+        ],
+        "after": []
+      },
+      "bac-mermaid-enhance": {
+        "src": "/assets/legacy-code/mermaid/mermaid-enhance.js?ver=1791339618",
+        "deps": [
+          "bac-mermaid-init"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-katex-js": {
+        "src": "/assets/legacy-code/katex/katex.min.js?ver=0.19.0",
+        "deps": [],
+        "before": [],
+        "after": []
+      },
+      "bac-katex-autorender": {
+        "src": "/assets/legacy-code/katex/auto-render.min.js?ver=0.19.0",
+        "deps": [
+          "bac-katex-js"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-katex-init": {
+        "src": "/assets/legacy-code/katex/katex-init.js?ver=1791339618",
+        "deps": [
+          "bac-katex-autorender"
+        ],
+        "before": [],
+        "after": []
+      }
+    },
+    "styles": {
+      "bac-prism-base": {
+        "src": "/assets/legacy-code/prism/prism.css?ver=1791339618",
+        "deps": [],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-toolbar": {
+        "src": "/assets/legacy-code/prism/prism-toolbar.css?ver=1791339618",
+        "deps": [
+          "bac-prism-base"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-arcaea-common": {
+        "src": "/assets/legacy-code/prism/themes/arcaea-common.css?ver=1791339618",
+        "deps": [
+          "bac-prism-toolbar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-arcaea-theme": {
+        "src": "/assets/legacy-code/prism/themes/arcaea-dark.css?ver=1791339618",
+        "deps": [
+          "bac-prism-arcaea-common"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-wrap": {
+        "src": "/assets/legacy-code/css/bac-prism-wrap.css?ver=1791339618",
+        "deps": [
+          "bac-prism-arcaea-theme"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-ln": {
+        "src": "/assets/legacy-code/prism/prism-line-numbers.css?ver=1791339618",
+        "deps": [
+          "bac-prism-arcaea-theme"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-lh": {
+        "src": "/assets/legacy-code/prism/prism-line-highlight.css?ver=1791339618",
+        "deps": [
+          "bac-prism-arcaea-theme"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-previewers": {
+        "src": "/assets/legacy-code/prism/prism-previewers.css?ver=1791339618",
+        "deps": [
+          "bac-prism-arcaea-theme"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-previewers-arcaea": {
+        "src": "/assets/legacy-code/prism/prism-previewers-arcaea.css?ver=1791339618",
+        "deps": [
+          "bac-prism-previewers"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-titlebar": {
+        "src": "/assets/legacy-code/prism/prism-titlebar.css?ver=1791339618",
+        "deps": [
+          "bac-prism-wrap"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-prism-fold": {
+        "src": "/assets/legacy-code/prism/prism-fold.css?ver=1791339618",
+        "deps": [
+          "bac-prism-titlebar"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-mermaid": {
+        "src": "/assets/legacy-code/mermaid/mermaid.css?ver=1791339618",
+        "deps": [],
+        "before": [],
+        "after": []
+      },
+      "bac-mermaid-enhance": {
+        "src": "/assets/legacy-code/mermaid/mermaid-enhance.css?ver=1791339618",
+        "deps": [
+          "bac-mermaid"
+        ],
+        "before": [],
+        "after": []
+      },
+      "bac-katex": {
+        "src": "/assets/legacy-code/katex/katex.min.css?ver=0.19.0",
+        "deps": [],
+        "before": [],
+        "after": []
+      },
+      "bac-latex": {
+        "src": "/assets/legacy-code/css/bac-latex.css?ver=1791339618",
+        "deps": [
+          "bac-katex"
+        ],
+        "before": [],
+        "after": []
+      }
+    }
+  }
+}

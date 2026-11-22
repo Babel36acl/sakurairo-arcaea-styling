@@ -1,0 +1,546 @@
+/* Phase 2C: the legacy homepage exhibition owns this block's geometry. */
+body.legacy-post-list .exhibition-area-container {
+	width: 100%;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding-top: 4%;
+}
+
+body.legacy-post-list h1.fes-title {
+	color: var(--theme-skin, #505050);
+	font-size: 18px;
+	font-weight: var(--global-font-weight, 400);
+	padding-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	opacity: 0;
+	content-visibility: hidden;
+	contain-intrinsic-size: auto none;
+}
+
+body.legacy-post-list .bento-grid {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-auto-rows: minmax(3rem, auto);
+	gap: 1.25rem;
+	width: 100%;
+	margin: 15px 0;
+}
+
+body.legacy-post-list .bento-item {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba(255, 255, 255, var(--front_background-transparency, 0.8));
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 1.25rem;
+	box-shadow: 0 4px 24px -8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+	transition: all 0.3s ease;
+	opacity: 0;
+	content-visibility: hidden;
+	contain-intrinsic-size: auto none;
+}
+
+body.legacy-post-list .bento-item::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+	pointer-events: none;
+}
+
+body.legacy-post-list .bento-item::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 0.25rem;
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.5) 70%, rgba(255, 255, 255, 0.7) 100%);
+	transition: all 0.3s ease;
+	z-index: 2;
+}
+
+body.legacy-post-list .bento-medium {
+	grid-column: span 4;
+	grid-row: span 2;
+	min-height: 18rem;
+	overflow: hidden;
+}
+
+body.legacy-post-list .card-title-wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 1rem 1.25rem;
+	z-index: 3;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+	border-radius: 1.25rem 1.25rem 0 0;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	mask-image: linear-gradient(180deg, #000000 20%, #0000004d);
+	-webkit-mask-image: linear-gradient(180deg, #000000 20%, #0000004d);
+}
+
+body.legacy-post-list .bento-card-title {
+	margin: 0;
+	color: #fff;
+	font-size: 0.95rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+body.legacy-post-list .card-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+body.legacy-post-list .card-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+body.legacy-post-list .card-image::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0.4) 100%);
+	opacity: 0.8;
+	transition: opacity 0.4s;
+}
+
+body.legacy-post-list .card-info {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 4rem 1.25rem 2rem;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 70%, transparent 100%);
+	color: white;
+	transition: transform 0.4s ease, opacity 0.3s;
+	z-index: 2;
+	transform: translateY(1rem);
+	opacity: 0.9;
+}
+
+body.legacy-post-list .card-description {
+	margin: 0;
+	font-size: 0.9375rem;
+	line-height: 1.5;
+	display: -webkit-box;
+	line-clamp: 2;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	opacity: 0.9;
+}
+
+body.legacy-post-list .stat-capsules-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.6rem;
+	width: 100%;
+	grid-column: span 12;
+	padding: 0.25rem 0.1rem;
+}
+
+body.legacy-post-list .stat-capsule {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	height: 50px;
+	min-width: 110px;
+	flex-shrink: 0;
+	padding: 0.35rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.7);
+	border-radius: 2rem;
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	font-size: 0.85rem;
+	line-height: 1.2;
+	transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+	opacity: 0;
+	content-visibility: hidden;
+	contain-intrinsic-size: auto none;
+}
+
+body.legacy-post-list .stat-capsule i {
+	color: #888;
+	font-size: 0.9rem;
+}
+
+body.legacy-post-list .capsule-content {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	line-height: 1.2;
+}
+
+body.legacy-post-list .capsule-label {
+	position: relative;
+	margin-bottom: 1px;
+	color: #555;
+	font-size: 0.8rem;
+	font-weight: 500;
+}
+
+body.legacy-post-list .capsule-value {
+	color: var(--theme-skin, #505050);
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+body.legacy-post-list .announcement-capsule {
+	min-width: 180px;
+}
+
+body.legacy-post-list .announcement-line {
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	color: #555;
+	font-size: 0.85rem;
+	line-height: 1.2;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+body.legacy-post-list .first-line {
+	margin-bottom: 1px;
+}
+
+body.legacy-post-list .medal-capsule {
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+	z-index: 5;
+}
+
+body.legacy-post-list .medal-capsule::before,
+body.legacy-post-list .medal-capsule::after {
+	content: "";
+	position: absolute;
+	inset: -2px;
+	border-radius: 2.2rem;
+	opacity: 0;
+	pointer-events: none;
+}
+
+body.legacy-post-list .medal-capsule::before {
+	z-index: -1;
+	transition: opacity 0.5s ease;
+}
+
+body.legacy-post-list .medal-capsule::after {
+	z-index: -2;
+	transition: opacity 0.4s ease, transform 0.4s ease;
+	backdrop-filter: blur(10px);
+}
+
+body.legacy-post-list .medal-capsule:hover::before {
+	opacity: 0.5;
+	box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+}
+
+body.legacy-post-list .medal-capsule:hover::after {
+	opacity: 0.2;
+	transform: scale(1.02);
+}
+
+body.legacy-post-list .medal-capsule.gold {
+	background: linear-gradient(135deg, #ffd700 0%, #ffec8b 50%, #e6bc00 100%);
+	border-color: #ffd700;
+	box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+body.legacy-post-list .medal-capsule.gold::before {
+	background: radial-gradient(circle at center, rgba(255, 215, 0, 0.8) 0%, rgba(255, 215, 0, 0) 70%);
+}
+
+body.legacy-post-list .medal-capsule.gold::after {
+	box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+	background: rgba(255, 215, 0, 0.1);
+}
+
+body.legacy-post-list .medal-capsule.gold:hover {
+	background: linear-gradient(135deg, #ffdf1c 0%, #fff0a0 50%, #f5ca00 100%);
+	box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+}
+
+body.legacy-post-list .medal-capsule.gold i {
+	color: #5d4b00 !important;
+	text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+	animation: legacy-pulse-gold 2s infinite;
+}
+
+body.legacy-post-list .medal-capsule.bronze {
+	background: linear-gradient(135deg, #cd7f32 0%, #e0aa76 50%, #a05c25 100%);
+	border-color: #cd7f32;
+	box-shadow: 0 2px 10px rgba(205, 127, 50, 0.3);
+}
+
+body.legacy-post-list .medal-capsule.bronze::before {
+	background: radial-gradient(circle at center, rgba(205, 127, 50, 0.8) 0%, rgba(205, 127, 50, 0) 70%);
+}
+
+body.legacy-post-list .medal-capsule.bronze::after {
+	box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+	background: rgba(205, 127, 50, 0.1);
+}
+
+body.legacy-post-list .medal-capsule.bronze:hover {
+	background: linear-gradient(135deg, #d38c44 0%, #e9b688 50%, #b16b2e 100%);
+	box-shadow: 0 8px 25px rgba(205, 127, 50, 0.5);
+}
+
+body.legacy-post-list .medal-capsule.gold .capsule-label,
+body.legacy-post-list .medal-capsule.gold .capsule-value,
+body.legacy-post-list .medal-capsule.bronze .capsule-label,
+body.legacy-post-list .medal-capsule.bronze .capsule-value {
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+body.legacy-post-list .medal-capsule.gold .capsule-label,
+body.legacy-post-list .medal-capsule.gold .capsule-value {
+	color: #5d4b00 !important;
+}
+
+body.legacy-post-list .medal-capsule.bronze .capsule-label,
+body.legacy-post-list .medal-capsule.bronze .capsule-value,
+body.legacy-post-list .medal-capsule.bronze i {
+	color: #fff !important;
+}
+
+body.legacy-post-list .medal-particles-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 1;
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+body.legacy-post-list .medal-particles {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: opacity 0.6s ease;
+}
+
+body.legacy-post-list .medal-capsule:hover .medal-particles {
+	opacity: 1;
+}
+
+body.legacy-post-list .medal-info-tooltip {
+	position: absolute;
+	top: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%) translateY(10px);
+	width: max-content;
+	max-width: 230px;
+	padding: 10px 15px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 10px;
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(8px);
+	color: #fff;
+	font-size: 0.85rem;
+	line-height: 1.5;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.3s ease-out;
+	z-index: 100;
+	pointer-events: none;
+}
+
+body.legacy-post-list .medal-capsule:hover .medal-info-tooltip {
+	opacity: 1;
+	visibility: visible;
+	transform: translateX(-50%) translateY(0);
+}
+
+body.legacy-post-list .medal-achievement {
+	margin-bottom: 8px;
+	font-weight: 500;
+}
+
+body.legacy-post-list .medal-next-level {
+	margin-top: 5px;
+	padding-top: 8px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	font-size: 0.8rem;
+	opacity: 0.8;
+}
+
+body.legacy-post-list .medal-ambient {
+	position: absolute;
+	top: -20%;
+	left: -20%;
+	width: 140%;
+	height: 140%;
+	border-radius: inherit;
+	background: radial-gradient(circle at 30% 30%, rgba(255, 236, 150, 0.75) 0%, rgba(255, 220, 100, 0.35) 35%, rgba(255, 215, 0, 0.15) 65%, rgba(255, 215, 0, 0) 80%);
+	background-size: 150% 150%;
+	pointer-events: none;
+	z-index: 2;
+	mix-blend-mode: color-dodge;
+	opacity: 0.8;
+	animation: legacy-ambient-light 9s ease-in-out infinite, legacy-ambient-color 12s ease-in-out infinite;
+	transition: transform 0.5s ease-out, background 0.5s ease;
+}
+
+body.legacy-post-list .medal-fleck {
+	position: absolute;
+	width: 15%;
+	height: 15%;
+	border-radius: 50%;
+	background: radial-gradient(ellipse at center, rgba(255, 255, 220, 0.9) 0%, rgba(255, 255, 200, 0.4) 40%, rgba(255, 255, 200, 0) 100%);
+	pointer-events: none;
+	z-index: 3;
+	filter: blur(1.8px);
+	opacity: 0.75;
+	mix-blend-mode: lighten;
+	box-shadow: 0 0 10px rgba(255, 255, 200, 0.45);
+}
+
+body.legacy-post-list .medal-fleck-1 {
+	animation: legacy-light-fleck-1 8s ease-in-out infinite;
+}
+
+body.legacy-post-list .medal-fleck-2 {
+	width: 13%;
+	height: 13%;
+	animation: legacy-light-fleck-2 11s ease-in-out infinite;
+}
+
+@keyframes legacy-ambient-light {
+	0%, 100% { opacity: 0.4; background-position: 20% 20%; background-size: 140% 140%; }
+	20% { opacity: 0.7; background-position: 45% 30%; background-size: 165% 165%; }
+	40% { opacity: 0.5; background-position: 50% 45%; background-size: 155% 155%; }
+	60% { opacity: 0.75; background-position: 15% 40%; background-size: 170% 170%; }
+	80% { opacity: 0.6; background-position: 25% 15%; background-size: 160% 160%; }
+}
+
+@keyframes legacy-ambient-color {
+	0%, 100% { filter: hue-rotate(0deg) brightness(1) contrast(1); }
+	25% { filter: hue-rotate(8deg) brightness(1.15) contrast(1.05); }
+	50% { filter: hue-rotate(3deg) brightness(1.1) contrast(0.98); }
+	75% { filter: hue-rotate(-6deg) brightness(0.95) contrast(1.08); }
+}
+
+@keyframes legacy-light-fleck-1 {
+	0%, 100% { opacity: 0.4; transform: scale(1) translate(0, 0); filter: brightness(1); }
+	20% { opacity: 0.75; transform: scale(1.04) translate(2px, -1px); filter: brightness(1.15); }
+	50% { opacity: 0.5; transform: scale(0.98) translate(-1px, -2px); filter: brightness(0.95); }
+	80% { opacity: 0.65; transform: scale(1.02) translate(1px, 2px); filter: brightness(1.1); }
+}
+
+@keyframes legacy-light-fleck-2 {
+	0%, 100% { opacity: 0.45; transform: scale(1) translate(0, 0); filter: brightness(1.05); }
+	30% { opacity: 0.6; transform: scale(1.03) translate(-2px, 2px); filter: brightness(1.15); }
+	60% { opacity: 0.4; transform: scale(0.97) translate(2px, 1px); filter: brightness(0.98); }
+	85% { opacity: 0.7; transform: scale(1.01) translate(-1px, -2px); filter: brightness(1.2); }
+}
+
+@keyframes legacy-pulse-gold {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.08); }
+}
+
+/* The legacy IntersectionObserver applies this class to all exhibition
+ * primitives with the same half-second homepage-load animation as cards. */
+body.legacy-post-list .stat-capsule.post-list-show,
+body.legacy-post-list .bento-item.post-list-show,
+body.legacy-post-list h1.fes-title.post-list-show {
+	animation: legacy-exhibition-reveal 0.5s ease;
+	opacity: 1;
+	content-visibility: visible;
+}
+
+@keyframes legacy-exhibition-reveal {
+	from {
+		opacity: 0;
+		transform: translateY(80px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+html.dark body.legacy-post-list .bento-item,
+body.dark body.legacy-post-list .bento-item {
+	background-color: rgba(30, 30, 30, var(--front_background-transparency, 0.8));
+}
+
+html.dark body.legacy-post-list .stat-capsule,
+body.dark body.legacy-post-list .stat-capsule {
+	background: rgba(30, 30, 30, 0.85);
+	border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark body.legacy-post-list .capsule-label,
+body.dark body.legacy-post-list .capsule-label,
+html.dark body.legacy-post-list .announcement-line,
+body.dark body.legacy-post-list .announcement-line {
+	color: #aaa;
+}
+
+@media (max-width: 1080px) {
+	body.legacy-post-list .bento-medium {
+		grid-column: span 6;
+		min-height: 14rem;
+		height: 14rem;
+	}
+}
+
+@media (max-width: 768px) {
+	body.legacy-post-list .bento-medium {
+		grid-column: span 12;
+		min-height: 12rem;
+		height: 12rem;
+	}
+}
+
+/* The Astro shell uses a 14px root at phone widths; the frozen Sakurairo
+ * exhibition keeps its original 16px rem geometry. Keep this block in px at
+ * that breakpoint so the reference's 20px grid and 192px cards remain stable. */
+@media (max-width: 767px) {
+	body.legacy-post-list .bento-grid {
+		gap: 20px;
+		margin: 15px 0;
+	}
+
+	body.legacy-post-list .stat-capsules-container {
+		gap: 9.6px;
+		padding: 4px 1.6px;
+	}
+
+	body.legacy-post-list .bento-medium {
+		min-height: 192px;
+		height: 192px;
+	}
+}

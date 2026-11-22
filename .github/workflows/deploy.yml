@@ -1,0 +1,156 @@
+# 构建 astro-babel36acl-next 并发布到 babel36acl.xyz（VPS）。
+# 站点源码位于 astro-babel36acl-next/；服务器侧切换逻辑在 .github/ci/deploy-vps.sh。
+#
+# 触发：push 到 main 且改动站点源码 / 本工作流 / 发版脚本；也支持 workflow_dispatch。
+# 旧的 GitHub Pages 部署（原 deploy.yml）已废弃并由本工作流取代。
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "astro-babel36acl-next/**"
+      - ".github/workflows/deploy.yml"
+      - ".github/ci/deploy-vps.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 同一时间只允许一个部署在跑，避免并发切换 release
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
+env:
+  SITE_DIR: astro-babel36acl-next
+  SITE_ROOT: /opt/1panel/www/sites/babel36acl.xyz/index
+  HEALTH_URL: https://babel36acl.xyz/
+  KEEP_RELEASES: "5"
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pnpm 必须先于 setup-node 安装（cache: pnpm 依赖 PATH 上的 pnpm）
+      - name: Setup pnpm 11.22.0
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+          run_install: false
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: astro-babel36acl-next/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: astro-babel36acl-next
+        run: pnpm install --frozen-lockfile
+
+      - name: Astro check
+        working-directory: astro-babel36acl-next
+        run: pnpm astro check
+
+      # pnpm build 是完整管线（GitHub 卡片 → LQIP → VNDB → astro build → pio 清理
+      # → 字体子集化 → 内联脚本压缩 → Pagefind），不要拆成 astro build。
+      - name: Build
+        working-directory: astro-babel36acl-next
+        env:
+          CI: "true"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build
+
+      - name: Verify dist
+        working-directory: astro-babel36acl-next
+        run: node scripts/verify-dist.mjs
+
+      - name: Package dist
+        working-directory: astro-babel36acl-next
+        run: |
+          set -euo pipefail
+          tar --numeric-owner --owner=0 --group=0 -czf "$RUNNER_TEMP/astro-dist.tar.gz" -C dist .
+          sha256sum "$RUNNER_TEMP/astro-dist.tar.gz" | tee "$RUNNER_TEMP/astro-dist.sha256"
+          ls -lh "$RUNNER_TEMP/astro-dist.tar.gz"
+
+      - name: Configure SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VPS_HOST}" ] || [ -z "${VPS_SSH_KEY}" ]; then
+            echo "::error::VPS_HOST / VPS_SSH_KEY secrets are not configured"
+            exit 1
+          fi
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
+          printf '%s\n' "$VPS_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/vps_deploy_key"
+          chmod 600 "$HOME/.ssh/vps_deploy_key"
+          for i in 1 2 3; do
+            if ssh-keyscan -p "${VPS_PORT:-22}" -H "$VPS_HOST" >> "$HOME/.ssh/known_hosts" 2>/dev/null; then
+              break
+            fi
+            sleep 3
+          done
+          test -s "$HOME/.ssh/known_hosts" || { echo "::error::could not learn the VPS host key"; exit 1; }
+
+      - name: Upload release tarball
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          set -euo pipefail
+          REMOTE_TAR="/tmp/astro-dist-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.tar.gz"
+          echo "REMOTE_TAR=$REMOTE_TAR" >> "$GITHUB_ENV"
+          scp -i "$HOME/.ssh/vps_deploy_key" -P "${VPS_PORT:-22}" \
+            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "$RUNNER_TEMP/astro-dist.tar.gz" "${VPS_USER:-deploy}@$VPS_HOST:$REMOTE_TAR"
+          echo "uploaded $REMOTE_TAR"
+
+      - name: Deploy release on VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          set -euo pipefail
+          REMOTE_SCRIPT="/tmp/deploy-vps-${GITHUB_RUN_ID}.sh"
+          TAR_SHA="$(cut -d' ' -f1 "$RUNNER_TEMP/astro-dist.sha256")"
+          # 脚本经 base64 走 stdin，避免多行 heredoc 在 SSH 传输里被引号/换行吃掉
+          base64 -w0 .github/ci/deploy-vps.sh | ssh -i "$HOME/.ssh/vps_deploy_key" -p "${VPS_PORT:-22}" \
+            -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes \
+            "${VPS_USER:-deploy}@$VPS_HOST" \
+            "base64 -d > '$REMOTE_SCRIPT' && bash '$REMOTE_SCRIPT' '$REMOTE_TAR' '$TAR_SHA' '$SITE_ROOT' '$HEALTH_URL' '$KEEP_RELEASES' && rm -f '$REMOTE_SCRIPT'"
+
+      - name: Verify live site
+        run: |
+          set -euo pipefail
+          check() {
+            local url="$1" want="$2" i code
+            for i in $(seq 1 10); do
+              code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$url" || true)"
+              if [ "$code" = "$want" ]; then
+                echo "OK $code $url"
+                return 0
+              fi
+              sleep 3
+            done
+            echo "::error::$url returned $code (want $want)"
+            return 1
+          }
+          check "$HEALTH_URL" 200
+          check "${HEALTH_URL%/}/toolbox/" 200
+          check "${HEALTH_URL%/}/toolbox/stm32-tim/" 200
+          curl -s -o /dev/null -w 'old post -> %{http_code} %{redirect_url}\n' \
+            "${HEALTH_URL%/}/posts/mcgs-mcp-reverse-engineering/" | tee /tmp/old-post.txt
+          grep -q '301' /tmp/old-post.txt

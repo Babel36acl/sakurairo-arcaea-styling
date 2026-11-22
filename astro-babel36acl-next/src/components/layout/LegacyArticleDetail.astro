@@ -1,0 +1,81 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import FontSetup from "@/components/features/FontSetup.astro";
+import SakuraEffect from "@/components/features/SakuraEffect.astro";
+import SelectionParticles from "@/components/features/SelectionParticles.astro";
+import SakurairoHomeHeader from "./SakurairoHomeHeader.astro";
+import Footer from "./Footer.astro";
+import LegacyArticleToc from "./LegacyArticleToc.astro";
+import LegacySidebar from "./LegacySidebar.astro";
+import { renderLegacyArticle } from "@/utils/legacy-article-renderer";
+import runtime from "@/data/legacy-article-runtime.json";
+import articleMetadata from "@/data/legacy-article-metadata.json";
+import "@/styles/legacy-article-reference.css";
+import "@/styles/legacy-article-fonts.css";
+import "@/styles/legacy-article.css";
+interface Props { entry: CollectionEntry<"posts">; }
+const { entry } = Astro.props;
+const { html, headings } = renderLegacyArticle(entry.body || "");
+const ordered = (await getCollection("posts")).filter(p => p.data.legacyId).sort((a,b) => a.data.published.valueOf()-b.data.published.valueOf() || (a.data.legacyId || 0)-(b.data.legacyId || 0));
+const index = ordered.findIndex(p=>p.id===entry.id);
+const previous = ordered[index-1], next = ordered[index+1];
+const date = (value: Date) => value.toISOString().slice(0,10);
+const updated = date(entry.data.updated || entry.data.published);
+// Phase 3A imports the reference's displayed counters, not a new counting algorithm.
+const metadata = articleMetadata[String(entry.data.legacyId) as keyof typeof articleMetadata];
+---
+<!doctype html>
+<html lang="zh-Hans" class="legacy-article-root dark">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{entry.data.title} – Babel36acl的个人博客</title>
+  <link rel="canonical" href={`https://babel36acl.xyz${entry.data.canonicalPath}`} />
+  <meta name="description" content={entry.data.description} />
+  <FontSetup />
+ </head>
+ <body class={`legacy-article single single-post postid-${entry.data.legacyId} chinese-font dark serif`}>
+  <SakurairoHomeHeader article={true} articleTitle={entry.data.title} />
+  <section id="main-container">
+   <div id="page" class="site wrapper">
+    <div class="blank"></div>
+    <div id="content" class="site-content"><div id="primary" class="content-area"><main id="main" class="site-main">
+     <div class="has-toc have-toc"></div>
+     <article id={`post-${entry.data.legacyId}`} class="post type-post status-publish format-standard hentry">
+      <header class="entry-header">
+       <h1 class="entry-title">{entry.data.title}</h1>
+       <p class="entry-census" data-metadata-source={metadata.capturedFrom}><span class="meta-author"><a href="/author/chuixin/"><img src="/assets/legacy-avatar.webp" width="16" height="16" class="avatar avatar-16 photo avatar" alt="Babel36acl" /></a><a rel="author" title="Babel36acl" href="/author/chuixin/">Babel36acl</a></span><span><i class="fa-regular fa-folder"></i>{" "}<a href="/学习记录/">{entry.data.primaryCategory}</a></span>{" "}{metadata.views} 次阅读 预计阅读时间: {metadata.readingTime} 发布于 {date(entry.data.published)} 最后更新于 {updated} {metadata.words} 字</p>
+       <hr />
+      </header>
+      <div class="entry-content"><div class="arcaea-article-content" set:html={html} /></div>
+      <footer class="post-footer">
+       <a class="post-license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh_CN" target="_blank" rel="nofollow" title="此文章遵守 CC BY-SA 4.0 知识共享许可协议"><i class="fa-brands fa-creative-commons"></i><i class="fa-brands fa-creative-commons-by"></i><i class="fa-brands fa-creative-commons-sa"></i></a>
+       <div class="info" itemprop="author" itemscope itemtype="http://schema.org/Person"><a href="/author/chuixin/" class="profile gravatar"><img class="fa-spin" style="--fa-animation-duration:15s" src="/assets/legacy-author-avatar.png" itemprop="image" alt="Babel36acl" height="30" width="30" /></a></div>
+       <div class="meta"><a href="/author/chuixin/" itemprop="url" rel="author">Babel36acl</a></div>
+       <div class="desc"><i class="fa-solid fa-feather" aria-hidden="true"></i>此作者没有提供个人介绍。</div>
+       <div class="post-modified-time"><i class="fa-solid fa-calendar-day" aria-hidden="true"></i>最后更新于 {updated}</div>
+      </footer>
+     </article>
+     <LegacyArticleToc headings={headings} />
+     <section class="post-squares nextprev">{previous && <a href={previous.data.canonicalPath} rel="prev"><div class="background lazyload" style="background-image:url('/assets/basic/puff-load.svg')" data-article-gallery></div><span class="label">上一篇文章</span><div class="info"><h3>{previous.data.title}</h3><hr /></div></a>}{next && <a href={next.data.canonicalPath} rel="next"><div class="background lazyload" style="background-image:url('/assets/basic/puff-load.svg')" data-article-gallery></div><span class="label">下一篇文章</span><div class="info"><h3>{next.data.title}</h3><hr /></div></a>}</section>
+    </main></div></div>
+   </div>
+   <Footer article={true} statistics={metadata.footerStats} />
+  </section>
+  <div class="background_blur current_blur"></div>
+  <button id="moblieGoTop" type="button" title="回到顶部"><i class="fa-solid fa-caret-up fa-lg"></i></button>
+  <button id="changskin" type="button" title="控制面板" aria-expanded="false"><i class="fa-solid fa-compass-drafting fa-lg fa-flip"></i></button>
+  <LegacySidebar />
+  <SakuraEffect /><SelectionParticles />
+  <script is:inline define:vars={{ config: runtime.config, manifest: runtime.manifest }}>
+   window.BAC_Config = config; window.BAC_Assets = manifest;
+  </script>
+  <script is:inline src="/assets/legacy-code/js/content-loader.js"></script>
+  <script is:inline src="/assets/legacy-code/reading/reading-progress.js"></script>
+  <script>
+   import { initLegacyArticle } from "@/scripts/legacy-article";
+   initLegacyArticle();
+  </script>
+ </body>
+</html>

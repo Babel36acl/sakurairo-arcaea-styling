@@ -1,0 +1,151 @@
+/* ============================================================
+ * Babel Arcaea Code — Prism Arcaea Dark Theme
+ * Visual tokens aligned with sakurairo-arcaea-blog-skill.
+ * ============================================================ */
+
+:root {
+    --bac-code-bg: rgba(8, 21, 42, 0.42);
+    --bac-code-border: rgba(230, 238, 255, 0.78);
+    --bac-code-text: rgba(238, 244, 255, 0.94);
+    --bac-code-muted: rgba(238, 244, 255, 0.65);
+    --bac-code-primary: rgba(238, 244, 255, 0.96);
+    --bac-code-accent: #9db4ff;
+    --bac-code-sky: #8ad8ff;
+    --bac-code-violet: #c7b6ff;
+    --bac-code-red: rgba(255, 130, 130, 0.78);
+    --bac-code-green: #b8f0d0;
+    --bac-code-yellow: #ffe6a8;
+    --bac-code-orange: #ffc28a;
+}
+
+pre[class*="language-"] {
+    color: var(--bac-code-text) !important;
+    background: var(--bac-code-bg) !important;
+    border: 1px solid var(--bac-code-border) !important;
+}
+
+code[class*="language-"],
+pre[class*="language-"] code {
+    color: var(--bac-code-text) !important;
+}
+
+:not(pre)>code[class*="language-"] {
+    color: var(--bac-code-primary) !important;
+    background: rgba(230, 238, 255, 0.10) !important;
+    border: 1px solid rgba(230, 238, 255, 0.16);
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: rgba(238, 244, 255, 0.48) !important;
+    font-style: italic;
+}
+
+.token.punctuation,
+.token.operator {
+    color: rgba(238, 244, 255, 0.76) !important;
+    background: transparent !important;
+}
+
+.token.namespace {
+    opacity: 0.72;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: var(--bac-code-orange) !important;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: var(--bac-code-green) !important;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: var(--bac-code-sky) !important;
+}
+
+.token.function,
+.token.class-name {
+    color: var(--bac-code-violet) !important;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: var(--bac-code-yellow) !important;
+}
+
+.token.entity,
+.token.url {
+    color: var(--bac-code-accent) !important;
+    background: transparent !important;
+}
+
+.token.bold,
+.token.important {
+    font-weight: 700;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.line-numbers .line-numbers-rows {
+    border-right-color: rgba(230, 238, 255, 0.20) !important;
+}
+
+.line-numbers-rows>span::before {
+    color: rgba(238, 244, 255, 0.38) !important;
+}
+
+div.code-toolbar>.toolbar button,
+div.code-toolbar>.toolbar a,
+div.code-toolbar>.toolbar>.toolbar-item>span {
+    color: rgba(238, 244, 255, 0.84) !important;
+    background: rgba(8, 12, 20, 0.72) !important;
+    border: 1px solid rgba(230, 238, 255, 0.18) !important;
+}
+
+div.code-toolbar>.toolbar button:hover,
+div.code-toolbar>.toolbar a:hover,
+div.code-toolbar>.toolbar>.toolbar-item>span:hover {
+    color: rgba(238, 244, 255, 0.96) !important;
+    background: rgba(139, 167, 255, 0.16) !important;
+    border-color: rgba(138, 216, 255, 0.58) !important;
+}
+
+pre[class*="language-"] .line-highlight {
+    background: linear-gradient(90deg, rgba(138, 216, 255, 0.13), rgba(157, 180, 255, 0.06)) !important;
+    box-shadow: inset 3px 0 0 rgba(138, 216, 255, 0.55);
+}
+
+.command-line-prompt {
+    border-right-color: rgba(230, 238, 255, 0.20) !important;
+    color: rgba(138, 216, 255, 0.72) !important;
+}
+
+pre[class*="language-"]::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb {
+    background-color: rgba(138, 216, 255, 0.38);
+}
+
+pre[class*="language-"]::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(138, 216, 255, 0.58);
+}

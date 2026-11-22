@@ -1,0 +1,306 @@
+/* ============================================================
+ * Babel Arcaea Code — Prism Previewers Arcaea Glass Layer
+ * Transforms official Previewers default (dev-tool look) into
+ * a futuristic, glassmorphic component fitting the Arcaea UI.
+ *
+ * Targets: Color · Gradient · Angle · Time · Easing
+ * ============================================================ */
+
+body.legacy-article .prism-previewer,
+body.legacy-article .prism-previewer-easing {
+    --bac-preview-ring: rgba(255, 255, 255, 0.10);
+    --bac-preview-glow: rgba(130, 170, 255, 0.18);
+    --bac-preview-glow-strong: rgba(130, 170, 255, 0.32);
+    --bac-preview-surface: rgba(13, 18, 28, 0.92);
+}
+
+/* ── Unified Previewer Container ── */
+body.legacy-article .prism-previewer {
+    margin-top: -56px;
+    width: 42px;
+    height: 42px;
+    margin-left: -21px;
+    z-index: 9999;
+
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+
+    border-radius: 16px;
+    overflow: visible;
+
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.40),
+        0 0 24px var(--bac-preview-glow);
+
+    -webkit-transition:
+        opacity 0.25s ease,
+        -webkit-transform 0.25s ease;
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+body.legacy-article .prism-previewer.active:hover {
+    transform: scale(1.08);
+}
+
+body.legacy-article .prism-previewer.flipped {
+    margin-top: 0;
+    margin-bottom: -56px;
+}
+
+/* ── Outer glow ring (replaces white border) ── */
+body.legacy-article .prism-previewer:before {
+    top: -2px;
+    right: -2px;
+    left: -2px;
+    bottom: -2px;
+    border-radius: 18px;
+    border: 1px solid var(--bac-preview-ring);
+    box-shadow:
+        inset 0 0 12px rgba(130, 170, 255, 0.08),
+        0 0 0 rgba(130, 170, 255, 0);
+}
+
+/* ── Arrow indicator ── */
+body.legacy-article .prism-previewer:after {
+    top: 100%;
+    width: 0;
+    height: 0;
+    margin: 4px 0 0 -8px;
+    border: 8px solid transparent;
+    border-top-color: rgba(130, 170, 255, 0.42);
+    filter: drop-shadow(0 0 4px var(--bac-preview-glow-strong));
+}
+
+body.legacy-article .prism-previewer.flipped:after {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 4px;
+    border-top-color: transparent;
+    border-bottom-color: rgba(130, 170, 255, 0.42);
+}
+
+/* ── Color Previewer ── */
+body.legacy-article .prism-previewer-color {
+    background-image:
+        linear-gradient(45deg, rgba(200, 210, 230, 0.20) 25%, transparent 25%,
+            transparent 75%, rgba(200, 210, 230, 0.20) 75%, rgba(200, 210, 230, 0.20)),
+        linear-gradient(45deg, rgba(200, 210, 230, 0.20) 25%, transparent 25%,
+            transparent 75%, rgba(200, 210, 230, 0.20) 75%, rgba(200, 210, 230, 0.20));
+    background-size: 10px 10px;
+    background-position: 0 0, 5px 5px;
+    border-radius: 14px;
+}
+
+body.legacy-article .prism-previewer-color:before {
+    background-color: inherit;
+    background-clip: padding-box;
+    border-radius: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 0 20px rgba(130, 170, 255, 0.12),
+        0 0 30px rgba(130, 170, 255, 0.28);
+}
+
+/* ── Gradient Previewer ── */
+body.legacy-article .prism-previewer-gradient {
+    background-image:
+        linear-gradient(45deg, rgba(200, 210, 230, 0.20) 25%, transparent 25%,
+            transparent 75%, rgba(200, 210, 230, 0.20) 75%, rgba(200, 210, 230, 0.20)),
+        linear-gradient(45deg, rgba(200, 210, 230, 0.20) 25%, transparent 25%,
+            transparent 75%, rgba(200, 210, 230, 0.20) 75%, rgba(200, 210, 230, 0.20));
+    background-size: 10px 10px;
+    background-position: 0 0, 5px 5px;
+    width: 72px;
+    margin-left: -36px;
+    border-radius: 14px;
+}
+
+body.legacy-article .prism-previewer-gradient:before {
+    content: none;
+}
+
+body.legacy-article .prism-previewer-gradient div {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 0 20px rgba(130, 170, 255, 0.08),
+        0 0 30px rgba(180, 220, 255, 0.16);
+}
+
+/* ── Angle Previewer ── */
+body.legacy-article .prism-previewer-angle:before {
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(126, 164, 255, 0.18), transparent 40%),
+        var(--bac-preview-surface);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--bac-preview-ring);
+}
+
+body.legacy-article .prism-previewer-angle:after {
+    margin-top: 4px;
+}
+
+body.legacy-article .prism-previewer-angle svg {
+    width: 36px;
+    height: 36px;
+    transform: rotate(-90deg);
+}
+
+body.legacy-article .prism-previewer-angle[data-negative] svg {
+    transform: scaleX(-1) rotate(-90deg);
+}
+
+body.legacy-article .prism-previewer-angle circle {
+    fill: transparent;
+    stroke: rgba(130, 170, 255, 0.20);
+    stroke-opacity: 0.9;
+    stroke-width: 36;
+    stroke-dasharray: 0, 500;
+}
+
+/* Arcaea compass: the angle line */
+body.legacy-article .prism-previewer-angle svg line {
+    stroke: #82aaff !important;
+    stroke-width: 2 !important;
+    stroke-opacity: 0.9 !important;
+    filter: drop-shadow(0 0 4px rgba(130, 170, 255, 0.40));
+}
+
+/* ── Time Previewer ── */
+body.legacy-article .prism-previewer-time:before {
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(126, 164, 255, 0.18), transparent 40%),
+        var(--bac-preview-surface);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--bac-preview-ring);
+}
+
+body.legacy-article .prism-previewer-time:after {
+    margin-top: 4px;
+}
+
+body.legacy-article .prism-previewer-time svg {
+    width: 36px;
+    height: 36px;
+    transform: rotate(-90deg);
+}
+
+body.legacy-article .prism-previewer-time circle {
+    fill: transparent;
+    stroke: rgba(130, 170, 255, 0.15);
+    stroke-opacity: 0.9;
+    stroke-width: 36;
+    stroke-dasharray: 0, 500;
+    stroke-dashoffset: 0;
+    animation: legacy-article-prism-previewer-time linear infinite 3s;
+}
+
+/* ── Easing Previewer ── */
+body.legacy-article .prism-previewer-easing {
+    margin-top: -84px;
+    margin-left: -34px;
+    width: 68px;
+    height: 68px;
+    background:
+        radial-gradient(circle at 30% 24%, rgba(126, 164, 255, 0.16), transparent 42%),
+        var(--bac-preview-surface);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(140%);
+    border-radius: 16px;
+    border: 1px solid var(--bac-preview-ring);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.40),
+        0 0 24px var(--bac-preview-glow);
+}
+
+body.legacy-article .prism-previewer-easing.flipped {
+    margin-bottom: -68px;
+}
+
+body.legacy-article .prism-previewer-easing svg {
+    width: 68px;
+    height: 68px;
+}
+
+body.legacy-article .prism-previewer-easing circle {
+    fill: rgba(15, 18, 22, 0.95);
+    stroke: rgba(255, 255, 255, 0.20);
+    stroke-width: 1;
+}
+
+body.legacy-article .prism-previewer-easing path {
+    fill: none;
+    stroke: #82aaff;
+    stroke-linecap: round;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 6px rgba(130, 170, 255, 0.35));
+}
+
+body.legacy-article .prism-previewer-easing line {
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+}
+
+/* ── Dark / Light mode ── */
+html.legacy-article-root.dark .prism-previewer-easing {
+    background: rgba(8, 10, 14, 0.95);
+}
+
+html.legacy-article-root:not(.dark) .prism-previewer-easing {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.20),
+        0 0 24px rgba(130, 170, 255, 0.12);
+}
+
+html.legacy-article-root:not(.dark) .prism-previewer {
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.15),
+        0 0 20px rgba(130, 170, 255, 0.10);
+}
+
+/* ── Mobile: tap instead of hover ── */
+@media (pointer: coarse) {
+    body.legacy-article .prism-previewer {
+        max-width: 80vw;
+    }
+
+    body.legacy-article .prism-previewer.active {
+        opacity: 1;
+    }
+
+    body.legacy-article .prism-previewer.active:hover {
+        transform: none;
+    }
+}
+
+/* ── Animation for time previewer ── */
+@keyframes legacy-article-prism-previewer-time {
+    0% {
+        stroke-dasharray: 0, 500;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 100, 500;
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dasharray: 0, 500;
+        stroke-dashoffset: -100;
+    }
+}

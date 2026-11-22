@@ -1,0 +1,17 @@
+---
+import type { LegacyArticleHeading } from "@/utils/legacy-article-renderer";
+interface Props { headings: LegacyArticleHeading[]; }
+const { headings } = Astro.props;
+type Item = LegacyArticleHeading & { children: Item[] };
+const items: Item[] = [];
+const stack: Item[] = [];
+for (const heading of headings) {
+	const item = { ...heading, children: [] } as Item;
+	while (stack.length && stack[stack.length - 1].depth >= item.depth) stack.pop();
+	(stack.length ? stack[stack.length - 1].children : items).push(item);
+	stack.push(item);
+}
+const escape = (text: string) => text.replaceAll("&", "&amp;").replaceAll("<", "&lt;");
+const list = (rows: Item[], nested = false): string => `<ol class="toc-list${nested ? " is-collapsible is-collapsed" : ""}">${rows.map(row => `<li class="toc-list-item"><a href="#${row.id}" class="toc-link node-name--H${row.depth}">${escape(row.text)}</a>${row.children.length ? list(row.children, true) : ""}</li>`).join("")}</ol>`;
+---
+<div class="toc-container"><div class="toc" set:html={list(items)} /></div>

@@ -1,0 +1,47 @@
+/**
+ * Babel Arcaea Code — Prism Code Block Soft Wrap
+ *
+ * Ensures long code lines wrap instead of overflowing horizontally.
+ * Compatible with Line Numbers plugin and all Prism themes.
+ *
+ * @see https://prismjs.com/plugins/line-numbers/
+ */
+
+/**
+ * Babel Arcaea Code — Prism Code Block Soft Wrap
+ *
+ * Ensures long code lines wrap instead of overflowing horizontally.
+ * Compatible with Line Numbers plugin and all Prism themes.
+ * Uses !important to override theme defaults (Sakurairo Arcaea etc.).
+ *
+ * @see https://prismjs.com/plugins/line-numbers/
+ */
+
+/* ── Core wrap rules ── */
+body.legacy-article pre[class*="language-"],
+body.legacy-article code[class*="language-"] {
+    white-space: pre-wrap !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+body.legacy-article pre[class*="language-"] {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}
+
+body.legacy-article code[class*="language-"] {
+    white-space: inherit !important;
+}
+
+/* ── Line Numbers compatibility ── */
+body.legacy-article pre.line-numbers {
+    white-space: pre-wrap !important;
+}
+
+/* ── Override theme `<pre>` overflow that breaks wrapping ── */
+body.legacy-article pre[class*="language-"].line-numbers {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+}

@@ -1,0 +1,455 @@
+/* ============================================================
+ * Babel Arcaea Code — Mermaid 响应式渲染
+ *
+ * 架构：
+ *   Markdown → Mermaid 代码块 → Mermaid.js → SVG
+ *   → 玻璃拟态容器 → 自动缩放 → 超宽滚动 → 全屏预览
+ *
+ * 设计理念：
+ *   - 小图自动居中，保持自然尺寸
+ *   - 大图容器滚动，不挤压 SVG
+ *   - 玻璃拟态（Glassmorphism）适配 Arcaea 暗色风格
+ *   - 发光边框 + 悬停微动效
+ *   - 深色主题联动
+ * ============================================================ */
+
+/* ── Mermaid 外层包裹容器 ──
+ * 职责：玻璃拟态背景、横向滚动、悬停动效
+ * 小图 → 无滚动，SVG 居中
+ * 大图 → 横向滚动条出现，不挤压 SVG
+ */
+.arcaea-mermaid-box {
+  position: relative;
+
+  /* 玻璃拟态 — 对齐 Arcaea 设计 Token */
+  /* Token: --arcaea-bg + backdrop-filter: blur(12px) saturate(130%) */
+  background:
+    linear-gradient(180deg,
+      rgba(8, 16, 30, 0.86),
+      rgba(6, 12, 24, 0.84));
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
+  backdrop-filter: blur(10px) saturate(112%);
+
+  /* Token: --arcaea-border */
+  border: 1px solid rgba(230, 238, 255, 0.52);
+  border-radius: 10px;
+
+  /* Token: 卡片投影 + 内嵌白色高光边 */
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  margin: 2rem 0;
+  padding: 1.1rem;
+
+  /* 阻断 Sakurairo 主题继承链 */
+  font-family:
+    "FiraCode Nerd Font",
+    "Fira Code",
+    "JetBrains Mono",
+    "Noto Sans SC",
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(238, 244, 255, 0.94);
+  text-shadow: none;
+
+  /* 图表由 JS 按容器缩放，容器不再制造嵌套滚动区。 */
+  overflow: hidden;
+  max-height: none;
+
+  /* 悬停动效准备 — 仅 border-color, box-shadow 过渡 */
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+
+  overscroll-behavior: contain;
+
+  /* CSS containment — 限制重排范围，减少 Forced reflow */
+  contain: layout paint;
+}
+
+/* Hover — 仅增强边框与阴影，不做 scale（避免 SVG 重新光栅化） */
+.arcaea-mermaid-box:hover {
+  border-color: rgba(160, 220, 255, 0.48);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* 禁用旧的发光伪元素 */
+.arcaea-mermaid-box::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* ── 阻断 Sakurairo 全局 * 规则泄漏 ──
+ * 主题的 `* { transition: all 0.4s }` 会穿透到 SVG 内部，
+ * 给每个 <rect>/<path>/<text> 加 400ms 过渡并引发 Forced reflow。 */
+.arcaea-mermaid-box * {
+  transition: none !important;
+}
+
+/* ── Mermaid 图表内部容器 ──
+ * MerPress-style: <pre class="mermaid"> holds the Mermaid source
+ * and Mermaid.run() replaces it with SVG. */
+pre.mermaid {
+  width: 100%;
+  max-width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  margin: 0.5rem 0;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  color: rgba(238, 244, 255, 0.94);
+
+  font-family:
+    "FiraCode Nerd Font",
+    "Fira Code",
+    "JetBrains Mono",
+    "Noto Sans SC",
+    "Microsoft YaHei",
+    sans-serif;
+}
+
+/* Override Prism glassmorphism pre styling for Mermaid containers.
+   Mermaid .arcaea-mermaid-box already provides the glass effect;
+   the inner pre.mermaid should be transparent. */
+.arcaea-mermaid-box pre.mermaid {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  margin: 0 !important;
+  padding: 0.5rem !important;
+  overflow: visible !important;
+}
+
+/* ── foreignObject 隔离（防御性） ──
+ * mermaid-init.js 已设 htmlLabels: false，正常不会产生 foreignObject；
+ * 此处作为纵深防御，消除 Sakurairo 主题 CSS 对 SVG 内部元素的一切污染。 */
+pre.mermaid foreignObject,
+pre.mermaid foreignObject div,
+pre.mermaid foreignObject span,
+pre.mermaid foreignObject p {
+  all: initial;
+  display: block;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 0.18em 0.36em;
+  overflow: visible;
+}
+
+/* ── SVG 基本样式 ──
+ * SVG 最终宽度由 mermaid-init.js 按 viewBox 写入内联样式：
+ *   小图保持自然宽度
+ *   大图最多占满容器宽度
+ * SVG 自身必须保持纯画布盒模型；padding/border 会改变视口尺寸，
+ * 并在 Sakurairo 的 svg overflow 规则下裁切边缘内容。
+ */
+pre.mermaid svg {
+  display: block;
+  height: auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.arcaea-mermaid-box[data-bac-mermaid-scale-mode="natural"] pre.mermaid svg {
+  width: auto;
+}
+
+/* ── 文字样式 ──
+ * Mermaid 初始化 JS 的 themeVariables 已注入内联样式作为基准，
+ * 此处 CSS 提高优先级（选择器特异性）而非滥用 !important。
+ */
+pre.mermaid svg text,
+pre.mermaid .label,
+pre.mermaid .nodeLabel,
+pre.mermaid .edgeLabel,
+pre.mermaid .actor,
+pre.mermaid .messageText,
+pre.mermaid .noteText {
+  fill: rgba(238, 244, 255, 0.94);
+  color: rgba(238, 244, 255, 0.94);
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+
+  font-family:
+    "FiraCode Nerd Font",
+    "Fira Code",
+    "JetBrains Mono",
+    "Noto Sans SC",
+    "Microsoft YaHei",
+    sans-serif;
+}
+
+/* ── 节点边框 ── 对齐 Arcaea Token: ice blue #a0dcff */
+pre.mermaid .node rect,
+pre.mermaid .node circle,
+pre.mermaid .node ellipse,
+pre.mermaid .node polygon,
+pre.mermaid .node path {
+  stroke: rgba(160, 220, 255, 0.50);
+  stroke-width: 1.6px;
+}
+
+pre.mermaid .node .label,
+pre.mermaid .node .nodeLabel,
+pre.mermaid .node foreignObject div,
+pre.mermaid .node foreignObject span {
+  line-height: 1.45;
+  padding: 0.16em 0.34em;
+  overflow: visible;
+}
+
+/* ── 连线 ── */
+pre.mermaid .edgePath path,
+pre.mermaid .flowchart-link {
+  stroke: rgba(160, 220, 255, 0.60);
+  stroke-width: 1.6px;
+}
+
+/* ── 箭头标记 ── */
+pre.mermaid marker path,
+pre.mermaid marker polygon,
+pre.mermaid marker circle {
+  fill: rgba(160, 220, 255, 0.60);
+  stroke: rgba(160, 220, 255, 0.60);
+}
+
+/* ── 边标签背景 ── */
+pre.mermaid .edgeLabel {
+  border-radius: 6px;
+}
+
+/* ── 集群盒子 ── 对齐 Arcaea Token: clusterBorder #8ab0ff */
+pre.mermaid .cluster rect {
+  fill: transparent;
+  stroke: rgba(138, 176, 255, 0.72);
+}
+
+/* ── 错误状态 ── */
+.arcaea-mermaid-box.arcaea-mermaid-error {
+  border-color: rgba(255, 120, 160, 0.38);
+  background:
+    linear-gradient(135deg,
+      rgba(255, 95, 140, 0.10),
+      rgba(120, 180, 255, 0.06));
+}
+
+.arcaea-mermaid-error-message {
+  margin-top: 0.85rem;
+  padding: 0.75rem 0.95rem;
+  border-radius: 12px;
+  color: #ffd9e5;
+  background: rgba(80, 20, 42, 0.55);
+  border: 1px solid rgba(255, 150, 185, 0.25);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ── 全屏预览按钮 ── */
+.arcaea-mermaid-fullscreen-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  /* 全屏按钮 backdrop */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(20, 25, 35, 0.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+
+  color: rgba(238, 244, 255, 0.7);
+  font-size: 16px;
+  cursor: pointer;
+
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.arcaea-mermaid-box:hover .arcaea-mermaid-fullscreen-btn {
+  opacity: 1;
+}
+
+.arcaea-mermaid-box:focus-within .arcaea-mermaid-fullscreen-btn {
+  opacity: 1;
+}
+
+.arcaea-mermaid-fullscreen-btn:hover {
+  background: rgba(40, 50, 70, 0.8);
+  color: rgba(238, 244, 255, 1);
+}
+
+/* ── 全屏覆层 ── */
+.arcaea-mermaid-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(10, 12, 18, 0.92);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.arcaea-mermaid-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.arcaea-mermaid-overlay .arcaea-mermaid-overlay-content {
+  max-width: 94vw;
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 18px;
+  background: rgba(20, 25, 35, 0.5);
+  padding: 1rem;
+}
+
+.arcaea-mermaid-overlay .arcaea-mermaid-overlay-content svg {
+  max-width: none;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+html.bac-mermaid-overlay-open,
+body.bac-mermaid-overlay-open {
+  overflow: hidden;
+}
+
+.arcaea-mermaid-overlay-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(20, 25, 35, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+
+  color: rgba(238, 244, 255, 0.85);
+  font-size: 22px;
+  cursor: pointer;
+
+  -webkit-transition: background 0.2s, color 0.2s;
+  transition: background 0.2s, color 0.2s;
+  z-index: 10;
+}
+
+.arcaea-mermaid-overlay-close:hover {
+  background: rgba(60, 30, 40, 0.8);
+  color: #fff;
+}
+
+/* ── 滚动条美化 ── */
+.arcaea-mermaid-box::-webkit-scrollbar,
+.arcaea-mermaid-overlay-content::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.arcaea-mermaid-box::-webkit-scrollbar-track,
+.arcaea-mermaid-overlay-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.arcaea-mermaid-box::-webkit-scrollbar-thumb,
+.arcaea-mermaid-overlay-content::-webkit-scrollbar-thumb {
+  background: rgba(160, 220, 255, 0.25);
+  border-radius: 3px;
+}
+
+.arcaea-mermaid-box::-webkit-scrollbar-thumb:hover,
+.arcaea-mermaid-overlay-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 220, 255, 0.4);
+}
+
+/* ── 响应式：平板 ── */
+@media (max-width: 768px) {
+  .arcaea-mermaid-box {
+    margin: 1.4rem 0;
+    padding: 0.75rem;
+    border-radius: 14px;
+  }
+
+  .arcaea-mermaid-fullscreen-btn {
+    opacity: 1;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .arcaea-mermaid-overlay .arcaea-mermaid-overlay-content {
+    max-width: 98vw;
+    max-height: 96vh;
+    padding: 0.5rem;
+  }
+}
+
+/* ── 响应式：小手机 ── */
+@media (max-width: 420px) {
+  .arcaea-mermaid-box {
+    padding: 0.5rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+  }
+
+}
+
+/* ── 减少动效 ── */
+@media (prefers-reduced-motion: reduce) {
+
+  .arcaea-mermaid-box,
+  .arcaea-mermaid-box:hover {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .arcaea-mermaid-overlay {
+    transition: none !important;
+  }
+}

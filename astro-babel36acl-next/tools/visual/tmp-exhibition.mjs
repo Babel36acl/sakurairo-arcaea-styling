@@ -1,0 +1,3 @@
+import { createBrowser, openPreparedPage, closeBrowserResources, VIEWPORTS } from "./common.mjs";
+const b=await createBrowser();
+for(const v of VIEWPORTS){const h=await openPreparedPage(b,"http://127.0.0.1:18082/",v,{static:true,waitMs:300}); console.log(v.name,await h.page.evaluate(()=>{const e=document.querySelector('.exhibition-area-container');const c=e&&getComputedStyle(e);return {html:e?.outerHTML,rect:e?.getBoundingClientRect().toJSON(),style:e&&{display:c.display,height:c.height,pad:c.padding,margin:c.margin,bg:c.background,position:c.position}}}));await closeBrowserResources(h)} await b.close();

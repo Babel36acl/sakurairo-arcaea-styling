@@ -1,0 +1,61 @@
+/* Static capture stabilization only. This file never ships with the site. */
+html {
+	color-scheme: dark !important;
+	scroll-behavior: auto !important;
+}
+
+*,
+*::before,
+*::after {
+	 caret-color: transparent !important;
+	animation: none !important;
+	animation-delay: 0s !important;
+	animation-play-state: paused !important;
+	transition: none !important;
+}
+
+#astro-dev-toolbar,
+astro-dev-toolbar,
+[data-astro-dev-toolbar],
+[data-vite-devtools],
+[data-dev-toolbar] {
+	display: none !important;
+}
+
+/* The legacy reference creates random medal particles with inline styles. They
+ * are intentionally excluded from static capture; motion is covered separately
+ * by probe-animations.mjs and scroll-state probes. */
+.medal-particles-container,
+.medal-particles,
+.medal-particle {
+	visibility: hidden !important;
+}
+
+/* The legacy reference renders falling petals on a canvas; it is intentionally
+ * excluded from static screenshots so the same page can be compared twice. */
+#canvas_sakura {
+	display: none !important;
+}
+
+/* The legacy quote widget rewrites its typed string on a timer. Preserve its
+ * layout while hiding that non-deterministic text in static captures. */
+.header-info .element,
+.header-info .typed-cursor,
+.header-info > i {
+	visibility: hidden !important;
+}
+
+.headertop-down {
+	visibility: hidden !important;
+}
+
+/* Legacy post-list reveal is intentionally frozen at its visible state for
+ * static geometry and pixel captures. Runtime reveal remains owned by the
+ * page stylesheet and IntersectionObserver. */
+.post-list-thumb {
+	animation: none !important;
+	opacity: 1 !important;
+	filter: none !important;
+	transform: none !important;
+	content-visibility: visible !important;
+}

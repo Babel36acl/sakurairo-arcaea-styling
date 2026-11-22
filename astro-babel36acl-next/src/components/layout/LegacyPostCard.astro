@@ -1,0 +1,148 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+import CoverImage from "@/components/common/CoverImage.astro";
+import { getApiUrlList, processCoverImageSync } from "@/utils/image-utils";
+import { getCategoryUrl, getFileDirFromPath } from "@/utils/url-utils";
+import { formatDateToYYYYMMDD } from "@/utils/date-utils";
+
+const REFERENCE_SNAPSHOT_NOW = new Date("2026-10-04T00:00:00+08:00").getTime();
+
+// These counters are the values rendered by the captured Sakurairo home page.
+// They are intentionally limited to the first visual-fidelity tranche; newer
+// posts fall back to the Astro content values below.
+const LEGACY_REFERENCE_META: Record<number, { views: number; words: number; minutes: number; minutesLabel?: string }> = {
+	1326: { views: 122, words: 4493, minutes: 20 },
+	1275: { views: 183, words: 3798, minutes: 17 },
+	1178: { views: 347, words: 12769, minutes: 58 },
+	861: { views: 343, words: 4722, minutes: 21 },
+	798: { views: 516, words: 26096, minutes: 120, minutesLabel: "2 小时" },
+	796: { views: 281, words: 4106, minutes: 19 },
+	791: { views: 261, words: 1242, minutes: 6 },
+	788: { views: 289, words: 2774, minutes: 13 },
+	782: { views: 161, words: 3119, minutes: 14 },
+	780: { views: 198, words: 2392, minutes: 11 },
+};
+
+function formatLegacyPublished(date: Date) {
+	const days = Math.floor((REFERENCE_SNAPSHOT_NOW - date.getTime()) / 86_400_000);
+	return days >= 0 && days < 30 ? `${days} 天前` : formatDateToYYYYMMDD(date);
+}
+
+interface Props {
+	entry: CollectionEntry<"posts">;
+	title: string;
+	url: string;
+	published: Date;
+	tags: string[];
+	category: string | null;
+	image: string;
+	description: string;
+	words?: number;
+	minutes?: number;
+	password?: boolean;
+	pinned?: boolean;
+	loading?: "lazy" | "eager";
+}
+
+const {
+	entry,
+	title,
+	url,
+	published,
+	category,
+	image,
+	description,
+	words,
+	minutes,
+	password = false,
+	pinned = false,
+	loading = "lazy",
+} = Astro.props;
+
+const processedImage = processCoverImageSync(image, entry.id);
+const apiUrls = getApiUrlList(image, entry.id);
+const descriptionText = description || "";
+const hasCover = Boolean(processedImage);
+const referenceMeta = entry.data.legacyId ? LEGACY_REFERENCE_META[entry.data.legacyId] : undefined;
+const displayViews = referenceMeta?.views ?? 0;
+const displayWords = referenceMeta?.words ?? words;
+const displayMinutes = referenceMeta?.minutes ?? minutes;
+const displayMinutesLabel = referenceMeta?.minutesLabel;
+---
+
+<article
+	class:list={["post", "post-list-thumb", hasCover ? "has-cover" : "no-cover", pinned ? "post-top" : ""]}
+	itemscope
+	itemtype="http://schema.org/BlogPosting"
+>
+	<div class="post-thumb">
+		<a href={url} aria-label={title}>
+			{hasCover && (
+				<CoverImage
+					src={processedImage}
+					basePath={getFileDirFromPath(entry.filePath || "")}
+					alt={title}
+					class="legacy-post-cover"
+					preview={true}
+					loading={loading}
+					apiUrls={apiUrls}
+				/>
+			)}
+		</a>
+	</div>
+
+	<div class="post-date">
+		<i class="fa-regular fa-clock" aria-hidden="true"></i>
+		发布于 {formatLegacyPublished(published)}
+	</div>
+
+	<div class="post-meta">
+		<span class="legacy-meta-views"><i class="fa-regular fa-eye" aria-hidden="true"></i>{displayViews} 热度</span>
+		<span class="comments-number">
+			<i class="fa-regular fa-comment" aria-hidden="true"></i>
+			{" "}
+			<a href={`${url}#respond`}>无~</a>
+		</span>
+		<span>
+			<i class="fa-regular fa-folder" aria-hidden="true"></i>{" "}
+			<a href={getCategoryUrl(category || "")}>{category || "未分类"}</a>
+		</span>
+		<span>
+			<i class="fa-regular fa-pen-to-square" aria-hidden="true"></i>{displayWords} 字
+		</span>
+		<span title="预计阅读时间">
+			<i class="fa-solid fa-hourglass" aria-hidden="true"></i>{displayMinutesLabel ?? displayMinutes} {displayMinutesLabel ? "" : "分钟"}
+		</span>
+
+		<span class="meta-author">
+			<a href="/author/chuixin/">
+				<img
+					alt="Babel36acl"
+					class="avatar avatar-16 photo avatar"
+					height="16"
+					width="16"
+					decoding="async"
+					src="/assets/legacy-avatar.webp"
+				/>
+			</a>
+			<a rel="author" title="Babel36acl" href="/author/chuixin/">Babel36acl</a>
+		</span>
+	</div>
+
+	<div class="post-title">
+		<a href={url}>
+			<h3>
+				{title}
+				{password && <Icon name="material-symbols:lock-outline" aria-label="加密文章" />}
+			</h3>
+		</a>
+	</div>
+
+	<div class="post-excerpt">
+		<div class="ai-excerpt-tip">
+			<i class="fa-solid fa-bars-staggered" aria-hidden="true"></i>摘要
+		</div>
+		<p>{descriptionText}</p>
+	</div>
+</article>
